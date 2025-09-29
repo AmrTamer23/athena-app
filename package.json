@@ -1,9 +1,9 @@
 {
-  "name": "athena-fe",
+  "name": "athena-app",
   "private": true,
   "type": "module",
   "workspaces": [
-    "apps/*",
+    "app",
     "packages/*"
   ],
   "scripts": {
