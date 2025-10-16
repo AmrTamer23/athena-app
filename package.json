@@ -1,11 +1,16 @@
 {
   "name": "athena-app",
+  "devDependencies": {
+    "turbo": "^2.5.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "oxlint": "^1.12.0"
+  },
+  "lint-staged": {
+    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
+  },
+  "packageManager": "bun@1.2.18",
   "private": true,
-  "type": "module",
-  "workspaces": [
-    "app",
-    "packages/*"
-  ],
   "scripts": {
     "prepare": "husky",
     "check": "oxlint",
@@ -16,15 +21,9 @@
     "dev:web": "turbo -F web dev",
     "dev:server": "turbo -F server dev"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "turbo": "^2.5.4",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.1.2",
-    "oxlint": "^1.12.0"
-  },
-  "lint-staged": {
-    "**/*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,astro,svelte}": "oxlint"
-  },
-  "packageManager": "bun@1.2.18"
+  "type": "module",
+  "workspaces": [
+    "app",
+    "packages/*"
+  ]
 }
