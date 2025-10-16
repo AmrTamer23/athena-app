@@ -186,4 +186,7 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  html, body, #root {
+    @apply h-full min-h-screen bg-background;
+  }
 }
