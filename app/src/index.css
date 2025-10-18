@@ -190,3 +190,13 @@ body {
     @apply h-full min-h-screen bg-background;
   }
 }
+
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
