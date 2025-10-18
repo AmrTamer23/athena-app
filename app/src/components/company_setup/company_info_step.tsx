@@ -9,9 +9,14 @@ interface CompanyInfoStepProps {
   errors: {
     [key: string]: string | undefined;
   };
+  onBlur: (fieldName: string) => void;
 }
 
-export function CompanyInfoStep({ form, errors }: CompanyInfoStepProps) {
+export function CompanyInfoStep({
+  form,
+  errors,
+  onBlur,
+}: CompanyInfoStepProps) {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -31,6 +36,7 @@ export function CompanyInfoStep({ form, errors }: CompanyInfoStepProps) {
                 placeholder="Acme Corporation"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={() => onBlur("companyName")}
                 size="lg"
               />
               <AnimatePresence mode="wait">
@@ -59,6 +65,7 @@ export function CompanyInfoStep({ form, errors }: CompanyInfoStepProps) {
                 placeholder="acme-corp"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={() => onBlur("companyIdentifier")}
                 size="lg"
               />
               <p className="text-xs text-muted-foreground ps-3">

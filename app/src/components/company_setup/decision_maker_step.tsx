@@ -9,9 +9,14 @@ interface DecisionMakerStepProps {
   errors: {
     [key: string]: string | undefined;
   };
+  onBlur: (fieldName: string) => void;
 }
 
-export function DecisionMakerStep({ form, errors }: DecisionMakerStepProps) {
+export function DecisionMakerStep({
+  form,
+  errors,
+  onBlur,
+}: DecisionMakerStepProps) {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -31,6 +36,8 @@ export function DecisionMakerStep({ form, errors }: DecisionMakerStepProps) {
                 placeholder="John Doe"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={() => onBlur("fullName")}
+                size="lg"
               />
               <AnimatePresence mode="wait">
                 {errors.fullName && (
@@ -39,7 +46,7 @@ export function DecisionMakerStep({ form, errors }: DecisionMakerStepProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2 }}
-                    className="text-sm text-destructive"
+                    className="text-xs text-destructive"
                   >
                     {errors.fullName}
                   </motion.p>
@@ -59,6 +66,8 @@ export function DecisionMakerStep({ form, errors }: DecisionMakerStepProps) {
                 placeholder="john@acme.com"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={() => onBlur("email")}
+                size="lg"
               />
               <AnimatePresence mode="wait">
                 {errors.email && (
@@ -67,7 +76,7 @@ export function DecisionMakerStep({ form, errors }: DecisionMakerStepProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2 }}
-                    className="text-sm text-destructive"
+                    className="text-xs text-destructive"
                   >
                     {errors.email}
                   </motion.p>
@@ -87,6 +96,8 @@ export function DecisionMakerStep({ form, errors }: DecisionMakerStepProps) {
                 placeholder="••••••••"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={() => onBlur("password")}
+                size="lg"
               />
               <AnimatePresence mode="wait">
                 {errors.password && (
@@ -95,7 +106,7 @@ export function DecisionMakerStep({ form, errors }: DecisionMakerStepProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2 }}
-                    className="text-sm text-destructive"
+                    className="text-xs text-destructive"
                   >
                     {errors.password}
                   </motion.p>
@@ -115,6 +126,8 @@ export function DecisionMakerStep({ form, errors }: DecisionMakerStepProps) {
                 placeholder="••••••••"
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={() => onBlur("confirmPassword")}
+                size="lg"
               />
               <AnimatePresence mode="wait">
                 {errors.confirmPassword && (
@@ -123,7 +136,7 @@ export function DecisionMakerStep({ form, errors }: DecisionMakerStepProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2 }}
-                    className="text-sm text-destructive"
+                    className="text-xs text-destructive"
                   >
                     {errors.confirmPassword}
                   </motion.p>

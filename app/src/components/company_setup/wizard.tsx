@@ -20,6 +20,7 @@ export function Wizard() {
     submitError,
     isSuccess,
     validateStep,
+    validateField,
     errors,
   } = useCompanySetup();
 
@@ -47,9 +48,17 @@ export function Wizard() {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <CompanyInfoStep form={form} errors={errors} />;
+        return (
+          <CompanyInfoStep form={form} errors={errors} onBlur={validateField} />
+        );
       case 2:
-        return <DecisionMakerStep form={form} errors={errors} />;
+        return (
+          <DecisionMakerStep
+            form={form}
+            errors={errors}
+            onBlur={validateField}
+          />
+        );
       case 3:
         return (
           <ConfirmationStep

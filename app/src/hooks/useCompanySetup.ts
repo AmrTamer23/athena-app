@@ -29,6 +29,76 @@ export const useCompanySetup = () => {
     } as CompanySetupForm,
   });
 
+  const validateField = (fieldName: string) => {
+    const values = form.state.values;
+
+    if (currentStep === 1) {
+      const result = companyInfoSchema.safeParse({
+        companyName: values.companyName,
+        companyIdentifier: values.companyIdentifier,
+      });
+
+      if (!result.success) {
+        const fieldError = result.error.issues.find(
+          (error: any) => error.path[0] === fieldName
+        );
+
+        if (fieldError) {
+          setErrors((prev) => ({
+            ...prev,
+            [fieldName]: fieldError.message,
+          }));
+        } else {
+          setErrors((prev) => {
+            const newErrors = { ...prev };
+            delete newErrors[fieldName];
+            return newErrors;
+          });
+        }
+      } else {
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[fieldName];
+          return newErrors;
+        });
+      }
+    }
+
+    if (currentStep === 2) {
+      const result = decisionMakerSchema.safeParse({
+        fullName: values.fullName,
+        email: values.email,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      });
+
+      if (!result.success) {
+        const fieldError = result.error.issues.find(
+          (error: any) => error.path[0] === fieldName
+        );
+
+        if (fieldError) {
+          setErrors((prev) => ({
+            ...prev,
+            [fieldName]: fieldError.message,
+          }));
+        } else {
+          setErrors((prev) => {
+            const newErrors = { ...prev };
+            delete newErrors[fieldName];
+            return newErrors;
+          });
+        }
+      } else {
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[fieldName];
+          return newErrors;
+        });
+      }
+    }
+  };
+
   const validateStep = async (step: number): Promise<boolean> => {
     const values = form.state.values;
 
@@ -126,6 +196,7 @@ export const useCompanySetup = () => {
     submitError,
     isSuccess,
     validateStep,
+    validateField,
     errors,
   };
 };
