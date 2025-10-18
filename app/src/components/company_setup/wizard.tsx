@@ -27,11 +27,17 @@ export function Wizard() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
     if (isSuccess) {
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         navigate({ to: "/" });
       }, 2000);
     }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [isSuccess, navigate]);
 
   const handleNext = async () => {
