@@ -1,6 +1,8 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
+import { TooltipTrigger, TooltipPopup, Tooltip } from "../ui/tooltip";
+import { InfoIcon } from "lucide-react";
 
 interface CompanyInfoStepProps {
   form: {
@@ -59,7 +61,21 @@ export function CompanyInfoStep({
         <form.Field name="companyIdentifier">
           {(field: any) => (
             <div className="flex flex-col gap-2">
-              <Label htmlFor="companyIdentifier">Company Identifier</Label>
+              <Label
+                htmlFor="companyIdentifier"
+                className="flex items-end gap-1"
+              >
+                <span>Company Identifier</span>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <InfoIcon className="w-3.5 h-3.5" />
+                  </TooltipTrigger>
+                  <TooltipPopup side="right">
+                    This will be used in your company URL. Use lowercase
+                    letters, numbers, and hyphens only.
+                  </TooltipPopup>
+                </Tooltip>
+              </Label>
               <Input
                 id="companyIdentifier"
                 placeholder="acme-corp"
@@ -68,10 +84,7 @@ export function CompanyInfoStep({
                 onBlur={() => onBlur("companyIdentifier")}
                 size="lg"
               />
-              <p className="text-xs text-muted-foreground ps-3">
-                This will be used in your company URL. Use lowercase letters,
-                numbers, and hyphens only.
-              </p>
+
               <AnimatePresence mode="wait">
                 {errors.companyIdentifier && (
                   <motion.p

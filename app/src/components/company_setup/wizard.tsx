@@ -4,6 +4,7 @@ import { CompanyInfoStep } from "./company_info_step";
 import { DecisionMakerStep } from "./decision_maker_step";
 import { ConfirmationStep } from "./confirmation_step";
 import { useCompanySetup } from "@/hooks/useCompanySetup";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
@@ -55,22 +56,50 @@ export function Wizard() {
     switch (currentStep) {
       case 1:
         return (
-          <CompanyInfoStep form={form} errors={errors} onBlur={validateField} />
+          <motion.div
+            key="step-1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <CompanyInfoStep
+              form={form}
+              errors={errors}
+              onBlur={validateField}
+            />
+          </motion.div>
         );
       case 2:
         return (
-          <DecisionMakerStep
-            form={form}
-            errors={errors}
-            onBlur={validateField}
-          />
+          <motion.div
+            key="step-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <DecisionMakerStep
+              form={form}
+              errors={errors}
+              onBlur={validateField}
+            />
+          </motion.div>
         );
       case 3:
         return (
-          <ConfirmationStep
-            formData={form.state.values}
-            isSuccess={isSuccess}
-          />
+          <motion.div
+            key="step-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ConfirmationStep
+              formData={form.state.values}
+              isSuccess={isSuccess}
+            />
+          </motion.div>
         );
       default:
         return null;
@@ -109,7 +138,7 @@ export function Wizard() {
       </CardHeader>
 
       <CardContent className="space-y-6">
-        {renderStep()}
+        <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
 
         {submitError && (
           <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
