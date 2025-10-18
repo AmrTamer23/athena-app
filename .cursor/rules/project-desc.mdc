@@ -1,0 +1,341 @@
+---
+description: Project Descreption and functional requirements
+alwaysApply: true
+---
+
+Virtual Company Management Software Application Software Requirements Specification Document
+Virtual Company Management Software Application SRS
+Date: Date
+Document type: Project Plan
+
+Contents
+
+1. Introduction
+2. Functional Requirements
+3. User Interface Design
+4. Data Management
+
+5. Introduction
+   1.1 Purpose
+   The purpose of this Software Requirements Specification (SRS) document is to outline the functional and non-functional requirements for the development of a Virtual Company Management Software Application. This web application is designed to provide comprehensive, top-down visibility into an organization's internal workings, specifically addressing the needs of remote-first and virtual companies.
+   1.2 Scope
+   The project encompasses the design, development, and deployment of a web application tailored for remote companies, focusing on hierarchical organizational visibility, task management, and performance analytics.
+
+Web Application Development: Development of a user-friendly web interface for all user roles (CEO, CTO, PM, HR, Senior Engineer, Junior Engineer, Interns), including robust backend and intuitive frontend for authentication, role-based access control, task management, and data analytics.
+Company Management: Functionality for CEOs to create and configure company profiles, define organizational roles, and manage company identifiers for employee assignment.
+User Management and Authentication: Implementation of an invitation system for employees via email with specified roles, an onboarding process through email invitation acceptance, and secure user authentication and authorization based on company affiliation and role.
+Hierarchical Task Management: Features for task assignment, progress tracking, status updates, flagging, and due date management within a hierarchical structure.
+Performance and Feedback System: Mechanism for superiors to provide feedback on completed tasks and employee profiles displaying comprehensive analytical data, including task count, feedback history, and performance ratings.
+AI-Powered Task Assignment: Development of an automated AI agent to recommend best-fit engineers for specific task genres based on their work history, roles, feedback, and ratings.
+Data Storage and Security: Implementation of secure data storage for company information, user profiles, tasks, and performance data.
+
+1.3 Goals
+The main goal is to build a comprehensive web-based solution that optimizes the following processes for remote companies:
+
+Organizational Visibility: Provide CEOs and leadership with complete visibility into their company's operational hierarchy, from executives to interns.
+Streamlined Workflows: Facilitate seamless oversight, allowing superiors to assign and view tasks for their direct reports.
+Accountability and Improvement: Provide a structured mechanism for feedback and performance reviews to foster an environment of accountability and continuous improvement.
+Optimized Task Allocation: Leverage an intelligent AI agent for optimized task allocation based on employee profiles and task genres.
+Efficient Communication: Ensure efficient communication and reporting across all levels of the remote organization.
+
+2. Functional Requirements
+   2.1 Company Creation and Configuration
+   ID: FR-001
+   Title: CEO-Initiated Company Setup
+   Description: CEOs will have the ability to create new company profiles from scratch, providing essential company information including a unique Company Identifier. This identifier will be crucial for associating employees with their respective companies.
+   Input: Company name, Company Identifier, Company details.
+   Output: New company profile created with a unique Company Identifier.
+   Pre-condition: The CEO must be logged in and authorized to create company profiles.
+   Post-condition: A new company profile exists in the system.
+   Dependencies: Database connectivity.
+   Assumptions: CEOs will provide accurate company information.
+   Acceptance Criteria:
+   The system allows CEOs to create a new company profile.
+   A unique Company Identifier is generated and associated with the new company.
+   ID: FR-002
+   Title: Role Definition and Management
+   Description: CEOs can select and define the organizational roles within their company from a predefined list (e.g., CTO, Project Manager, HR, Senior Engineer, Junior Engineer, etc.). This establishes the hierarchical structure that governs task assignment and visibility.
+   Input: Selection of roles from a predefined list.
+   Output: Defined organizational roles associated with the company profile.
+   Pre-condition: A company profile must exist. The CEO must be logged in and authorized to manage roles.
+   Post-condition: The company's hierarchical structure is established with defined roles.
+   Dependencies: Database connectivity.
+   Assumptions: The predefined list of roles meets the company's needs.
+   Acceptance Criteria:
+   CEOs can define organizational roles from a predefined list.
+   The defined roles establish the company's hierarchical structure.
+   2.2 Employee Onboarding and Role Assignment
+   ID: FR-003
+   Title: Email-Based Invitation System
+   Description: CEOs can invite employees to join their company by inputting the user's email address and assigning a specific role. This streamlines the process of populating the organizational structure.
+   Input: Employee email address, assigned role.
+   Output: Email invitation sent to the employee.
+   Pre-condition: The CEO must be logged in and authorized to invite employees. The company must have defined roles.
+   Post-condition: An invitation email is sent to the specified address.
+   Dependencies: Email service integration.
+   Assumptions: The provided email address is valid.
+   Acceptance Criteria:
+   The system sends an email invitation to the specified employee with the assigned role.
+   ID: FR-004
+   Title: Seamless Joining Process
+   Description: Employees receive an email invitation and, upon acceptance, are automatically assigned to the specified role within the company. Upon acceptance, the employee will be prompted to fill out all required information. Each role will have a certain checklist with an onboarding buddy to help the newcomer in the checklist completion. This ensures a smooth and efficient onboarding experience.
+   Input: Acceptance of email invitation, employee information (profile details).
+   Output: Employee account created and assigned to the role, onboarding checklist initiated.
+   Pre-condition: Employee has received an invitation email.
+   Post-condition: Employee is onboarded, assigned a role, and an onboarding checklist is active.
+   Dependencies: Database connectivity, user profile management.
+   Assumptions: Employees will complete the required information during onboarding.
+   Acceptance Criteria:
+   Upon invitation acceptance, employees are automatically assigned to their roles.
+   Employees are prompted to fill out required information.
+   An onboarding checklist with an assigned buddy is initiated for each new employee.
+
+2.3 Squad-Based Environments
+ID: FR-005
+Title: Squad Creation & Configuration
+Description: Managers (CTO, PM, HR) can create squads and assign leaders (Squad Lead / Tech Lead). Each squad is tied to a specific project or stack (e.g., React Frontend, Data Analytics, Mobile App). Squads can have different role mixes: PM + Engineers + QA + Designer.
+Input: Squad name, assigned leader, project/stack, desired role mix.
+Output: New squad created with specified configurations.
+Pre-condition: Manager is logged in and authorized to create squads.
+Post-condition: A new squad exists in the system with defined attributes.
+Dependencies: Database connectivity.
+Assumptions: Managers have a clear understanding of squad requirements.
+Acceptance Criteria:
+Managers can create squads and assign leaders.
+Squads can be associated with specific projects or technology stacks.
+Squads can be configured with various role combinations.
+ID: FR-006
+Title: Task Management within Squads
+Description: Tasks can be assigned at the squad level, then further delegated internally. Squad dashboards show Kanban boards / progress graphs for squad-specific tasks. Squad leads can review and provide feedback, which also feeds into the hierarchical feedback system.
+Input: Task details, squad assignment, task delegation within the squad, feedback.
+Output: Task assigned to squad, progress tracked on dashboard, feedback recorded.
+Pre-condition: Squads are created. Managers/Squad Leads are logged in and authorized to manage tasks.
+Post-condition: Tasks are managed effectively within squads, with transparent progress and feedback.
+Dependencies: Hierarchical task management, performance and feedback system.
+Assumptions: Squad members will update task statuses accurately.
+Acceptance Criteria:
+Tasks can be assigned to squads and delegated to individual members.
+Squad dashboards display Kanban boards and progress graphs for squad-specific tasks.
+Squad leads can provide feedback that integrates with the main feedback system.
+2.4 Hierarchical Task Management
+ID: FR-007
+Title: Superior-Inferior Task Assignment
+Description: Individuals in higher hierarchical positions can assign tasks directly to their subordinates. This reinforces the chain of command and ensures clear task delegation.
+Input: Task details, assignee (subordinate).
+Output: Task assigned to the subordinate, visible in their task list.
+Pre-condition: Superior and subordinate roles are defined in the hierarchy.
+Post-condition: Task is delegated according to the organizational hierarchy.
+Dependencies: Role definition and management.
+Assumptions: Superiors assign tasks relevant to their subordinates' roles.
+Acceptance Criteria:
+Superiors can assign tasks directly to their subordinates.
+Assigned tasks are visible to the assignee and the assigner.
+ID: FR-008
+Title: Dynamic Task Status Tracking
+Description: Tasks will have multiple statuses (e.g., assigned, in progress, completed, reviewed) that can be updated by both the assignee and the assigner. This provides real-time visibility into task progress.
+Input: Task status update (assigned, in progress, completed, reviewed).
+Output: Task status updated in real-time.
+Pre-condition: Task has been assigned.
+Post-condition: Task progress is accurately reflected and visible.
+Dependencies: Task assignment.
+Assumptions: Users update task statuses regularly.
+Acceptance Criteria:
+Tasks can have multiple statuses that can be updated by assignees and assigners.
+Task progress is visible in real-time.
+ID: FR-009
+Title: Task Enhancements (Flags & Due Dates)
+Description: Tasks can be marked with various flags to indicate priority, category, or type. Due dates can be assigned to tasks, enabling effective time management and deadline adherence.
+Input: Task flags (priority, category, type), due date.
+Output: Task displayed with specified flags and due date.
+Pre-condition: Task has been created.
+Post-condition: Tasks are clearly prioritized and time-bound.
+Dependencies: Task assignment.
+Assumptions: Users utilize flags and due dates appropriately.
+Acceptance Criteria:
+Users can add various flags to tasks.
+Users can assign due dates to tasks.
+2.5 Gamification Experience
+ID: FR-010
+Title: Experience Points (XP) & Levels
+Description: Every task completed, feedback received, or milestone achieved earns employees XP, which can be calculated via the AI agent or inferred from the task’s info. Employees "level up" (Intern → Junior → Senior), but promotion requires approval from superiors, not solely relying on experience points and levels.
+Input: Task completion, feedback received, milestone achievement.
+Output: XP awarded, employee level updated (if applicable).
+Pre-condition: Employee account exists. AI agent is operational for XP calculation.
+Post-condition: Employees gain XP and can level up, subject to superior approval for promotions.
+Dependencies: Hierarchical task management, AI-powered task assignment agent, performance and feedback system.
+Assumptions: XP calculation is accurate and fair.
+Acceptance Criteria:
+Employees earn XP for tasks, feedback, and milestones.
+XP contributes to employee levels.
+Promotions are subject to superior approval, not just XP/level.
+ID: FR-011
+Title: Badges & Achievements
+Description: Show badges on employee profiles alongside their performance stats. Could be like ("Consistency Champ", "Innovator", etc.). Titled Badges can express the number of tasks done by employees (e.g., 100+, 200+, 300+ tasks). Another type of badge would be for 5-star reviewed tasks, similar to the 100+, 200+, 300+ task badges.
+Input: Task completion count, 5-star feedback count.
+Output: Badges displayed on employee profiles.
+Pre-condition: Employee profile exists. Performance stats are available.
+Post-condition: Employees are recognized for achievements through badges.
+Dependencies: Performance and feedback system.
+Assumptions: Badge criteria are clearly defined.
+Acceptance Criteria:
+Badges are displayed on employee profiles.
+Badges are awarded for task count and 5-star reviewed tasks.
+
+ID: FR-012
+Title: Streaks & Progress Bars
+Description: Progress Bars: Show task progress visually (like GitHub’s contribution graph but tied to company tasks).
+Input: Task progress data.
+Output: Visual progress bars displayed for tasks.
+Pre-condition: Tasks are in progress.
+Post-condition: Users have a visual representation of task progress.
+Dependencies: Dynamic task status tracking.
+Assumptions: Progress data is continuously updated.
+Acceptance Criteria:
+Task progress is visually represented by progress bars.
+2.6 Personal User Dashboard
+ID: FR-013
+Title: Dashboard Overview
+Description: The user will have a bunch of widgets reflecting the amount of tasks in each status type: in progress, to do, done, under on hold. Each widget redirects to that task status list of tasks. Also a graph for a specific range of time (3 months, 6 months, 12 months) reflecting the amount of tasks done within that period and when, superiors will be able to view those graphs as well.
+Input: Task status data, task completion dates.
+Output: Dashboard displaying task status widgets and historical task completion graphs.
+Pre-condition: User is logged in. Task data is available.
+Post-condition: Users have a clear overview of their tasks and performance.
+Dependencies: Dynamic task status tracking.
+Assumptions: Task data is accurate and up-to-date.
+Acceptance Criteria:
+The dashboard displays widgets for various task statuses, with redirection to task lists.
+A graph shows task completion over selected time ranges (3, 6, 12 months).
+Superiors can view these graphs for their reports.
+
+2.7 Performance and Feedback System
+ID: FR-014
+Title: Structured Feedback Mechanism
+Description: Superiors can provide detailed feedback on completed tasks, contributing to an employee's performance record. This promotes constructive criticism and professional development.
+Input: Feedback on completed tasks.
+Output: Feedback recorded on employee's performance record.
+Pre-condition: Task is completed. Superior is logged in and authorized to provide feedback.
+Post-condition: Employee's performance record is updated with feedback.
+Dependencies: Hierarchical task management.
+Assumptions: Superiors provide constructive and timely feedback.
+Acceptance Criteria:
+Superiors can provide detailed feedback on completed tasks.
+Feedback is recorded on the employee's performance record.
+ID: FR-015
+Title: Comprehensive Employee Profiles
+Description: Each employee will have a personalized profile displaying key analytical data such as task count, received feedback, and overall performance ratings. Profiles could also include personal information, a self-bio, and links to social media, allowing employees to express themselves professionally.
+Input: Employee personal information, self-bio, social media links.
+Output: Personalized employee profile displaying analytical data and personal information.
+Pre-condition: Employee account exists. Performance data is available.
+Post-condition: Employees have a comprehensive profile showcasing their work and personality.
+Dependencies: Performance and feedback system, gamification experience.
+Assumptions: Employees will keep their personal information updated.
+Acceptance Criteria:
+Employee profiles display task count, received feedback, and performance ratings.
+Profiles allow for personal information, self-bio, and social media links.
+
+2.8 AI-Powered Task Assignment Agent
+ID: FR-016
+Title: Intelligent Engineer Recommendation
+Description: An automated AI agent will assist task assigners in finding the most suitable engineers for specific tasks or genres of tasks. The agent will analyze an employee's work history, feedback, and performance ratings to generate qualified recommendations.
+Input: Task details, employee work history, feedback, performance ratings.
+Output: AI-generated recommendations for suitable engineers for a task.
+Pre-condition: Task is created. Employee data (work history, feedback, ratings) is available.
+Post-condition: Task assigners receive intelligent recommendations for task allocation.
+Dependencies: Hierarchical task management, performance and feedback system.
+Assumptions: The AI agent has access to comprehensive and accurate employee data.
+Acceptance Criteria:
+The AI agent provides recommendations for suitable engineers based on task details and employee data.
+Recommendations are based on work history, feedback, and performance ratings.
+2.9 Bonus Functionalities
+2.9.1 Avatar Customization
+ID: FR-017
+Title: Personalized Employee Avatars
+Description: Employees will have the ability to create and customize their avatars, adding a personalized touch to their profiles and promoting a more engaging user experience.
+Input: Avatar customization options.
+Output: Customized avatar displayed on employee profile.
+Pre-condition: Employee profile exists.
+Post-condition: Employee profiles are visually personalized.
+Dependencies: Employee profile management.
+Assumptions: Users will engage with avatar customization.
+Acceptance Criteria:
+Employees can create and customize their avatars.
+Customized avatars are displayed on employee profiles.
+2.9.2 In-Company Chat System(Prio Bonus)
+ID: FR-018
+Title: Integrated Communication Platform
+Description: A built-in chatting system will facilitate real-time communication among employees within the company, fostering collaboration and quick information exchange.
+Input: Chat messages.
+Output: Real-time communication between employees.
+Pre-condition: Employees are logged in.
+Post-condition: Employees can communicate directly within the application.
+Dependencies: User authentication.
+Assumptions: Users will utilize the chat system for internal communication.
+Acceptance Criteria:
+The system provides a built-in real-time chat feature for employees.
+2.9.3 Gamification Add-ons
+ID: FR-019
+Title: Reward System
+Description: CEO/HR can tie points to actual perks (gift cards, extra day off, public recognition). Keeps it fun while offering tangible benefits for sustained engagement.
+Input: Points awarded, perk selection.
+Output: Perks awarded to employees.
+Pre-condition: Employees have earned points through gamification.
+Post-condition: Employees are rewarded for their performance.
+Dependencies: Experience Points (XP) & Levels.
+Assumptions: Perks are clearly defined and valued by employees.
+Acceptance Criteria:
+CEO/HR can associate earned points with tangible perks.
+Employees can redeem points for selected perks.
+ID: FR-020
+Title: Quest / Mission System (Team-Based)
+Description: Managers can bundle multiple tasks into "missions" with themed goals (e.g., Sprint Quest, Bug Hunt, Feature Launch). Completing the mission as a team unlocks shared rewards (XP boosts, team badges).
+Input: Mission creation, team task completion.
+Output: Shared team rewards (XP boosts, team badges).
+Pre-condition: Squads are created. Tasks are available.
+Post-condition: Teams are motivated to achieve shared goals.
+Dependencies: Squad-based environments, gamification experience.
+Assumptions: Managers will create engaging and achievable missions.
+
+2.9.4 User Personal Actions
+ID: FR-021
+Title: Actionable Reminders
+Description: Employee can alert superiors yearly with a notification that the yearly annual is coming up for this employee as a reminder for yearly bonuses + annual raises.
+Input: Employee request for annual review reminder.
+Output: Notification sent to superior regarding upcoming annual review.
+Pre-condition: Employee account exists.
+Post-condition: Superiors are reminded of upcoming annual reviews for their reports.
+Dependencies: Employee profile.
+Assumptions: Superiors will act upon these reminders.
+Acceptance Criteria:
+Employees can trigger yearly reminders for their superiors regarding annual reviews, bonuses, and raises.
+
+3. User Interface Design
+   The user interface will be clean, modern, and intuitive, prioritizing ease of use and clear information presentation. A consistent design language will be applied throughout the application to ensure a cohesive user experience.
+
+Dashboard Layout:
+Header: Contains the company logo, user avatar with dropdown menu for profile/settings, and global search bar.
+Sidebar Navigation: Left-hand navigation panel with clear icons and labels for main modules (e.g., Dashboard, Tasks, Employees, Squads, Reports, Settings). Active module will be highlighted.
+Main Content Area: Dynamic area displaying relevant information based on the selected navigation item.
+Color Palette: A professional and calming color palette will be used, with clear accent colors for interactive elements and important information.
+Typography: A legible and modern font family will be chosen for consistency across all text elements.
+Interactive Elements:
+Buttons: Clearly labeled and styled buttons for actions (e.g., "Assign Task", "Create Squad", "Submit Feedback").
+Forms: Intuitive forms with clear input fields, labels, and validation messages.
+Tables: Sortable and filterable tables for data display, with pagination for large datasets.
+Graphs & Charts: Visually appealing and interactive graphs to represent performance analytics and task progress.
+User Profile Screens: Dedicated screens for employee profiles, allowing users to view and edit personal information, performance metrics, and gamification elements (avatars, badges).
+Task Management Views: Kanban boards for squad task management, and detailed task views with fields for description, assignee, status, due date, and feedback.
+
+4. Data Management
+   Data management will focus on security, integrity, and efficient access.
+
+Data Storage:
+User profiles, company information, roles, tasks, and feedback will primarily be stored in a relational database (e.g., PostgreSQL) to ensure data consistency and support complex queries for hierarchical structures and performance analytics.
+Data Models:
+Clearly defined data models for each entity (User, Company, Role, Task, Feedback, Squad, etc.) will be established to ensure consistency and facilitate development.
+Data Retrieval:
+Efficient indexing and query optimization will be implemented to ensure fast data retrieval, especially for dashboards and reports.
+Caching mechanisms will be utilized for frequently accessed data to reduce database load and improve response times.
+Data Security and Privacy:
+All data will be encrypted both in transit (using TLS) and at rest (using database encryption features).
+Strict access controls will be applied to the database, ensuring only authorized services and personnel can access sensitive data.
+Role-Based Access Control (RBAC) will be implemented to manage and enforce access permissions to sensitive data.
