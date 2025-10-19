@@ -24,7 +24,8 @@ export function useLoginForm() {
       alert('Login successful! (This is just a demo)')
     },
     validators: {
-      onChange: loginSchema,
+      onBlur: loginSchema,
+      onSubmit: loginSchema,
     },
   })
 

@@ -119,7 +119,7 @@ function RouteComponent() {
               to="/join"
               className="text-primary hover:underline font-medium"
             >
-              Join now 
+              Join now
             </Link>
           </div>
         </CardContent>
