@@ -35,7 +35,7 @@ function RouteComponent() {
               <form.Field
                 name="email"
                 validators={{
-                  onChange: ({ value }) =>
+                  onBlur: ({ value }) =>
                     !value
                       ? 'Email is required'
                       : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
@@ -73,7 +73,7 @@ function RouteComponent() {
               <form.Field
                 name="password"
                 validators={{
-                  onChange: ({ value }) =>
+                  onBlur: ({ value }) =>
                     !value
                       ? 'Password is required'
                       : value.length < 6

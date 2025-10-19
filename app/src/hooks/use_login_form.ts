@@ -8,26 +8,45 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>
 
+// Helper function to properly validate with Zod and return string errors
+function validateWithZod(value: LoginFormData) {
+  const result = loginSchema.safeParse(value)
+  if (result.success) {
+    return undefined
+  }
+  
+  // Extract the first error message for each field
+  const fieldErrors: Record<string, string> = {}
+  result.error.issues.forEach((issue) => {
+    const fieldName = issue.path[0] as string
+    if (!fieldErrors[fieldName]) {
+      fieldErrors[fieldName] = issue.message
+    }
+  })
+  
+  return fieldErrors
+}
+
 export function useLoginForm() {
   const form = useForm({
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     } as LoginFormData,
     onSubmit: async ({ value }) => {
-      console.log('Login attempt:', value)
-      
+      console.log("Login attempt:", value);
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Handle successful login or errors here
-      alert('Login successful! (This is just a demo)')
+      alert("Login successful! (This is just a demo)");
     },
     validators: {
-      onBlur: loginSchema,
-      onSubmit: loginSchema,
+      onSubmit: ({ value }) => validateWithZod(value),
+      onBlur: ({ value }) => validateWithZod(value),
     },
-  })
+  });
 
   return form
 }
