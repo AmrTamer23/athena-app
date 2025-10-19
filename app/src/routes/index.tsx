@@ -14,7 +14,7 @@ function HomeComponent() {
       </h1>
       <div className="flex gap-4 items-center justify-center">
         <Button variant="secondary" size="lg">
-          Login
+          <Link to="/login">Login</Link>
         </Button>
         <Button size="lg" asChild>
           <Link to="/join">Join</Link>

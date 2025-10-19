@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login/route'
 import { Route as AuthJoinRouteRouteImport } from './routes/_auth/join/route'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthLoginRouteRoute = AuthLoginRouteRouteImport.update({
+  id: '/_auth/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthJoinRouteRoute = AuthJoinRouteRouteImport.update({
@@ -26,27 +32,31 @@ const AuthJoinRouteRoute = AuthJoinRouteRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/join': typeof AuthJoinRouteRoute
+  '/login': typeof AuthLoginRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/join': typeof AuthJoinRouteRoute
+  '/login': typeof AuthLoginRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth/join': typeof AuthJoinRouteRoute
+  '/_auth/login': typeof AuthLoginRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/join'
+  fullPaths: '/' | '/join' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/join'
-  id: '__root__' | '/' | '/_auth/join'
+  to: '/' | '/join' | '/login'
+  id: '__root__' | '/' | '/_auth/join' | '/_auth/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthJoinRouteRoute: typeof AuthJoinRouteRoute
+  AuthLoginRouteRoute: typeof AuthLoginRouteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/join': {
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthJoinRouteRoute: AuthJoinRouteRoute,
+  AuthLoginRouteRoute: AuthLoginRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
