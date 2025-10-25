@@ -13,8 +13,8 @@ function HomeComponent() {
         <span className="font-serif font-black italic text-6xl">Athena</span>
       </h1>
       <div className="flex gap-4 items-center justify-center">
-        <Button variant="secondary" size="lg">
-          Login
+        <Button variant="secondary" size="lg" asChild>
+          <Link to="/login">Login</Link>
         </Button>
         <Button size="lg" asChild>
           <Link to="/join">Join</Link>
