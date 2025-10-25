@@ -1,5 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,8 +20,8 @@ function RouteComponent() {
   const form = useLoginForm();
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className=" flex items-center justify-center p-4 w-full">
+      <Card className="w-full max-w-md bg-transparent border-0 shadow-none">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Welcome back</CardTitle>
           <CardDescription>
@@ -37,17 +43,19 @@ function RouteComponent() {
                 validators={{
                   onBlur: ({ value }) =>
                     !value
-                      ? 'Email is required'
+                      ? "Email is required"
                       : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-                        ? 'Please enter a valid email address'
+                        ? "Please enter a valid email address"
                         : undefined,
                   onChangeAsyncDebounceMs: 500,
                   onChangeAsync: async ({ value }) => {
                     if (!value) return undefined;
-                    
+
                     // Simulate checking if email exists
                     await new Promise((resolve) => setTimeout(resolve, 1000));
-                    return value.includes('banned') && 'This email is not allowed';
+                    return (
+                      value.includes("banned") && "This email is not allowed"
+                    );
                   },
                 }}
                 children={(field) => (
@@ -57,11 +65,14 @@ function RouteComponent() {
                       id={field.name}
                       name={field.name}
                       type="email"
+                      size={"lg"}
                       placeholder="Enter your email"
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
+                      aria-invalid={
+                        field.state.meta.isTouched && !field.state.meta.isValid
+                      }
                     />
                     <FieldInfo field={field} />
                   </>
@@ -75,15 +86,16 @@ function RouteComponent() {
                 validators={{
                   onBlur: ({ value }) =>
                     !value
-                      ? 'Password is required'
+                      ? "Password is required"
                       : value.length < 6
-                        ? 'Password must be at least 6 characters long'
+                        ? "Password must be at least 6 characters long"
                         : undefined,
                 }}
                 children={(field) => (
                   <>
                     <Label htmlFor={field.name}>Password</Label>
                     <Input
+                      size={"lg"}
                       id={field.name}
                       name={field.name}
                       type="password"
@@ -91,7 +103,9 @@ function RouteComponent() {
                       value={field.state.value}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={field.state.meta.isTouched && !field.state.meta.isValid}
+                      aria-invalid={
+                        field.state.meta.isTouched && !field.state.meta.isValid
+                      }
                     />
                     <FieldInfo field={field} />
                   </>
@@ -102,19 +116,17 @@ function RouteComponent() {
             <form.Subscribe
               selector={(state) => [state.canSubmit, state.isSubmitting]}
               children={([canSubmit, isSubmitting]) => (
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={!canSubmit}
-                >
-                  {isSubmitting ? 'Signing in...' : 'Sign in'}
+                <Button type="submit" className="w-full" disabled={!canSubmit}>
+                  {isSubmitting ? "Signing in..." : "Sign in"}
                 </Button>
               )}
             />
           </form>
 
           <div className="mt-6 text-center text-sm">
-            <span className="text-muted-foreground">Don't have an account? </span>
+            <span className="text-muted-foreground">
+              Don't have an account?{" "}
+            </span>
             <Link
               to="/join"
               className="text-primary hover:underline font-medium"
