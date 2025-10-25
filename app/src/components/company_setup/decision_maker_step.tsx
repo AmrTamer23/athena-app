@@ -19,72 +19,74 @@ export function DecisionMakerStep({
 }: DecisionMakerStepProps) {
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-2xl font-semibold">Your Information</h2>
-        <p className="text-muted-foreground">
+      <div className="flex flex-col gap-2 items-center justify-center">
+        <h2 className="text-xl font-semibold">Your Information</h2>
+        <p className="text-sm text-muted-foreground">
           Create your account as the company decision maker
         </p>
       </div>
 
-      <div className="space-y-4">
-        <form.Field name="fullName">
-          {(field: any) => (
-            <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input
-                id="fullName"
-                placeholder="John Doe"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={() => onBlur("fullName")}
-                size="lg"
-              />
-              <AnimatePresence mode="wait">
-                {errors.fullName && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-xs text-destructive"
-                  >
-                    {errors.fullName}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
-        </form.Field>
+      <div className="space-y-4 max-w-md mx-auto">
+        <div className="flex gap-2">
+          <form.Field name="fullName">
+            {(field: any) => (
+              <div className="space-y-2">
+                <Label htmlFor="fullName">Full Name</Label>
+                <Input
+                  id="fullName"
+                  placeholder="John Doe"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={() => onBlur("fullName")}
+                  size="lg"
+                />
+                <AnimatePresence mode="wait">
+                  {errors.fullName && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="text-xs text-destructive"
+                    >
+                      {errors.fullName}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+          </form.Field>
 
-        <form.Field name="email">
-          {(field: any) => (
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="john@acme.com"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={() => onBlur("email")}
-                size="lg"
-              />
-              <AnimatePresence mode="wait">
-                {errors.email && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-xs text-destructive"
-                  >
-                    {errors.email}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
-        </form.Field>
+          <form.Field name="email">
+            {(field: any) => (
+              <div className="space-y-2">
+                <Label htmlFor="email">Email Address</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="john@acme.com"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={() => onBlur("email")}
+                  size="lg"
+                />
+                <AnimatePresence mode="wait">
+                  {errors.email && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="text-xs text-destructive"
+                    >
+                      {errors.email}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+          </form.Field>
+        </div>
 
         <form.Field name="password">
           {(field: any) => (

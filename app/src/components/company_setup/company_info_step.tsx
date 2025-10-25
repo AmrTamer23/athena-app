@@ -20,15 +20,15 @@ export function CompanyInfoStep({
   onBlur,
 }: CompanyInfoStepProps) {
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-2xl font-semibold">Company Information</h2>
-        <p className="text-muted-foreground">
+    <div className="flex flex-col gap-6 w-full">
+      <div className="flex flex-col gap-2 items-center justify-center">
+        <h2 className="text-xl font-semibold">Company Information</h2>
+        <p className="text-sm text-muted-foreground">
           Let's start by setting up your company workspace
         </p>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 w-full max-w-md mx-auto">
         <form.Field name="companyName">
           {(field: any) => (
             <div className="flex flex-col gap-2">

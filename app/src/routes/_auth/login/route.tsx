@@ -15,6 +15,12 @@ function RouteComponent() {
   return (
     <div className=" flex items-center justify-center w-full">
       <div className="w-full max-w-sm bg-transparent border-0 shadow-none flex flex-col gap-6">
+        <div className="text-center flex flex-col gap-2">
+          <h2 className="text-2xl font-semibold">Welcome back</h2>
+          <p className="text-muted-foreground">
+            Sign in to your Athena HQ account
+          </p>
+        </div>
         <form
           onSubmit={(e) => {
             e.preventDefault();

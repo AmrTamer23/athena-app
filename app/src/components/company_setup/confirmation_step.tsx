@@ -32,16 +32,16 @@ export function ConfirmationStep({
   }
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-2xl font-semibold">Review & Confirm</h2>
-        <p className="text-muted-foreground">
+    <div className="space-y-6 w-full max-w-md mx-auto">
+      <div className="flex flex-col gap-2 items-center justify-center">
+        <h2 className="text-xl font-semibold">Review & Confirm</h2>
+        <p className="text-sm text-muted-foreground">
           Please review your information before creating your workspace
         </p>
       </div>
 
       <div className="space-y-6 bg-muted/50 rounded-lg p-6">
-        <div className="space-y-4">
+        <div className="flex flex-col gap-4">
           <div>
             <h3 className="text-sm font-medium text-muted-foreground mb-2">
               Company Information

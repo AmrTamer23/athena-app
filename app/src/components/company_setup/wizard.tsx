@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { CompanyInfoStep } from "./company_info_step";
 import { DecisionMakerStep } from "./decision_maker_step";
 import { ConfirmationStep } from "./confirmation_step";
@@ -107,8 +106,8 @@ export function Wizard() {
   };
 
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader>
+    <div className="w-full max-w-lg mx-auto flex flex-col gap-4">
+      <div className="space-y-4">
         <div className="space-y-4">
           <div className="flex items-center justify-center gap-2">
             {[1, 2, 3].map((step) => (
@@ -135,9 +134,9 @@ export function Wizard() {
             ))}
           </div>
         </div>
-      </CardHeader>
+      </div>
 
-      <CardContent className="space-y-6">
+      <div className="flex flex-col gap-4 ">
         <AnimatePresence mode="wait">{renderStep()}</AnimatePresence>
 
         {submitError && (
@@ -147,7 +146,7 @@ export function Wizard() {
         )}
 
         {!isSuccess && (
-          <div className="flex justify-between pt-4">
+          <div className="flex justify-between pt-2 max-w-md mx-auto w-full">
             <Button
               variant="outline"
               onClick={previousStep}
@@ -174,7 +173,7 @@ export function Wizard() {
             )}
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
