@@ -3,10 +3,11 @@ import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
 import { TooltipTrigger, TooltipPopup, Tooltip } from "../ui/tooltip";
 import { InfoIcon } from "lucide-react";
+import type { FieldComponent } from "@tanstack/react-form";
 
 interface CompanyInfoStepProps {
   form: {
-    Field: any;
+    Field: FieldComponent<any, any, any, any>;
   };
   errors: {
     [key: string]: string | undefined;
