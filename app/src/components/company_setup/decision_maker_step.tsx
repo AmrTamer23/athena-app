@@ -1,10 +1,10 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
-
+import { Field } from "@tanstack/react-form";
 interface DecisionMakerStepProps {
   form: {
-    Field: any;
+    Field: typeof Field;
   };
   errors: {
     [key: string]: string | undefined;
