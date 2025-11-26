@@ -19,6 +19,9 @@ function HomeComponent() {
         <Button size="lg" asChild>
           <Link to="/join">Join</Link>
         </Button>
+        <Button variant="outline" size="lg" asChild>
+          <Link to="/invite">Invite Team</Link>
+        </Button>
       </div>
     </main>
   );
