@@ -1,6 +1,6 @@
 FROM node:lts-alpine AS base
 
-RUN apk add --no-cache curl unzip && \
+RUN apk add --no-cache curl unzip bash && \
     curl -fsSL https://bun.sh/install | bash && \
     mv /root/.bun/bin/bun /usr/local/bin/bun && \
     chmod +x /usr/local/bin/bun
