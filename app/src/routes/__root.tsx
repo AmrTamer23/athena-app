@@ -1,4 +1,9 @@
+import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 
 import {
   HeadContent,
@@ -38,15 +43,18 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 });
 
 function RootDocument() {
+  const [queryClient] = useState(() => new QueryClient());
   return (
     <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
       <body className="min-h-screen">
-        <Outlet />
-        <Toaster richColors />
-        <TanStackRouterDevtools position="bottom-left" />
+        <QueryClientProvider client={queryClient}>
+          <Outlet />
+          <Toaster richColors />
+          <TanStackRouterDevtools position="bottom-left" />
+        </QueryClientProvider>
         <Scripts />
       </body>
     </html>
