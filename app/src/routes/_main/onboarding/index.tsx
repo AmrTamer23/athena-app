@@ -1,21 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useOnboardingFlow } from "@/hooks/useOnboardingFlow";
 import { WelcomeScreen } from "@/routes/_main/onboarding/-components/welcome-screen";
-import { BuddySpotlight } from "@/routes/_main/onboarding/-components/buddy-spotlight";
+
 import { ChecklistBoard } from "@/routes/_main/onboarding/-components/checklist-board";
 import { FieldControl } from "@/routes/_main/onboarding/-components/field-control";
 import { TwoSideLayout } from "@/routes/_main/onboarding/-components/two-side-layout";
 import { OnboardingSidePanel } from "@/routes/_main/onboarding/-components/onboarding-side-panel";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/_main/onboarding/")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -42,8 +36,6 @@ function RouteComponent() {
     updateField,
     updateSocialMediaField,
     handleSubmit,
-    handleSkip,
-    handleBlur,
   } = useOnboardingFlow({ token });
 
   if (!token) {
@@ -131,24 +123,24 @@ function RouteComponent() {
         <AnimatePresence mode="wait">
           <motion.div
             key="checklist"
-            className="w-full max-w-4xl flex flex-col gap-6"
+            className="w-full max-w-4xl *:mx-auto flex flex-col gap-4 justify-center items-center"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">
+            <div className="flex flex-col gap-1 text-start w-full *:mx-auto">
+              <p className="text-xs font-medium text-muted-foreground">
                 You are officially onboard
               </p>
-              <h1 className="text-3xl font-semibold tracking-tight">
+              <h1 className="text-2xl font-semibold tracking-tight ">
                 Meet your buddy and first wins
               </h1>
             </div>
-            <div className="grid gap-6 lg:grid-cols-2">
-              <BuddySpotlight buddy={activeBuddy} invite={invite} />
-              <ChecklistBoard checklist={activeChecklist} />
-            </div>
+            <ChecklistBoard checklist={activeChecklist} />
+            <Button asChild>
+              <Link to="/dashboard">Go to Dashboard</Link>
+            </Button>
           </motion.div>
         </AnimatePresence>
       </TwoSideLayout>
@@ -192,22 +184,22 @@ function RouteComponent() {
                 handleSubmit();
               }}
             >
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2">
                 {sharedFields.map((field) => (
                   <FieldControl
                     key={field.key as string}
                     label={field.label}
                     error={errors[field.key as string]}
+                    colSpan={field.type === "textarea" ? 2 : undefined}
                   >
                     {field.type === "textarea" ? (
-                      <textarea
+                      <Textarea
                         value={values[field.key] as string}
                         onChange={(event) =>
                           updateField(field.key, event.target.value)
                         }
-                        onBlur={handleBlur}
                         rows={3}
-                        className="min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                        className="min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-none"
                         aria-invalid={Boolean(errors[field.key as string])}
                         placeholder={field.placeholder}
                       />
@@ -218,7 +210,6 @@ function RouteComponent() {
                         onChange={(event) =>
                           updateField(field.key, event.target.value)
                         }
-                        onBlur={handleBlur}
                         aria-invalid={Boolean(errors[field.key as string])}
                         placeholder={field.placeholder}
                       />
@@ -227,7 +218,7 @@ function RouteComponent() {
                 ))}
               </div>
 
-              <div className="space-y-2 pt-2">
+              <div className="flex flex-col gap-2 pt-2">
                 <p className="text-sm font-medium text-muted-foreground">
                   Social media links (optional)
                 </p>
@@ -249,7 +240,6 @@ function RouteComponent() {
                                 event.target.value
                               )
                             }
-                            onBlur={handleBlur}
                             aria-invalid={Boolean(
                               errors["socialMedia.linkedin"]
                             )}
@@ -269,7 +259,6 @@ function RouteComponent() {
                                 event.target.value
                               )
                             }
-                            onBlur={handleBlur}
                             aria-invalid={Boolean(
                               errors["socialMedia.twitter"]
                             )}
@@ -289,7 +278,6 @@ function RouteComponent() {
                                 event.target.value
                               )
                             }
-                            onBlur={handleBlur}
                             aria-invalid={Boolean(errors["socialMedia.github"])}
                             placeholder="https://github.com/yourusername"
                           />
@@ -307,7 +295,6 @@ function RouteComponent() {
                                 event.target.value
                               )
                             }
-                            onBlur={handleBlur}
                             aria-invalid={Boolean(
                               errors["socialMedia.website"]
                             )}
@@ -324,17 +311,9 @@ function RouteComponent() {
                 <p className="text-sm text-destructive">{submitError}</p>
               )}
 
-              <div className="flex items-center gap-3 pt-2">
+              <div className="flex justify-end gap-3 pt-2">
                 <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? "Saving…" : "Submit profile"}
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={handleSkip}
-                  disabled={isSubmitting}
-                >
-                  Skip social links
                 </Button>
               </div>
             </form>
@@ -362,19 +341,17 @@ function CenteredState({
 }: CenteredStateProps) {
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">
-      <Card className="w-full max-w-lg text-center">
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
-        </CardHeader>
+      <div className="w-full max-w-lg text-center flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl font-semibold">{title}</h1>
+          <p className="text-sm text-muted-foreground">{description}</p>
+        </div>
         {actionLabel && actionHref && (
-          <CardContent>
-            <Button asChild>
-              <a href={actionHref}>{actionLabel}</a>
-            </Button>
-          </CardContent>
+          <Button asChild>
+            <a href={actionHref}>{actionLabel}</a>
+          </Button>
         )}
-      </Card>
+      </div>
     </div>
   );
 }

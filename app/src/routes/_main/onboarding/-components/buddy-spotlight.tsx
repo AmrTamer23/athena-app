@@ -1,11 +1,4 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import type { BuddyProfile, OnboardingInvite } from "@/services/onboarding";
 import { SummaryField } from "./summary-field";
 
@@ -16,16 +9,16 @@ type BuddySpotlightProps = {
 
 export function BuddySpotlight({ buddy, invite }: BuddySpotlightProps) {
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle>Buddy details</CardTitle>
-        <CardDescription>
+    <div className="h-full flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
+        <h2 className="text-lg font-semibold">Buddy details</h2>
+        <p className="text-sm text-muted-foreground">
           {buddy
             ? `Reach out anytime to ${buddy.name}.`
             : "We'll assign a buddy shortly."}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
+        </p>
+      </div>
+      <div className="flex flex-col gap-4">
         <SummaryField
           label="You"
           value={`${invite.fullName} · ${invite.role}`}
@@ -51,7 +44,7 @@ export function BuddySpotlight({ buddy, invite }: BuddySpotlightProps) {
             </Button>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

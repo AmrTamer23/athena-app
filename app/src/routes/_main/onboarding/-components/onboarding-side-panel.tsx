@@ -6,7 +6,6 @@ import type {
   OnboardingInvite,
 } from "@/services/onboarding";
 import { InfoPanel } from "./info-panel";
-import { ChecklistPreviewCard } from "./checklist-preview-card";
 
 type OnboardingSidePanelProps =
   | {
@@ -111,20 +110,7 @@ export function OnboardingSidePanel(props: OnboardingSidePanelProps) {
               <h1 className="font-sans text-4xl font-medium text-primary-foreground">
                 Your First Week
               </h1>
-              <div className="space-y-2">
-                <p className="text-2xl font-semibold text-primary-foreground">
-                  {completedCount} of {totalCount} completed
-                </p>
-                <div className="w-64 h-2 bg-primary-foreground/20 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${progress}%` }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="h-full bg-primary-foreground"
-                  />
-                </div>
-              </div>
-              <p className="text-lg text-primary-foreground/90 max-w-md">
+              <p className="text-lg text-primary-foreground/90 max-w-md text-balance">
                 Work through your onboarding checklist with your buddy. Each
                 step brings you closer to being fully integrated into the team.
               </p>
@@ -133,9 +119,14 @@ export function OnboardingSidePanel(props: OnboardingSidePanelProps) {
                   <p className="text-sm text-primary-foreground/80 mb-1">
                     Need help? Reach out to
                   </p>
-                  <p className="text-base font-semibold text-primary-foreground">
+                  <a
+                    href={`mailto:${buddy.email}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-base font-semibold text-primary-foreground"
+                  >
                     {buddy.name}
-                  </p>
+                  </a>
                 </div>
               )}
             </motion.div>
@@ -163,7 +154,7 @@ export function OnboardingSidePanel(props: OnboardingSidePanelProps) {
               animate="animate"
               exit="initial"
               transition={{ delay: 0.3, duration: 0.5 }}
-              className="space-y-4 h-full"
+              className="h-full flex flex-col gap-4"
             >
               <div className="text-center mb-2">
                 <h1 className="font-sans text-xl font-medium text-primary-foreground">
@@ -174,9 +165,9 @@ export function OnboardingSidePanel(props: OnboardingSidePanelProps) {
                 </p>
               </div>
               <InfoPanel invite={invite} buddy={buddy} />
-              {props.checklist && (
+              {/* {props.checklist && (
                 <ChecklistPreviewCard checklist={props.checklist} />
-              )}
+              )} */}
             </motion.div>
           </AnimatePresence>
         </div>

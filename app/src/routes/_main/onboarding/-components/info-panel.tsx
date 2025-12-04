@@ -1,12 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import type { BuddyProfile, OnboardingInvite } from "@/services/onboarding";
-import { SummaryField } from "./summary-field";
 
 type InfoPanelProps = {
   invite: OnboardingInvite;
@@ -15,11 +7,11 @@ type InfoPanelProps = {
 
 export function InfoPanel({ invite, buddy }: InfoPanelProps) {
   return (
-    <div className="bg-primary-foreground/5 backdrop-blur-sm rounded-lg border border-primary-foreground/10 p-3">
+    <div className="bg-primary-foreground/5 backdrop-blur-sm rounded-lg border border-primary-foreground/10 p-3 text-start">
       <p className="text-xs font-semibold text-primary-foreground mb-2">
         Quick facts
       </p>
-      <div className="space-y-2">
+      <div className="flex flex-col gap-2">
         <div>
           <p className="text-xs text-primary-foreground/70">Role</p>
           <p className="text-sm text-primary-foreground">{invite.role}</p>

@@ -1,10 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import type { ChecklistPreview } from "@/services/onboarding";
 
 type ChecklistPreviewCardProps = {

@@ -1,10 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import type { ChecklistPreview } from "@/services/onboarding";
 
 type ChecklistBoardProps = {
@@ -13,14 +6,14 @@ type ChecklistBoardProps = {
 
 export function ChecklistBoard({ checklist }: ChecklistBoardProps) {
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle>{checklist.title}</CardTitle>
-        <CardDescription>
+    <div className="h-full flex flex-col gap-4">
+      <div className="flex flex-col gap-1">
+        <h2 className="text-lg font-semibold">{checklist.title}</h2>
+        <p className="text-sm text-muted-foreground">
           Work through these with your buddy over the first week.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
+        </p>
+      </div>
+      <div className="flex flex-col gap-4">
         {checklist.steps.map((step) => (
           <div
             key={step.id}
@@ -35,8 +28,7 @@ export function ChecklistBoard({ checklist }: ChecklistBoardProps) {
             </div>
           </div>
         ))}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
-

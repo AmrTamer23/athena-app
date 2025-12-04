@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useForm, useStore } from "@tanstack/react-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -6,7 +6,6 @@ import {
   type BuddyProfile,
   type ChecklistPreview,
   type OnboardingProfilePayload,
-  type RoleFieldDefinition,
 } from "@/services/onboarding";
 import {
   onboardingProfileSchema,
@@ -92,14 +91,6 @@ export const useOnboardingFlow = ({ token }: UseOnboardingFlowArgs) => {
     form.store,
     (state) => state.values
   ) as OnboardingProfileForm;
-  const roleDetails = values.roleDetails as Record<string, string>;
-
-  const roleFields = useMemo<RoleFieldDefinition[]>(() => {
-    if (!inviteQuery.data) {
-      return [];
-    }
-    return inviteQuery.data.roleFields;
-  }, [inviteQuery.data]);
 
   const initialChecklist = inviteQuery.data?.checklist ?? null;
   const initialBuddy = inviteQuery.data?.buddy ?? null;
@@ -120,7 +111,19 @@ export const useOnboardingFlow = ({ token }: UseOnboardingFlowArgs) => {
 
   const buildGeneralValidation = (): Record<string, string> => {
     const generalIssues: Record<string, string> = {};
-    const result = onboardingProfileSchema.safeParse(values);
+    const socialMediaValue = values.socialMedia ?? {};
+    const cleanedSocialMedia: Record<string, string | undefined> = {};
+    const socialFields = ["linkedin", "twitter", "github", "website"] as const;
+    socialFields.forEach((field) => {
+      const value = socialMediaValue[field];
+      const trimmed = typeof value === "string" ? value.trim() : "";
+      cleanedSocialMedia[field] = trimmed === "" ? undefined : trimmed;
+    });
+    const cleanedValues = {
+      ...values,
+      socialMedia: cleanedSocialMedia,
+    };
+    const result = onboardingProfileSchema.safeParse(cleanedValues);
     if (!result.success) {
       result.error.issues.forEach((issue) => {
         const key = issue.path.join(".");
@@ -130,53 +133,18 @@ export const useOnboardingFlow = ({ token }: UseOnboardingFlowArgs) => {
     return generalIssues;
   };
 
-  const appendRoleFieldErrors = (
-    current: Record<string, string>
-  ): Record<string, string> => {
-    const next = { ...current };
-    roleFields.forEach((field) => {
-      const key = `roleDetails.${field.key}`;
-      const fieldValue = roleDetails[field.key] ?? "";
-      if (!fieldValue.trim()) {
-        next[key] = "This field is required";
-      } else {
-        delete next[key];
-      }
-    });
-    return next;
-  };
-
   const validateForm = () => {
     const general = buildGeneralValidation();
-    const merged = appendRoleFieldErrors(general);
-    return applyValidationErrors(merged);
-  };
-
-  const validateBasicFields = (): Record<string, string> => {
-    const general = buildGeneralValidation();
-    const basicIssues: Record<string, string> = {};
-    Object.keys(general).forEach((key) => {
-      if (!key.startsWith("roleDetails.")) {
-        basicIssues[key] = general[key];
-      }
-    });
-    return basicIssues;
+    return applyValidationErrors(general);
   };
 
   const updateField = (key: keyof OnboardingProfileForm, value: string) => {
     form.setFieldValue(key, () => value);
   };
 
-  const updateRoleField = (key: string, value: string) => {
-    form.setFieldValue("roleDetails", (prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
   const updateSocialMediaField = (key: string, value: string) => {
     form.setFieldValue("socialMedia", (prev) => ({
-      ...prev,
+      ...(prev ?? {}),
       [key]: value,
     }));
   };
@@ -192,41 +160,32 @@ export const useOnboardingFlow = ({ token }: UseOnboardingFlowArgs) => {
       if (!isValid) {
         return;
       }
+      const socialMediaValue = values.socialMedia ?? {};
+      const cleanedSocialMedia: Record<string, string | undefined> = {};
+      const socialFields = [
+        "linkedin",
+        "twitter",
+        "github",
+        "website",
+      ] as const;
+      socialFields.forEach((field) => {
+        const value = socialMediaValue[field];
+        const trimmed = typeof value === "string" ? value.trim() : "";
+        cleanedSocialMedia[field] = trimmed === "" ? undefined : trimmed;
+      });
+      const cleanedValues = {
+        ...values,
+        socialMedia: cleanedSocialMedia,
+      };
       try {
         await mutation.mutateAsync({
           token,
-          profile: values as OnboardingProfilePayload,
+          profile: cleanedValues as OnboardingProfilePayload,
         });
       } catch {
         return;
       }
     }
-  };
-
-  const handleSkip = async () => {
-    if (!token) {
-      return;
-    }
-
-    if (currentStep === "profile-basic") {
-      const basicIssues = validateBasicFields();
-      const isValid = applyValidationErrors(basicIssues);
-      if (!isValid) {
-        return;
-      }
-      try {
-        await mutation.mutateAsync({
-          token,
-          profile: values as OnboardingProfilePayload,
-        });
-      } catch {
-        return;
-      }
-    }
-  };
-
-  const handleBlur = () => {
-    validateForm();
   };
 
   const startProfile = () => {
@@ -236,7 +195,6 @@ export const useOnboardingFlow = ({ token }: UseOnboardingFlowArgs) => {
   return {
     inviteQuery,
     sharedFields,
-    roleFields,
     values,
     errors,
     currentStep,
@@ -249,10 +207,7 @@ export const useOnboardingFlow = ({ token }: UseOnboardingFlowArgs) => {
     initialBuddy,
     startProfile,
     updateField,
-    updateRoleField,
     updateSocialMediaField,
     handleSubmit,
-    handleSkip,
-    handleBlur,
   };
 };
