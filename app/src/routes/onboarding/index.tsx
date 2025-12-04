@@ -3,15 +3,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useOnboardingFlow } from "@/hooks/useOnboardingFlow";
-import { WelcomeScreen } from "@/routes/_main/onboarding/-components/welcome-screen";
+import { WelcomeScreen } from "@/routes/onboarding/-components/welcome-screen";
 
-import { ChecklistBoard } from "@/routes/_main/onboarding/-components/checklist-board";
-import { FieldControl } from "@/routes/_main/onboarding/-components/field-control";
-import { TwoSideLayout } from "@/routes/_main/onboarding/-components/two-side-layout";
-import { OnboardingSidePanel } from "@/routes/_main/onboarding/-components/onboarding-side-panel";
+import { ChecklistBoard } from "@/routes/onboarding/-components/checklist-board";
+import { FieldControl } from "@/routes/onboarding/-components/field-control";
+import { TwoSideLayout } from "@/routes/onboarding/-components/two-side-layout";
+import { OnboardingSidePanel } from "@/routes/onboarding/-components/onboarding-side-panel";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_main/onboarding/")({
+export const Route = createFileRoute("/onboarding/")({
   validateSearch: (search: Record<string, unknown>) => ({
     token: typeof search.token === "string" ? search.token : "",
   }),
@@ -190,7 +191,10 @@ function RouteComponent() {
                     key={field.key as string}
                     label={field.label}
                     error={errors[field.key as string]}
-                    colSpan={field.type === "textarea" ? 2 : undefined}
+                    className={cn(
+                      "col-span-1",
+                      field.type === "textarea" && "col-span-2"
+                    )}
                   >
                     {field.type === "textarea" ? (
                       <Textarea

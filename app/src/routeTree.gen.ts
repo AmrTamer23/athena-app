@@ -9,14 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MainRouteRouteImport } from './routes/_main/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as MainInviteRouteRouteImport } from './routes/_main/invite/route'
 import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login/route'
 import { Route as AuthJoinRouteRouteImport } from './routes/_auth/join/route'
-import { Route as MainOnboardingIndexRouteImport } from './routes/_main/onboarding/index'
 import { Route as MainDashboardIndexRouteImport } from './routes/_main/dashboard/index'
 
+const MainRouteRoute = MainRouteRouteImport.update({
+  id: '/_main',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
@@ -26,10 +31,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MainInviteRouteRoute = MainInviteRouteRouteImport.update({
-  id: '/_main/invite',
-  path: '/invite',
+const OnboardingIndexRoute = OnboardingIndexRouteImport.update({
+  id: '/onboarding/',
+  path: '/onboarding/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const MainInviteRouteRoute = MainInviteRouteRouteImport.update({
+  id: '/invite',
+  path: '/invite',
+  getParentRoute: () => MainRouteRoute,
 } as any)
 const AuthLoginRouteRoute = AuthLoginRouteRouteImport.update({
   id: '/login',
@@ -41,15 +51,10 @@ const AuthJoinRouteRoute = AuthJoinRouteRouteImport.update({
   path: '/join',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-const MainOnboardingIndexRoute = MainOnboardingIndexRouteImport.update({
-  id: '/_main/onboarding/',
-  path: '/onboarding/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MainDashboardIndexRoute = MainDashboardIndexRouteImport.update({
-  id: '/_main/dashboard/',
+  id: '/dashboard/',
   path: '/dashboard/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => MainRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -57,62 +62,61 @@ export interface FileRoutesByFullPath {
   '/join': typeof AuthJoinRouteRoute
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
+  '/onboarding': typeof OnboardingIndexRoute
   '/dashboard': typeof MainDashboardIndexRoute
-  '/onboarding': typeof MainOnboardingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/join': typeof AuthJoinRouteRoute
   '/login': typeof AuthLoginRouteRoute
-
   '/invite': typeof MainInviteRouteRoute
-
+  '/onboarding': typeof OnboardingIndexRoute
   '/dashboard': typeof MainDashboardIndexRoute
-  '/onboarding': typeof MainOnboardingIndexRoute
-
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
+  '/_main': typeof MainRouteRouteWithChildren
   '/_auth/join': typeof AuthJoinRouteRoute
   '/_auth/login': typeof AuthLoginRouteRoute
   '/_main/invite': typeof MainInviteRouteRoute
-}
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/join' | '/login' | '/invite'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/join' | '/login' | '/invite'
+  '/onboarding/': typeof OnboardingIndexRoute
   '/_main/dashboard/': typeof MainDashboardIndexRoute
-  '/_main/onboarding/': typeof MainOnboardingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/join' | '/login' | '/dashboard' | '/onboarding'
+  fullPaths: '/' | '/join' | '/login' | '/invite' | '/onboarding' | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/join' | '/login' | '/dashboard' | '/onboarding'
+  to: '/' | '/join' | '/login' | '/invite' | '/onboarding' | '/dashboard'
   id:
     | '__root__'
     | '/'
     | '/_auth'
+    | '/_main'
     | '/_auth/join'
     | '/_auth/login'
     | '/_main/invite'
+    | '/onboarding/'
     | '/_main/dashboard/'
-    | '/_main/onboarding/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  MainInviteRouteRoute: typeof MainInviteRouteRoute
-  MainDashboardIndexRoute: typeof MainDashboardIndexRoute
-  MainOnboardingIndexRoute: typeof MainOnboardingIndexRoute
+  MainRouteRoute: typeof MainRouteRouteWithChildren
+  OnboardingIndexRoute: typeof OnboardingIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/_main': {
+      id: '/_main'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof MainRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth': {
       id: '/_auth'
       path: ''
@@ -127,12 +131,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/onboarding/': {
+      id: '/onboarding/'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_main/invite': {
       id: '/_main/invite'
       path: '/invite'
       fullPath: '/invite'
       preLoaderRoute: typeof MainInviteRouteRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof MainRouteRoute
     }
     '/_auth/login': {
       id: '/_auth/login'
@@ -148,19 +159,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthJoinRouteRouteImport
       parentRoute: typeof AuthRouteRoute
     }
-    '/_main/onboarding/': {
-      id: '/_main/onboarding/'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof MainOnboardingIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_main/dashboard/': {
       id: '/_main/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof MainDashboardIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof MainRouteRoute
     }
   }
 }
@@ -179,12 +183,25 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface MainRouteRouteChildren {
+  MainInviteRouteRoute: typeof MainInviteRouteRoute
+  MainDashboardIndexRoute: typeof MainDashboardIndexRoute
+}
+
+const MainRouteRouteChildren: MainRouteRouteChildren = {
+  MainInviteRouteRoute: MainInviteRouteRoute,
+  MainDashboardIndexRoute: MainDashboardIndexRoute,
+}
+
+const MainRouteRouteWithChildren = MainRouteRoute._addFileChildren(
+  MainRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  MainInviteRouteRoute: MainInviteRouteRoute,
-  MainDashboardIndexRoute: MainDashboardIndexRoute,
-  MainOnboardingIndexRoute: MainOnboardingIndexRoute,
+  MainRouteRoute: MainRouteRouteWithChildren,
+  OnboardingIndexRoute: OnboardingIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

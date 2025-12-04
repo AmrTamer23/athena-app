@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
-import {
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import {
   HeadContent,
@@ -12,7 +9,6 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import appCss from "../index.css?url";
 
