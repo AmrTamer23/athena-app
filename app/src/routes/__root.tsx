@@ -12,10 +12,19 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import appCss from "../index.css?url";
 
 export interface RouterAppContext {}
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60,
+    },
+  },
+});
 
 export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({

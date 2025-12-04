@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MainInviteRouteRouteImport } from './routes/_main/invite/route'
 import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login/route'
 import { Route as AuthJoinRouteRouteImport } from './routes/_auth/join/route'
 import { Route as MainOnboardingIndexRouteImport } from './routes/_main/onboarding/index'
@@ -23,6 +24,11 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainInviteRouteRoute = MainInviteRouteRouteImport.update({
+  id: '/_main/invite',
+  path: '/invite',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthLoginRouteRoute = AuthLoginRouteRouteImport.update({
@@ -50,6 +56,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/join': typeof AuthJoinRouteRoute
   '/login': typeof AuthLoginRouteRoute
+  '/invite': typeof MainInviteRouteRoute
   '/dashboard': typeof MainDashboardIndexRoute
   '/onboarding': typeof MainOnboardingIndexRoute
 }
@@ -57,8 +64,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/join': typeof AuthJoinRouteRoute
   '/login': typeof AuthLoginRouteRoute
+
+  '/invite': typeof MainInviteRouteRoute
+
   '/dashboard': typeof MainDashboardIndexRoute
   '/onboarding': typeof MainOnboardingIndexRoute
+
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -66,6 +77,13 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_auth/join': typeof AuthJoinRouteRoute
   '/_auth/login': typeof AuthLoginRouteRoute
+  '/_main/invite': typeof MainInviteRouteRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/join' | '/login' | '/invite'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/join' | '/login' | '/invite'
   '/_main/dashboard/': typeof MainDashboardIndexRoute
   '/_main/onboarding/': typeof MainOnboardingIndexRoute
 }
@@ -80,6 +98,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_auth/join'
     | '/_auth/login'
+    | '/_main/invite'
     | '/_main/dashboard/'
     | '/_main/onboarding/'
   fileRoutesById: FileRoutesById
@@ -87,6 +106,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  MainInviteRouteRoute: typeof MainInviteRouteRoute
   MainDashboardIndexRoute: typeof MainDashboardIndexRoute
   MainOnboardingIndexRoute: typeof MainOnboardingIndexRoute
 }
@@ -105,6 +125,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_main/invite': {
+      id: '/_main/invite'
+      path: '/invite'
+      fullPath: '/invite'
+      preLoaderRoute: typeof MainInviteRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/login': {
@@ -155,6 +182,7 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
+  MainInviteRouteRoute: MainInviteRouteRoute,
   MainDashboardIndexRoute: MainDashboardIndexRoute,
   MainOnboardingIndexRoute: MainOnboardingIndexRoute,
 }
