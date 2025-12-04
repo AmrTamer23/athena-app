@@ -6,19 +6,17 @@ type FieldControlProps = {
   label: string;
   error?: string;
   children: ReactNode;
-  colSpan?: number;
+  className?: string;
 };
 
 export function FieldControl({
   label,
   error,
   children,
-  colSpan,
+  className,
 }: FieldControlProps) {
   return (
-    <div
-      className={cn("flex flex-col gap-2.5", colSpan && `col-span-${colSpan}`)}
-    >
+    <div className={cn("flex flex-col gap-2.5", className)}>
       <Label>{label}</Label>
       {children}
       {error && <p className="text-sm text-destructive">{error}</p>}
