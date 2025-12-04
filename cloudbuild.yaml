@@ -1,0 +1,33 @@
+steps:
+  # Docker Build
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "me-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend-image:$COMMIT_SHA",
+        ".",
+      ]
+
+  # Docker Push
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "me-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend-image:$COMMIT_SHA",
+      ]
+
+  # get the current used instance template
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "1"
+    args: ["./create_new_instance_template.sh", $COMMIT_SHA]
+    entrypoint: bash
+
+  # start update
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    waitFor: ["1"]
+    args: ["./activate_instance_template.sh", $COMMIT_SHA]
+    entrypoint: bash
+
+options:
+  logging: CLOUD_LOGGING_ONLY

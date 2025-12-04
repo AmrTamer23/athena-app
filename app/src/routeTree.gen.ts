@@ -14,6 +14,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as MainInviteRouteRouteImport } from './routes/_main/invite/route'
 import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login/route'
 import { Route as AuthJoinRouteRouteImport } from './routes/_auth/join/route'
+import { Route as MainOnboardingIndexRouteImport } from './routes/_main/onboarding/index'
+import { Route as MainDashboardIndexRouteImport } from './routes/_main/dashboard/index'
 
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
@@ -39,18 +41,35 @@ const AuthJoinRouteRoute = AuthJoinRouteRouteImport.update({
   path: '/join',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const MainOnboardingIndexRoute = MainOnboardingIndexRouteImport.update({
+  id: '/_main/onboarding/',
+  path: '/onboarding/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainDashboardIndexRoute = MainDashboardIndexRouteImport.update({
+  id: '/_main/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/join': typeof AuthJoinRouteRoute
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
+  '/dashboard': typeof MainDashboardIndexRoute
+  '/onboarding': typeof MainOnboardingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/join': typeof AuthJoinRouteRoute
   '/login': typeof AuthLoginRouteRoute
+
   '/invite': typeof MainInviteRouteRoute
+
+  '/dashboard': typeof MainDashboardIndexRoute
+  '/onboarding': typeof MainOnboardingIndexRoute
+
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -65,6 +84,14 @@ export interface FileRouteTypes {
   fullPaths: '/' | '/join' | '/login' | '/invite'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/join' | '/login' | '/invite'
+  '/_main/dashboard/': typeof MainDashboardIndexRoute
+  '/_main/onboarding/': typeof MainOnboardingIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/join' | '/login' | '/dashboard' | '/onboarding'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/join' | '/login' | '/dashboard' | '/onboarding'
   id:
     | '__root__'
     | '/'
@@ -72,12 +99,16 @@ export interface FileRouteTypes {
     | '/_auth/join'
     | '/_auth/login'
     | '/_main/invite'
+    | '/_main/dashboard/'
+    | '/_main/onboarding/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   MainInviteRouteRoute: typeof MainInviteRouteRoute
+  MainDashboardIndexRoute: typeof MainDashboardIndexRoute
+  MainOnboardingIndexRoute: typeof MainOnboardingIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -117,6 +148,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthJoinRouteRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_main/onboarding/': {
+      id: '/_main/onboarding/'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof MainOnboardingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_main/dashboard/': {
+      id: '/_main/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof MainDashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -138,6 +183,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   MainInviteRouteRoute: MainInviteRouteRoute,
+  MainDashboardIndexRoute: MainDashboardIndexRoute,
+  MainOnboardingIndexRoute: MainOnboardingIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
