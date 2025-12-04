@@ -25,8 +25,9 @@ export function InviteForm() {
       initial="initial"
       animate="animate"
       transition={{ delay: 0.1 }}
+      className="h-full "
     >
-      <Card className="p-6">
+      <Card className="p-6 h-full">
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-1">Invite New Team Member</h2>
           <p className="text-sm text-muted-foreground">
@@ -50,8 +51,8 @@ export function InviteForm() {
                   !value
                     ? "Email is required"
                     : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-                      ? "Please enter a valid email address"
-                      : undefined,
+                    ? "Please enter a valid email address"
+                    : undefined,
               }}
               children={(field) => (
                 <>
@@ -132,9 +133,7 @@ export function InviteForm() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or
-              </span>
+              <span className=" px-2 text-muted-foreground">Or</span>
             </div>
           </div>
 

@@ -52,7 +52,7 @@ const data = {
       items: [
         {
           title: "Dashboard",
-          url: "#",
+          url: "/dashboard",
           icon: RiScanLine,
         },
         // {
@@ -111,10 +111,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
-        {/* <TeamSwitcher teams={data.teams} /> */}
-        <hr className="border-t border-border mx-2 -mt-px" />
-        {/* <SearchForm className="mt-3" /> */}
+      <SidebarHeader className="flex flex-row items-center gap-2">
+        <img
+          src="/athena.avif"
+          alt="Logo"
+          className="w-14 h-14 object-cover rounded-full"
+        />
+        <h1 className="text-2xl font-bold font-serif italic mt-2">Athena HQ</h1>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}

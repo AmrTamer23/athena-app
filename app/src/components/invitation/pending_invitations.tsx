@@ -21,7 +21,12 @@ import {
   useInvitationActions,
   useInvitationFilters,
 } from "@/hooks/useInvitation";
-import { SearchIcon, MoreHorizontalIcon, SendIcon, Trash2Icon } from "lucide-react";
+import {
+  SearchIcon,
+  MoreHorizontalIcon,
+  SendIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { fadeInUpVariants } from "@/lib/animations-settings";
 import type { InvitationStatus } from "@/services/invitation";
 
@@ -35,7 +40,7 @@ const statusConfig: Record<
 };
 
 export function PendingInvitations() {
-  const { invitations, isLoading } = useInvitations();
+  const { invitations } = useInvitations();
   const { resendInvitation, deleteInvitation } = useInvitationActions();
 
   const {
@@ -47,16 +52,6 @@ export function PendingInvitations() {
     setStatusFilter,
     filteredInvitations,
   } = useInvitationFilters(invitations);
-
-  if (isLoading) {
-    return (
-      <Card className="p-6">
-        <div className="flex items-center justify-center h-64">
-          <p className="text-muted-foreground">Loading invitations...</p>
-        </div>
-      </Card>
-    );
-  }
 
   return (
     <motion.div
@@ -73,14 +68,14 @@ export function PendingInvitations() {
           </p>
         </div>
 
-        <div className="flex gap-3 mb-6">
-          <div className="relative flex-1">
+        <div className="flex gap-3">
+          <div className="relative flex-1 min-w-32">
             <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search by email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
+              className="pl-8"
             />
           </div>
 
@@ -88,16 +83,22 @@ export function PendingInvitations() {
             value={roleFilter}
             onValueChange={(value) => setRoleFilter(value as any)}
           >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue>{roleFilter === "all" ? "All Roles" : roleFilter}</SelectValue>
+            <SelectTrigger className=" min-w-28 flex-0">
+              <SelectValue>
+                {roleFilter === "all" ? "Role" : roleFilter}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Roles</SelectItem>
               <SelectItem value="Product Manager">Product Manager</SelectItem>
               <SelectItem value="UX/UI Designer">UX/UI Designer</SelectItem>
-              <SelectItem value="Software Engineer">Software Engineer</SelectItem>
+              <SelectItem value="Software Engineer">
+                Software Engineer
+              </SelectItem>
               <SelectItem value="Data Analyst">Data Analyst</SelectItem>
-              <SelectItem value="Marketing Specialist">Marketing Specialist</SelectItem>
+              <SelectItem value="Marketing Specialist">
+                Marketing Specialist
+              </SelectItem>
               <SelectItem value="Sales Manager">Sales Manager</SelectItem>
             </SelectContent>
           </Select>
@@ -106,9 +107,11 @@ export function PendingInvitations() {
             value={statusFilter}
             onValueChange={(value) => setStatusFilter(value as any)}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className=" min-w-28 flex-0">
               <SelectValue>
-                {statusFilter === "all" ? "All Statuses" : statusConfig[statusFilter].label}
+                {statusFilter === "all"
+                  ? "Status"
+                  : statusConfig[statusFilter].label}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
@@ -120,7 +123,7 @@ export function PendingInvitations() {
           </Select>
         </div>
 
-        <div className="space-y-3">
+        <div className="flex flex-col gap-2 h-[18rem] overflow-y-auto">
           {filteredInvitations.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground">No invitations found</p>
@@ -142,7 +145,9 @@ export function PendingInvitations() {
 
                 <div className="flex-1 min-w-0">
                   <p className="font-medium truncate">{invitation.email}</p>
-                  <p className="text-sm text-muted-foreground">{invitation.role}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {invitation.role}
+                  </p>
                 </div>
 
                 <Badge variant={statusConfig[invitation.status].variant}>
