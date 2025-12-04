@@ -10,6 +10,7 @@ WORKDIR /app
 FROM base AS deps
 
 COPY package.json bun.lock ./
+COPY app/package.json ./app/package.json
 
 RUN bun install --frozen-lockfile
 
