@@ -30,7 +30,7 @@ export function Wizard() {
     let timeoutId: ReturnType<typeof setTimeout> | undefined;
     if (isSuccess) {
       timeoutId = setTimeout(() => {
-        navigate({ to: "/" });
+        navigate({ to: "/dashboard" });
       }, 2000);
     }
     return () => {
@@ -79,7 +79,7 @@ export function Wizard() {
             transition={{ duration: 0.3 }}
           >
             <DecisionMakerStep
-              form={form}
+              form={form as any}
               errors={errors}
               onBlur={validateField}
             />
@@ -117,8 +117,8 @@ export function Wizard() {
                     step === currentStep
                       ? "border-primary bg-primary text-primary-foreground"
                       : step < currentStep
-                        ? "border-primary bg-primary/10 text-primary"
-                        : "border-muted bg-background text-muted-foreground"
+                      ? "border-primary bg-primary/10 text-primary"
+                      : "border-muted bg-background text-muted-foreground"
                   }`}
                 >
                   {step}
