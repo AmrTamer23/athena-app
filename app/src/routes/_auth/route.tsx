@@ -15,15 +15,20 @@ function RouteComponent() {
         animate="animate"
         className="relative hidden items-center justify-center overflow-hidden rounded-none sm:rounded-2xl lg:flex lg:w-[40%] flex-col "
       >
-        <img src="/banner.avif" alt="background" className="inset-100" />
+        <img
+          src="/VERT_athena.avif"
+          alt="background"
+          className="inset-0 object-contain w-[60%] scale-150"
+        />
 
         <motion.div
           variants={fadeInUpVariants}
           initial="initial"
           animate="animate"
           transition={{ delay: 0.3 }}
+          className="absolute left-1/2 -translate-x-1/2 top-20"
         >
-          <h1 className="font-sans mb-2 text-4xl font-medium text-primary-foreground text-center">
+          <h1 className="font-sans mb-2 text-4xl font-medium text-primary-foreground text-center leading-relaxed">
             Welcome to{"   "}
             <span className="font-serif italic text-6xl ml-1">Athena</span>
           </h1>
