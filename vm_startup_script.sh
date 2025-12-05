@@ -1,6 +1,6 @@
 #!bin/bash
 vm_name=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/name" -H "Metadata-Flavor: Google")
-commit_SHA=$(gcloud compute instances describe $vm_name --format='value(metadata.items.commit-SHA)' --zone=me-central1)
+commit_SHA=$(gcloud compute instances describe $vm_name --format='value(metadata.items.commit-SHA)' --zone=me-central1-a)
 
 # update package index
 apt-get update 
