@@ -26,9 +26,9 @@ echo "    ports:" >> docker-compose.yml
 echo "      - '80:80'" >> docker-compose.yml
 
 gcloud auth configure-docker \
-    me-central1-docker.pkg.dev
+    us-central1-docker.pkg.dev
 echo y
-IMAGE=me-central1-docker.pkg.dev/clear-camp-413302/frontend/frontend-image:$commit_SHA
+IMAGE=us-central1-docker.pkg.dev/clear-camp-413302/frontend/frontend-image:$commit_SHA
 export IMAGE
 
 docker-compose up -d
