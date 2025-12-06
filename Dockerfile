@@ -40,4 +40,4 @@ EXPOSE 80
 ENV PORT=80
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["bun", "run", "dist/server.js"]
+CMD ["bun", "dist/server.js"]
