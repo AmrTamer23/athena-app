@@ -16,7 +16,10 @@ import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as MainInviteRouteRouteImport } from './routes/_main/invite/route'
 import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login/route'
 import { Route as AuthJoinRouteRouteImport } from './routes/_auth/join/route'
+import { Route as MainSquadsIndexRouteImport } from './routes/_main/squads/index'
 import { Route as MainDashboardIndexRouteImport } from './routes/_main/dashboard/index'
+import { Route as MainSquadsCreateRouteImport } from './routes/_main/squads/create'
+import { Route as MainSquadsSquadIdEditRouteImport } from './routes/_main/squads/$squadId.edit'
 
 const MainRouteRoute = MainRouteRouteImport.update({
   id: '/_main',
@@ -51,9 +54,24 @@ const AuthJoinRouteRoute = AuthJoinRouteRouteImport.update({
   path: '/join',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const MainSquadsIndexRoute = MainSquadsIndexRouteImport.update({
+  id: '/squads/',
+  path: '/squads/',
+  getParentRoute: () => MainRouteRoute,
+} as any)
 const MainDashboardIndexRoute = MainDashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const MainSquadsCreateRoute = MainSquadsCreateRouteImport.update({
+  id: '/squads/create',
+  path: '/squads/create',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const MainSquadsSquadIdEditRoute = MainSquadsSquadIdEditRouteImport.update({
+  id: '/squads/$squadId/edit',
+  path: '/squads/$squadId/edit',
   getParentRoute: () => MainRouteRoute,
 } as any)
 
@@ -63,7 +81,10 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/squads/create': typeof MainSquadsCreateRoute
   '/dashboard': typeof MainDashboardIndexRoute
+  '/squads': typeof MainSquadsIndexRoute
+  '/squads/$squadId/edit': typeof MainSquadsSquadIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -71,7 +92,10 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/squads/create': typeof MainSquadsCreateRoute
   '/dashboard': typeof MainDashboardIndexRoute
+  '/squads': typeof MainSquadsIndexRoute
+  '/squads/$squadId/edit': typeof MainSquadsSquadIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -82,13 +106,34 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRouteRoute
   '/_main/invite': typeof MainInviteRouteRoute
   '/onboarding/': typeof OnboardingIndexRoute
+  '/_main/squads/create': typeof MainSquadsCreateRoute
   '/_main/dashboard/': typeof MainDashboardIndexRoute
+  '/_main/squads/': typeof MainSquadsIndexRoute
+  '/_main/squads/$squadId/edit': typeof MainSquadsSquadIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/join' | '/login' | '/invite' | '/onboarding' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/join'
+    | '/login'
+    | '/invite'
+    | '/onboarding'
+    | '/squads/create'
+    | '/dashboard'
+    | '/squads'
+    | '/squads/$squadId/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/join' | '/login' | '/invite' | '/onboarding' | '/dashboard'
+  to:
+    | '/'
+    | '/join'
+    | '/login'
+    | '/invite'
+    | '/onboarding'
+    | '/squads/create'
+    | '/dashboard'
+    | '/squads'
+    | '/squads/$squadId/edit'
   id:
     | '__root__'
     | '/'
@@ -98,7 +143,10 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_main/invite'
     | '/onboarding/'
+    | '/_main/squads/create'
     | '/_main/dashboard/'
+    | '/_main/squads/'
+    | '/_main/squads/$squadId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -159,11 +207,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthJoinRouteRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_main/squads/': {
+      id: '/_main/squads/'
+      path: '/squads'
+      fullPath: '/squads'
+      preLoaderRoute: typeof MainSquadsIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
     '/_main/dashboard/': {
       id: '/_main/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof MainDashboardIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/_main/squads/create': {
+      id: '/_main/squads/create'
+      path: '/squads/create'
+      fullPath: '/squads/create'
+      preLoaderRoute: typeof MainSquadsCreateRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/_main/squads/$squadId/edit': {
+      id: '/_main/squads/$squadId/edit'
+      path: '/squads/$squadId/edit'
+      fullPath: '/squads/$squadId/edit'
+      preLoaderRoute: typeof MainSquadsSquadIdEditRouteImport
       parentRoute: typeof MainRouteRoute
     }
   }
@@ -185,12 +254,18 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface MainRouteRouteChildren {
   MainInviteRouteRoute: typeof MainInviteRouteRoute
+  MainSquadsCreateRoute: typeof MainSquadsCreateRoute
   MainDashboardIndexRoute: typeof MainDashboardIndexRoute
+  MainSquadsIndexRoute: typeof MainSquadsIndexRoute
+  MainSquadsSquadIdEditRoute: typeof MainSquadsSquadIdEditRoute
 }
 
 const MainRouteRouteChildren: MainRouteRouteChildren = {
   MainInviteRouteRoute: MainInviteRouteRoute,
+  MainSquadsCreateRoute: MainSquadsCreateRoute,
   MainDashboardIndexRoute: MainDashboardIndexRoute,
+  MainSquadsIndexRoute: MainSquadsIndexRoute,
+  MainSquadsSquadIdEditRoute: MainSquadsSquadIdEditRoute,
 }
 
 const MainRouteRouteWithChildren = MainRouteRoute._addFileChildren(
