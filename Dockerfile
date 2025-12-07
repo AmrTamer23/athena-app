@@ -1,43 +1,35 @@
-FROM node:lts-alpine AS base
-
-RUN apk add --no-cache curl unzip bash && \
-    curl -fsSL https://bun.sh/install | bash && \
-    mv /root/.bun/bin/bun /usr/local/bin/bun && \
-    chmod +x /usr/local/bin/bun
-
+FROM oven/bun:1 as base
 WORKDIR /app
 
 FROM base AS deps
 
-COPY package.json bun.lock ./
-COPY app/package.json ./app/package.json
-
+COPY bun.lockb package.json turbo.json ./
+    
+COPY app ./app
+COPY packages ./packages
+    
 RUN bun install --frozen-lockfile
-
+    
 FROM base AS builder
-
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
+WORKDIR /app
+    
+COPY --from=deps /app ./
+    
 RUN bun run build
-
+    
 FROM base AS runner
-
+WORKDIR /app
+    
 ENV NODE_ENV=production
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=deps /app/node_modules ./node_modules
-
-COPY --from=builder /app/app/dist ./dist
-COPY --from=builder /app/app/public ./public
-
-USER nextjs
-
-EXPOSE 80   
-
-ENV PORT=80
-ENV HOSTNAME="0.0.0.0"
-
-CMD ["bun", "dist/server.js"]
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+    
+COPY --from=builder /app/app/.next/standalone ./
+    
+COPY --from=builder /app/app/.next/static ./app/.next/static
+    
+COPY --from=builder /app/app/public ./app/public
+    
+EXPOSE 3000
+    
+CMD ["bun", "server.js"]
