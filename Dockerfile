@@ -23,12 +23,12 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
     
-COPY --from=builder /app/app/.next/standalone ./
+COPY --from=deps /app/node_modules ./node_modules
     
-COPY --from=builder /app/app/.next/static ./app/.next/static
+COPY --from=builder /app/app/dist ./dist
     
-COPY --from=builder /app/app/public ./app/public
+COPY --from=builder /app/app/public ./public
     
 EXPOSE 3000
     
-CMD ["bun", "server.js"]
+CMD ["bun", "dist/server/server.js"]
