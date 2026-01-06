@@ -20,6 +20,7 @@ import {
   RiMailLine,
   RiLogoutBoxLine,
   RiTaskLine,
+  RiGroupLine,
 } from "@remixicon/react";
 import { useLocation } from "@tanstack/react-router";
 
