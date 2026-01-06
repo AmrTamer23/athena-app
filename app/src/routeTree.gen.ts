@@ -19,6 +19,7 @@ import { Route as AuthJoinRouteRouteImport } from './routes/_auth/join/route'
 import { Route as MainSquadsIndexRouteImport } from './routes/_main/squads/index'
 import { Route as MainDashboardIndexRouteImport } from './routes/_main/dashboard/index'
 import { Route as MainSquadsCreateRouteImport } from './routes/_main/squads/create'
+import { Route as MainEmployeesEmployeeIdRouteImport } from './routes/_main/employees/$employeeId'
 import { Route as MainSquadsSquadIdEditRouteImport } from './routes/_main/squads/$squadId.edit'
 
 const MainRouteRoute = MainRouteRouteImport.update({
@@ -69,6 +70,11 @@ const MainSquadsCreateRoute = MainSquadsCreateRouteImport.update({
   path: '/squads/create',
   getParentRoute: () => MainRouteRoute,
 } as any)
+const MainEmployeesEmployeeIdRoute = MainEmployeesEmployeeIdRouteImport.update({
+  id: '/employees/$employeeId',
+  path: '/employees/$employeeId',
+  getParentRoute: () => MainRouteRoute,
+} as any)
 const MainSquadsSquadIdEditRoute = MainSquadsSquadIdEditRouteImport.update({
   id: '/squads/$squadId/edit',
   path: '/squads/$squadId/edit',
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/employees/$employeeId': typeof MainEmployeesEmployeeIdRoute
   '/squads/create': typeof MainSquadsCreateRoute
   '/dashboard': typeof MainDashboardIndexRoute
   '/squads': typeof MainSquadsIndexRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/employees/$employeeId': typeof MainEmployeesEmployeeIdRoute
   '/squads/create': typeof MainSquadsCreateRoute
   '/dashboard': typeof MainDashboardIndexRoute
   '/squads': typeof MainSquadsIndexRoute
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRouteRoute
   '/_main/invite': typeof MainInviteRouteRoute
   '/onboarding/': typeof OnboardingIndexRoute
+  '/_main/employees/$employeeId': typeof MainEmployeesEmployeeIdRoute
   '/_main/squads/create': typeof MainSquadsCreateRoute
   '/_main/dashboard/': typeof MainDashboardIndexRoute
   '/_main/squads/': typeof MainSquadsIndexRoute
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/invite'
     | '/onboarding'
+    | '/employees/$employeeId'
     | '/squads/create'
     | '/dashboard'
     | '/squads'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/invite'
     | '/onboarding'
+    | '/employees/$employeeId'
     | '/squads/create'
     | '/dashboard'
     | '/squads'
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_main/invite'
     | '/onboarding/'
+    | '/_main/employees/$employeeId'
     | '/_main/squads/create'
     | '/_main/dashboard/'
     | '/_main/squads/'
@@ -228,6 +240,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainSquadsCreateRouteImport
       parentRoute: typeof MainRouteRoute
     }
+    '/_main/employees/$employeeId': {
+      id: '/_main/employees/$employeeId'
+      path: '/employees/$employeeId'
+      fullPath: '/employees/$employeeId'
+      preLoaderRoute: typeof MainEmployeesEmployeeIdRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
     '/_main/squads/$squadId/edit': {
       id: '/_main/squads/$squadId/edit'
       path: '/squads/$squadId/edit'
@@ -254,6 +273,7 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface MainRouteRouteChildren {
   MainInviteRouteRoute: typeof MainInviteRouteRoute
+  MainEmployeesEmployeeIdRoute: typeof MainEmployeesEmployeeIdRoute
   MainSquadsCreateRoute: typeof MainSquadsCreateRoute
   MainDashboardIndexRoute: typeof MainDashboardIndexRoute
   MainSquadsIndexRoute: typeof MainSquadsIndexRoute
@@ -262,6 +282,7 @@ interface MainRouteRouteChildren {
 
 const MainRouteRouteChildren: MainRouteRouteChildren = {
   MainInviteRouteRoute: MainInviteRouteRoute,
+  MainEmployeesEmployeeIdRoute: MainEmployeesEmployeeIdRoute,
   MainSquadsCreateRoute: MainSquadsCreateRoute,
   MainDashboardIndexRoute: MainDashboardIndexRoute,
   MainSquadsIndexRoute: MainSquadsIndexRoute,
