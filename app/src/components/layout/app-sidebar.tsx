@@ -96,6 +96,11 @@ const data = {
           url: "/invite",
           icon: RiMailLine,
         },
+        {
+          title: "Squads",
+          url: "/squads",
+          icon: RiGroupLine,
+        },
         // {
         //   title: "Help Center",
         //   url: "#",

@@ -5,6 +5,7 @@ gcloud compute instance-templates create $template_name \
     --network=dev-vpc-network \
     --subnet=dev-vpc-subnet \
     --region=me-central1\
+    --machine-type=e2-small\
     --metadata commit-SHA=$1\
     --metadata-from-file  startup-script='vm_startup_script.sh'\
     --image 'ubuntu-2204-jammy-v20251002'\
