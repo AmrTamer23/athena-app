@@ -1,38 +1,34 @@
-FROM node:lts-alpine AS base
-
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
+FROM oven/bun:1 as base
 WORKDIR /app
 
 FROM base AS deps
 
-COPY package.json pnpm-lock.yaml ./
-
-RUN pnpm install --frozen-lockfile
-
+COPY bun.lock package.json turbo.json ./
+    
+COPY app ./app
+    
+RUN bun install --frozen-lockfile
+    
 FROM base AS builder
-
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
-RUN pnpm build
-
+WORKDIR /app
+    
+COPY --from=deps /app ./
+    
+RUN bun run build
+    
 FROM base AS runner
-
+WORKDIR /app
+    
 ENV NODE_ENV=production
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 80   
-
 ENV PORT=80
-ENV HOSTNAME="0.0.0.0"
-
-CMD ["node", "server.js"]
+ENV HOSTNAME=0.0.0.0
+    
+COPY --from=deps /app/node_modules ./node_modules
+    
+COPY --from=builder /app/app/dist ./dist
+    
+COPY --from=builder /app/app/public ./public
+    
+EXPOSE 80
+    
+CMD ["bun", "dist/server/server.js"]

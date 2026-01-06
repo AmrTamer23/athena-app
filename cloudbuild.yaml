@@ -5,7 +5,7 @@ steps:
       [
         "build",
         "-t",
-        "me-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend-image:$COMMIT_SHA",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend-image:$COMMIT_SHA",
         ".",
       ]
 
@@ -14,7 +14,7 @@ steps:
     args:
       [
         "push",
-        "me-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend-image:$COMMIT_SHA",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend-image:$COMMIT_SHA",
       ]
 
   # get the current used instance template
