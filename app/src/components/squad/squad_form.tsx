@@ -36,7 +36,7 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
       {/* Header */}
       <header className="bg-background/50 backdrop-blur-md border-b border-border sticky top-0 z-40">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm text-foreground/60">
             <Link to="/" className="hover:text-foreground cursor-pointer">Dashboard</Link>
             <span>/</span>
             <Link to="/" className="hover:text-foreground cursor-pointer">Squads</Link>
@@ -55,7 +55,7 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight text-primary">{isEditing ? "Edit Squad" : "Create New Squad"}</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">{isEditing ? "Edit Squad" : "Create New Squad"}</h1>
           <p className="text-muted-foreground mt-2">
             {isEditing ? "Update team details, roles, and composition." : "Build a cross-functional team for your next big project."}
           </p>
@@ -80,7 +80,7 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
                   <div className="p-2">
                     <Users className="w-5 h-5 text-primary" />
                   </div>
-                  <h2 className="text-xl font-semibold text-primary">Squad Basics</h2>
+                  <h2 className="text-xl font-semibold text-foreground">Squad Basics</h2>
                 </div>
 
                 <Card className="border-none shadow-card bg-card/80 backdrop-blur-sm">
@@ -135,7 +135,7 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
                               onBlur={field.handleBlur}
                               onChange={(e) => field.handleChange(e.target.value)}
                             />
-                            <p className="text-xs text-muted-foreground text-right">{field.state.value?.length || 0}/500 characters</p>
+                            <p className="text-xs text-foreground/70 text-right">{field.state.value?.length || 0}/500 characters</p>
                           </div>
                         )}
                       />
@@ -150,7 +150,7 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
                   <div className="p-2">
                     <Crown className="w-5 h-5 text-primary" />
                   </div>
-                  <h2 className="text-xl font-semibold text-primary">Squad Leadership</h2>
+                  <h2 className="text-xl font-semibold text-foreground">Squad Leadership</h2>
                 </div>
 
                 <Card className="border-none shadow-card bg-card/80 backdrop-blur-sm">
@@ -180,14 +180,14 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
                   <div className="p-2">
                     <Puzzle className="w-5 h-5 text-primary" />
                   </div>
-                  <h2 className="text-xl font-semibold text-primary">Team Composition</h2>
+                  <h2 className="text-xl font-semibold text-foreground">Team Composition</h2>
                 </div>
 
                 <Card className="border-none shadow-card bg-card/80 backdrop-blur-sm">
                   <CardContent className="pt-6">
                     <div className="space-y-4">
                       <Label>Required Roles</Label>
-                      <p className="text-sm text-muted-foreground mb-4">Define the structure of your squad by adding role slots.</p>
+                      <p className="text-sm text-foreground/70 mb-4">Define the structure of your squad by adding role slots.</p>
 
                       <form.Field
                         name="roles"
@@ -210,7 +210,7 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
                   <div className="p-2 rounded-lg ">
                     <UserPlus className="w-5 h-5 text-primary" />
                   </div>
-                  <h2 className="text-xl font-semibold text-primary">Assign Members (Optional)</h2>
+                  <h2 className="text-xl font-semibold text-foreground">Assign Members (Optional)</h2>
                 </div>
 
                 <Card className="border-none shadow-card border-dashed border-2 border-border bg-card/40 backdrop-blur-sm">
@@ -219,7 +219,7 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
                       <Users className="w-8 h-8 text-muted-foreground" />
                     </div>
                     <h3 className="text-lg font-medium">Auto-Assignment Available</h3>
-                    <p className="text-muted-foreground max-w-md mt-2 mb-6">
+                    <p className="text-foreground/70 max-w-md mt-2 mb-6">
                       You can assign specific members later, or let our AI suggest the best team based on your requirements.
                     </p>
                     <Button type="button" variant="outline" className="border-accent text-accent-foreground hover:bg-accent/10">

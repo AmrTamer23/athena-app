@@ -40,7 +40,7 @@ export function SquadPreview({ values, roleColors }: SquadPreviewProps) {
         <CardHeader className="bg-muted/30 pb-4">
           <CardTitle className="text-sm font-medium uppercase tracking-wider text-muted-foreground flex justify-between items-center h-8">
             <span className="flex items-center">Squad Preview</span>
-            <Badge variant="secondary" className="bg-green-100 text-green-700 border-green-200">Live Update</Badge>
+            <Badge variant="secondary" className="bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20">Live Update</Badge>
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-6 space-y-6">
@@ -102,7 +102,7 @@ export function SquadPreview({ values, roleColors }: SquadPreviewProps) {
                     <div key={item.name} className="flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
-                        <span className="text-muted-foreground">{item.name}</span>
+                        <span className="text-foreground/80">{item.name}</span>
                       </div>
                       <span className="font-medium">{item.value}</span>
                     </div>
@@ -110,7 +110,7 @@ export function SquadPreview({ values, roleColors }: SquadPreviewProps) {
                 </div>
               </>
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 text-sm italic border-2 border-dashed border-muted rounded-xl">
+              <div className="w-full h-full flex items-center justify-center text-foreground/50 text-sm italic border-2 border-dashed border-muted rounded-xl">
                 Add members to see composition
               </div>
             )}
@@ -125,7 +125,7 @@ export function SquadPreview({ values, roleColors }: SquadPreviewProps) {
                 <AvatarFallback>L</AvatarFallback>
               </Avatar>
               <div>
-                <div className="text-xs text-muted-foreground uppercase font-semibold tracking-wide">Squad Lead</div>
+                <div className="text-xs text-foreground/70 uppercase font-semibold tracking-wide">Squad Lead</div>
                 <div className="font-medium text-foreground">John Wick</div>
               </div>
             </div>
