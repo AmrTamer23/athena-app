@@ -1,13 +1,26 @@
+import * as React from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TaskStatusSelector } from "./task_status_selector";
+import { TaskStatusBadge } from "./task_status_badge";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Frame, FramePanel } from "@/components/ui/frame";
 import type { Task } from "@/services/task";
 import { getUserById, getCurrentUser } from "@/services/hierarchy";
 import { useTaskStatusUpdate } from "@/hooks/useTaskStatusUpdate";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
+import {
+  ArrowLeft,
+  User,
+  Calendar,
+  Clock,
+  Flag,
+  Tag,
+  Edit,
+  FileText,
+} from "lucide-react";
 
 type TaskDetailsProps = {
   task: Task;
@@ -45,103 +58,194 @@ export function TaskDetails({ task }: TaskDetailsProps) {
   const assigner = getUserById(task.assignerId);
   const currentUser = getCurrentUser();
   const statusUpdate = useTaskStatusUpdate();
-  const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && task.status !== "completed" && task.status !== "reviewed";
+  const isOverdue =
+    task.dueDate &&
+    new Date(task.dueDate) < new Date() &&
+    task.status !== "completed" &&
+    task.status !== "reviewed";
   const canEdit = task.assignerId === currentUser.id;
-  const canUpdateStatus = task.assigneeId === currentUser.id || task.assignerId === currentUser.id;
+  const canUpdateStatus =
+    task.assigneeId === currentUser.id || task.assignerId === currentUser.id;
 
   const handleStatusChange = (newStatus: typeof task.status) => {
     statusUpdate.mutate({ taskId: task.id, status: newStatus });
   };
 
+  const MetadataItem = ({
+    icon: Icon,
+    label,
+    value,
+    children,
+  }: {
+    icon: React.ComponentType<{ className?: string; size?: number }>;
+    label: string;
+    value?: string;
+    children?: React.ReactNode;
+  }) => (
+    <div className="flex items-start gap-3">
+      <div className="mt-0.5">
+        <Icon className="h-5 w-5 text-muted-foreground" size={20} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-medium text-muted-foreground mb-1">{label}</p>
+        {children || (
+          <p className="text-sm font-medium text-foreground">{value || "—"}</p>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div className="flex flex-col gap-6">
-      <Card className="p-6">
-        <div className="flex items-start justify-between mb-6">
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold mb-2">{task.title}</h1>
-            <div className="flex items-center gap-3 flex-wrap">
-              <Badge className={cn("text-xs", priorityColors[task.priority])}>
-                {task.priority}
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                {task.category}
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                {task.type}
-              </Badge>
-            </div>
-          </div>
-          {canEdit && (
-            <Button asChild variant="secondary">
-              <Link to="/tasks/edit/$taskId" params={{ taskId: task.id }}>
-                Edit Task
-              </Link>
-            </Button>
-          )}
-        </div>
+      <div className="flex items-center gap-4">
+        <Button variant="ghost" size="icon" asChild>
+          <Link to="/tasks">
+            <ArrowLeft className="h-5 w-5" />
+            <span className="sr-only">Back to tasks</span>
+          </Link>
+        </Button>
+        <div className="flex-1" />
+        {canEdit && (
+          <Button asChild variant="secondary" size="sm">
+            <Link to="/tasks/edit/$taskId" params={{ taskId: task.id }}>
+              <Edit className="h-4 w-4 mr-2" />
+              Edit Task
+            </Link>
+          </Button>
+        )}
+      </div>
 
-        <Separator className="my-4" />
-
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-sm font-semibold mb-2">Description</h3>
-            <p className="text-sm text-muted-foreground whitespace-pre-wrap">{task.description}</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h3 className="text-sm font-semibold mb-2">Assignee</h3>
-              <p className="text-sm text-muted-foreground">
-                {assignee ? `${assignee.name} (${assignee.role})` : "Unknown"}
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-semibold mb-2">Assigned By</h3>
-              <p className="text-sm text-muted-foreground">
-                {assigner ? `${assigner.name} (${assigner.role})` : "Unknown"}
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-semibold mb-2">Status</h3>
-              {canUpdateStatus ? (
-                <TaskStatusSelector
-                  value={task.status}
-                  onValueChange={handleStatusChange}
-                  disabled={statusUpdate.isPending}
-                />
-              ) : (
-                <p className="text-sm text-muted-foreground">{task.status}</p>
-              )}
-            </div>
-
-            {task.dueDate && (
+      <Frame>
+        <FramePanel>
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
               <div>
-                <h3 className="text-sm font-semibold mb-2">Due Date</h3>
-                <p className={cn("text-sm", isOverdue && "text-destructive font-medium")}>
-                  {new Date(task.dueDate).toLocaleDateString()}
-                  {isOverdue && " (Overdue)"}
-                </p>
+                <h1 className="text-3xl font-bold mb-4">{task.title}</h1>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <TaskStatusBadge status={task.status} />
+                  <Badge className={cn("text-xs capitalize", priorityColors[task.priority])}>
+                    <Flag className="h-3 w-3 mr-1" />
+                    {task.priority}
+                  </Badge>
+                  <Badge variant="outline" className="text-xs capitalize">
+                    <Tag className="h-3 w-3 mr-1" />
+                    {task.category}
+                  </Badge>
+                  <Badge variant="outline" className="text-xs capitalize">
+                    {task.type}
+                  </Badge>
+                </div>
               </div>
-            )}
-
-            <div>
-              <h3 className="text-sm font-semibold mb-2">Created</h3>
-              <p className="text-sm text-muted-foreground">
-                {task.createdAt.toLocaleDateString()} ({formatDistanceToNow(task.createdAt)})
-              </p>
             </div>
 
-            <div>
-              <h3 className="text-sm font-semibold mb-2">Last Updated</h3>
-              <p className="text-sm text-muted-foreground">
-                {task.updatedAt.toLocaleDateString()} ({formatDistanceToNow(task.updatedAt)})
-              </p>
+            <Separator />
+
+            <div className="space-y-6">
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <FileText className="h-5 w-5 text-muted-foreground" />
+                  <h2 className="text-lg font-semibold">Description</h2>
+                </div>
+                <div className="rounded-lg border bg-muted/30 p-4">
+                  <p className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
+                    {task.description}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-lg font-semibold mb-4">Details</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <MetadataItem
+                    icon={User}
+                    label="Assignee"
+                    value={assignee ? `${assignee.name} · ${assignee.role}` : undefined}
+                  />
+
+                  <MetadataItem
+                    icon={User}
+                    label="Assigned By"
+                    value={assigner ? `${assigner.name} · ${assigner.role}` : undefined}
+                  />
+
+                  <MetadataItem icon={Flag} label="Status">
+                    {canUpdateStatus ? (
+                      <div className="flex items-center gap-3">
+                        <TaskStatusSelector
+                          value={task.status}
+                          onValueChange={handleStatusChange}
+                          disabled={statusUpdate.isPending}
+                        />
+                        {statusUpdate.isPending && (
+                          <span className="text-xs text-muted-foreground">
+                            Updating...
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <TaskStatusBadge status={task.status} />
+                    )}
+                  </MetadataItem>
+
+                  {task.dueDate && (
+                    <MetadataItem icon={Calendar} label="Due Date">
+                      <div className="flex items-center gap-2">
+                        <p
+                          className={cn(
+                            "text-sm font-medium",
+                            isOverdue && "text-destructive"
+                          )}
+                        >
+                          {new Date(task.dueDate).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </p>
+                        {isOverdue && (
+                          <Badge variant="destructive" className="text-xs">
+                            Overdue
+                          </Badge>
+                        )}
+                      </div>
+                    </MetadataItem>
+                  )}
+
+                  <MetadataItem icon={Clock} label="Created">
+                    <div className="flex flex-col">
+                      <p className="text-sm font-medium text-foreground">
+                        {task.createdAt.toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatDistanceToNow(task.createdAt)}
+                      </p>
+                    </div>
+                  </MetadataItem>
+
+                  <MetadataItem icon={Clock} label="Last Updated">
+                    <div className="flex flex-col">
+                      <p className="text-sm font-medium text-foreground">
+                        {task.updatedAt.toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {formatDistanceToNow(task.updatedAt)}
+                      </p>
+                    </div>
+                  </MetadataItem>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </Card>
+        </FramePanel>
+      </Frame>
     </div>
   );
 }
