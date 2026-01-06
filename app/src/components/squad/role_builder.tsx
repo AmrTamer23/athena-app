@@ -51,15 +51,15 @@ export function RoleBuilder({ value, onChange, roleDefinitions }: RoleBuilderPro
             className={cn(
               "relative flex items-center justify-between p-4 rounded-xl border transition-all duration-200",
               isSelected
-                ? "border-accent bg-white shadow-md ring-1 ring-accent"
-                : "border-border bg-white/50 hover:border-accent/50 hover:bg-white"
+                ? "border-accent bg-background shadow-md ring-1 ring-accent"
+                : "border-input bg-background/50 hover:bg-accent hover:border-accent/50"
             )}
           >
             <div className="flex items-center gap-3">
               <div
                 className={cn(
                   "p-2.5 rounded-lg flex items-center justify-center transition-colors",
-                  isSelected ? `bg-${def.color}-100 text-${def.color}-700` : "bg-muted text-muted-foreground"
+                  isSelected ? "" : "bg-muted text-muted-foreground"
                 )}
                 style={isSelected ? { backgroundColor: def.color + '20', color: def.color } : {}}
               >
@@ -73,29 +73,29 @@ export function RoleBuilder({ value, onChange, roleDefinitions }: RoleBuilderPro
 
             <div className="flex items-center gap-2">
               {isSelected ? (
-                 <div className="flex items-center gap-3 bg-muted/30 rounded-lg p-1 border border-border">
-                   <button
-                     type="button"
-                     onClick={() => handleDecrement(def.role)}
-                     className="h-6 w-6 flex items-center justify-center rounded-md hover:bg-white hover:shadow-sm transition-all text-muted-foreground hover:text-foreground"
-                   >
-                     <Minus className="w-3.5 h-3.5" />
-                   </button>
-                   <span className="font-mono font-bold text-sm w-3 text-center">{count}</span>
-                   <button
-                     type="button"
-                     onClick={() => handleIncrement(def.role, def.max)}
-                     className={cn(
-                       "h-6 w-6 flex items-center justify-center rounded-md transition-all",
-                       count >= def.max 
-                         ? "opacity-50 cursor-not-allowed text-muted-foreground"
-                         : "hover:bg-white hover:shadow-sm text-muted-foreground hover:text-foreground"
-                     )}
-                     disabled={count >= def.max}
-                   >
-                     <Plus className="w-3.5 h-3.5" />
-                   </button>
-                 </div>
+                <div className="flex items-center gap-3 bg-muted/30 rounded-lg p-1 border border-border">
+                  <button
+                    type="button"
+                    onClick={() => handleDecrement(def.role)}
+                    className="h-6 w-6 flex items-center justify-center rounded-md hover:bg-white hover:shadow-sm transition-all text-muted-foreground hover:text-foreground"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="font-mono font-bold text-sm w-3 text-center">{count}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleIncrement(def.role, def.max)}
+                    className={cn(
+                      "h-6 w-6 flex items-center justify-center rounded-md transition-all",
+                      count >= def.max
+                        ? "opacity-50 cursor-not-allowed text-muted-foreground"
+                        : "hover:bg-white hover:shadow-sm text-muted-foreground hover:text-foreground"
+                    )}
+                    disabled={count >= def.max}
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               ) : (
                 <Button
                   type="button"

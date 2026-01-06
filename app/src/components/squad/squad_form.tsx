@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { 
+import {
   Users,
   Crown,
   Puzzle,
@@ -24,10 +24,10 @@ import type { useForm } from '@tanstack/react-form';
 import type { SquadFormValues } from '@/hooks/useSquadCreate';
 
 interface SquadFormProps {
-    form: ReturnType<typeof useForm<SquadFormValues, any>>;
-    isEditing: boolean;
-    roleDefinitions: readonly RoleDefinition[];
-    roleColors: Record<string, string>;
+  form: ReturnType<typeof useForm<SquadFormValues, any>>;
+  isEditing: boolean;
+  roleDefinitions: readonly RoleDefinition[];
+  roleColors: Record<string, string>;
 }
 
 export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: SquadFormProps) {
@@ -55,25 +55,25 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight text-primary">{isEditing ? "Edit Squad" : "Create New Squad"}</h1>
-            <p className="text-muted-foreground mt-2">
-              {isEditing ? "Update team details, roles, and composition." : "Build a cross-functional team for your next big project."}
-            </p>
+          <h1 className="text-3xl font-bold tracking-tight text-primary">{isEditing ? "Edit Squad" : "Create New Squad"}</h1>
+          <p className="text-muted-foreground mt-2">
+            {isEditing ? "Update team details, roles, and composition." : "Build a cross-functional team for your next big project."}
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
+
           {/* Left Panel: Form */}
           <div className="lg:col-span-7 space-y-8">
             <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    form.handleSubmit();
-                }}
-                className="space-y-8"
+              onSubmit={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                form.handleSubmit();
+              }}
+              className="space-y-8"
             >
-              
+
               {/* Section 1: Squad Basics */}
               <section className="space-y-4">
                 <div className="flex items-center gap-3 mb-4">
@@ -83,102 +83,92 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
                   <h2 className="text-xl font-semibold text-primary">Squad Basics</h2>
                 </div>
 
-                <Card className="border-none shadow-card bg-transparent">
-                  <CardContent className="p-0">
-                      {/* Squad Details Section */}
-                      <section className="space-y-4">
-                        <div className="flex items-center gap-2 pb-2 border-b border-border/50">
-                          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold">1</span>
-                          <h2 className="text-xl font-semibold tracking-tight">Squad Details</h2>
-                        </div>
-                        
-                        <div className="grid gap-6 p-0 group">
-                          <div className="grid gap-2">
-                            <form.Field
-                              name="squadName"
-                              children={(field) => (
-                             <div className="space-y-2">
-                                <Label htmlFor="squadName">Squad Name</Label>
-                                <Input 
-                                    id="squadName" 
-                                    placeholder="e.g., Mobile App Alpha Team" 
-                                    className="h-12 bg-background/50"
-                                    value={field.state.value}
-                                    onBlur={field.handleBlur}
-                                    onChange={(e) => field.handleChange(e.target.value)}
-                                />
-                                {field.state.meta.errors ? (
-                                    <p className="text-sm text-destructive">{field.state.meta.errors.join(', ')}</p>
-                                ) : null}
-                            </div>
+                <Card className="border-none shadow-card bg-card/80 backdrop-blur-sm">
+                  <CardContent className="pt-6">
+                    <div className="grid gap-6">
+                      <form.Field
+                        name="squadName"
+                        children={(field) => (
+                          <div className="space-y-2">
+                            <Label htmlFor="squadName">Squad Name</Label>
+                            <Input
+                              id="squadName"
+                              placeholder="e.g., Mobile App Alpha Team"
+                              className="h-12 bg-background/50"
+                              value={field.state.value}
+                              onBlur={field.handleBlur}
+                              onChange={(e) => field.handleChange(e.target.value)}
+                            />
+                            {field.state.meta.errors ? (
+                              <p className="text-sm text-destructive">{field.state.meta.errors.join(', ')}</p>
+                            ) : null}
+                          </div>
                         )}
-                    />
+                      />
 
-                    <form.Field
+                      <form.Field
                         name="techStack"
                         children={(field) => (
-                            <div className="space-y-2">
-                                <Label>Project / Technology Stack</Label>
-                                <TechStackSelect 
-                                    value={field.state.value} 
-                                    onChange={field.handleChange} 
-                                />
-                                {field.state.meta.errors ? (
-                                    <p className="text-sm text-destructive">{field.state.meta.errors.join(', ')}</p>
-                                ) : null}
-                            </div>
+                          <div className="space-y-2">
+                            <Label>Project / Technology Stack</Label>
+                            <TechStackSelect
+                              value={field.state.value}
+                              onChange={field.handleChange}
+                            />
+                            {field.state.meta.errors ? (
+                              <p className="text-sm text-destructive">{field.state.meta.errors.join(', ')}</p>
+                            ) : null}
+                          </div>
                         )}
-                    />
+                      />
 
-                    <form.Field
+                      <form.Field
                         name="squadDescription"
                         children={(field) => (
-                            <div className="space-y-2">
-                                <Label htmlFor="squadDescription">Squad Mission</Label>
-                                <Textarea 
-                                    id="squadDescription" 
-                                    placeholder="Describe the squad's goals and objectives..." 
-                                    className="min-h-[120px] resize-none bg-background/50"
-                                    value={field.state.value}
-                                    onBlur={field.handleBlur}
-                                    onChange={(e) => field.handleChange(e.target.value)}
-                                />
-                                <p className="text-xs text-muted-foreground text-right">{field.state.value?.length || 0}/500 characters</p>
-                            </div>
-                        )}
-                    />
+                          <div className="space-y-2">
+                            <Label htmlFor="squadDescription">Squad Mission</Label>
+                            <Textarea
+                              id="squadDescription"
+                              placeholder="Describe the squad's goals and objectives..."
+                              className="min-h-[120px] resize-none bg-background/50"
+                              value={field.state.value}
+                              onBlur={field.handleBlur}
+                              onChange={(e) => field.handleChange(e.target.value)}
+                            />
+                            <p className="text-xs text-muted-foreground text-right">{field.state.value?.length || 0}/500 characters</p>
                           </div>
-                      </div>
-                    </section>
+                        )}
+                      />
+                    </div>
                   </CardContent>
                 </Card>
               </section>
 
               {/* Section 2: Leadership */}
               <section className="space-y-4">
-                 <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-4">
                   <div className="p-2">
-                    <Crown className="w-5 h-5 text-accent-foreground" />
+                    <Crown className="w-5 h-5 text-primary" />
                   </div>
                   <h2 className="text-xl font-semibold text-primary">Squad Leadership</h2>
                 </div>
 
                 <Card className="border-none shadow-card bg-card/80 backdrop-blur-sm">
                   <CardContent className="pt-6">
-                     <form.Field
-                        name="squadLeader"
-                        children={(field) => (
-                            <div className="space-y-2">
-                                <Label>Squad Lead / Tech Lead</Label>
-                                <UserSelect 
-                                    value={field.state.value} 
-                                    onChange={field.handleChange} 
-                                />
-                                {field.state.meta.errors ? (
-                                    <p className="text-sm text-destructive">{field.state.meta.errors.join(', ')}</p>
-                                ) : null}
-                            </div>
-                        )}
+                    <form.Field
+                      name="squadLeader"
+                      children={(field) => (
+                        <div className="space-y-2">
+                          <Label>Squad Lead / Tech Lead</Label>
+                          <UserSelect
+                            value={field.state.value}
+                            onChange={field.handleChange}
+                          />
+                          {field.state.meta.errors ? (
+                            <p className="text-sm text-destructive">{field.state.meta.errors.join(', ')}</p>
+                          ) : null}
+                        </div>
+                      )}
                     />
                   </CardContent>
                 </Card>
@@ -186,7 +176,7 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
 
               {/* Section 3: Team Composition */}
               <section className="space-y-4">
-                 <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-4">
                   <div className="p-2">
                     <Puzzle className="w-5 h-5 text-primary" />
                   </div>
@@ -198,15 +188,15 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
                     <div className="space-y-4">
                       <Label>Required Roles</Label>
                       <p className="text-sm text-muted-foreground mb-4">Define the structure of your squad by adding role slots.</p>
-                      
+
                       <form.Field
                         name="roles"
                         children={(field) => (
-                            <RoleBuilder 
-                                value={field.state.value} 
-                                onChange={field.handleChange} 
-                                roleDefinitions={roleDefinitions}
-                            />
+                          <RoleBuilder
+                            value={field.state.value}
+                            onChange={field.handleChange}
+                            roleDefinitions={roleDefinitions}
+                          />
                         )}
                       />
                     </div>
@@ -216,8 +206,8 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
 
               {/* Section 4: Member Assignment (Optional) */}
               <section className="space-y-4 opacity-60 hover:opacity-100 transition-opacity">
-                 <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-white p-2 rounded-lg shadow-sm border border-border">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 rounded-lg ">
                     <UserPlus className="w-5 h-5 text-primary" />
                   </div>
                   <h2 className="text-xl font-semibold text-primary">Assign Members (Optional)</h2>
@@ -244,12 +234,12 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
 
           {/* Right Panel: Preview */}
           <div className="hidden lg:block lg:col-span-5">
-             <form.Subscribe
-                selector={(state: any) => state.values}
-                children={(values: any) => (
-                    <SquadPreview values={values} roleColors={roleColors} />
-                )}
-             />
+            <form.Subscribe
+              selector={(state: any) => state.values}
+              children={(values: any) => (
+                <SquadPreview values={values} roleColors={roleColors} />
+              )}
+            />
           </div>
         </div>
       </main>
@@ -259,41 +249,41 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
         <div className="container mx-auto px-4 flex items-center justify-between">
           <Button variant="ghost" className="text-muted-foreground hover:text-foreground" asChild>
             <Link to="/">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Cancel
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Cancel
             </Link>
           </Button>
-          
+
           <div className="flex items-center gap-3">
             <Button variant="outline" className="border-accent text-accent-foreground hover:bg-accent/10">
               <Save className="w-4 h-4 mr-2" />
               Save Draft
             </Button>
             <form.Subscribe
-                selector={(state: any) => state.isSubmitting}
-                children={(isSubmitting: any) => (
-                    <Button 
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        form.handleSubmit();
-                    }}
-                    disabled={isSubmitting}
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground min-w-[140px]"
-                    >
-                    {isSubmitting ? (
-                        <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        {isEditing ? "Updating..." : "Creating..."}
-                        </>
-                    ) : (
-                        <>
-                        <Check className="w-4 h-4 mr-2" />
-                        {isEditing ? "Update Squad" : "Create Squad"}
-                        </>
-                    )}
-                    </Button>
-                )}
+              selector={(state: any) => state.isSubmitting}
+              children={(isSubmitting: any) => (
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    form.handleSubmit();
+                  }}
+                  disabled={isSubmitting}
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground min-w-[140px]"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      {isEditing ? "Updating..." : "Creating..."}
+                    </>
+                  ) : (
+                    <>
+                      <Check className="w-4 h-4 mr-2" />
+                      {isEditing ? "Update Squad" : "Create Squad"}
+                    </>
+                  )}
+                </Button>
+              )}
             />
           </div>
         </div>
