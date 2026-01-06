@@ -102,6 +102,6 @@ export function getAllUsers(): User[] {
 }
 
 export function getCurrentUser(): User {
-  return mockUsers[1];
+  return mockUsers[4];
 }
 
