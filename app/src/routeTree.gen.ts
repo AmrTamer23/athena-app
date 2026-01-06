@@ -16,7 +16,11 @@ import { Route as OnboardingIndexRouteImport } from './routes/onboarding/index'
 import { Route as MainInviteRouteRouteImport } from './routes/_main/invite/route'
 import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login/route'
 import { Route as AuthJoinRouteRouteImport } from './routes/_auth/join/route'
+import { Route as MainTasksIndexRouteImport } from './routes/_main/tasks/index'
 import { Route as MainDashboardIndexRouteImport } from './routes/_main/dashboard/index'
+import { Route as MainTasksCreateRouteRouteImport } from './routes/_main/tasks/create/route'
+import { Route as MainTasksTaskIdRouteRouteImport } from './routes/_main/tasks/$taskId/route'
+import { Route as MainTasksEditTaskIdRouteRouteImport } from './routes/_main/tasks/edit/$taskId/route'
 
 const MainRouteRoute = MainRouteRouteImport.update({
   id: '/_main',
@@ -51,11 +55,32 @@ const AuthJoinRouteRoute = AuthJoinRouteRouteImport.update({
   path: '/join',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const MainTasksIndexRoute = MainTasksIndexRouteImport.update({
+  id: '/tasks/',
+  path: '/tasks/',
+  getParentRoute: () => MainRouteRoute,
+} as any)
 const MainDashboardIndexRoute = MainDashboardIndexRouteImport.update({
   id: '/dashboard/',
   path: '/dashboard/',
   getParentRoute: () => MainRouteRoute,
 } as any)
+const MainTasksCreateRouteRoute = MainTasksCreateRouteRouteImport.update({
+  id: '/tasks/create',
+  path: '/tasks/create',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const MainTasksTaskIdRouteRoute = MainTasksTaskIdRouteRouteImport.update({
+  id: '/tasks/$taskId',
+  path: '/tasks/$taskId',
+  getParentRoute: () => MainRouteRoute,
+} as any)
+const MainTasksEditTaskIdRouteRoute =
+  MainTasksEditTaskIdRouteRouteImport.update({
+    id: '/tasks/edit/$taskId',
+    path: '/tasks/edit/$taskId',
+    getParentRoute: () => MainRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -63,7 +88,11 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/tasks/$taskId': typeof MainTasksTaskIdRouteRoute
+  '/tasks/create': typeof MainTasksCreateRouteRoute
   '/dashboard': typeof MainDashboardIndexRoute
+  '/tasks': typeof MainTasksIndexRoute
+  '/tasks/edit/$taskId': typeof MainTasksEditTaskIdRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -71,7 +100,11 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/tasks/$taskId': typeof MainTasksTaskIdRouteRoute
+  '/tasks/create': typeof MainTasksCreateRouteRoute
   '/dashboard': typeof MainDashboardIndexRoute
+  '/tasks': typeof MainTasksIndexRoute
+  '/tasks/edit/$taskId': typeof MainTasksEditTaskIdRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -82,13 +115,37 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRouteRoute
   '/_main/invite': typeof MainInviteRouteRoute
   '/onboarding/': typeof OnboardingIndexRoute
+  '/_main/tasks/$taskId': typeof MainTasksTaskIdRouteRoute
+  '/_main/tasks/create': typeof MainTasksCreateRouteRoute
   '/_main/dashboard/': typeof MainDashboardIndexRoute
+  '/_main/tasks/': typeof MainTasksIndexRoute
+  '/_main/tasks/edit/$taskId': typeof MainTasksEditTaskIdRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/join' | '/login' | '/invite' | '/onboarding' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/join'
+    | '/login'
+    | '/invite'
+    | '/onboarding'
+    | '/tasks/$taskId'
+    | '/tasks/create'
+    | '/dashboard'
+    | '/tasks'
+    | '/tasks/edit/$taskId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/join' | '/login' | '/invite' | '/onboarding' | '/dashboard'
+  to:
+    | '/'
+    | '/join'
+    | '/login'
+    | '/invite'
+    | '/onboarding'
+    | '/tasks/$taskId'
+    | '/tasks/create'
+    | '/dashboard'
+    | '/tasks'
+    | '/tasks/edit/$taskId'
   id:
     | '__root__'
     | '/'
@@ -98,7 +155,11 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_main/invite'
     | '/onboarding/'
+    | '/_main/tasks/$taskId'
+    | '/_main/tasks/create'
     | '/_main/dashboard/'
+    | '/_main/tasks/'
+    | '/_main/tasks/edit/$taskId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -159,11 +220,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthJoinRouteRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_main/tasks/': {
+      id: '/_main/tasks/'
+      path: '/tasks'
+      fullPath: '/tasks'
+      preLoaderRoute: typeof MainTasksIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
     '/_main/dashboard/': {
       id: '/_main/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof MainDashboardIndexRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/_main/tasks/create': {
+      id: '/_main/tasks/create'
+      path: '/tasks/create'
+      fullPath: '/tasks/create'
+      preLoaderRoute: typeof MainTasksCreateRouteRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/_main/tasks/$taskId': {
+      id: '/_main/tasks/$taskId'
+      path: '/tasks/$taskId'
+      fullPath: '/tasks/$taskId'
+      preLoaderRoute: typeof MainTasksTaskIdRouteRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
+    '/_main/tasks/edit/$taskId': {
+      id: '/_main/tasks/edit/$taskId'
+      path: '/tasks/edit/$taskId'
+      fullPath: '/tasks/edit/$taskId'
+      preLoaderRoute: typeof MainTasksEditTaskIdRouteRouteImport
       parentRoute: typeof MainRouteRoute
     }
   }
@@ -185,12 +274,20 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface MainRouteRouteChildren {
   MainInviteRouteRoute: typeof MainInviteRouteRoute
+  MainTasksTaskIdRouteRoute: typeof MainTasksTaskIdRouteRoute
+  MainTasksCreateRouteRoute: typeof MainTasksCreateRouteRoute
   MainDashboardIndexRoute: typeof MainDashboardIndexRoute
+  MainTasksIndexRoute: typeof MainTasksIndexRoute
+  MainTasksEditTaskIdRouteRoute: typeof MainTasksEditTaskIdRouteRoute
 }
 
 const MainRouteRouteChildren: MainRouteRouteChildren = {
   MainInviteRouteRoute: MainInviteRouteRoute,
+  MainTasksTaskIdRouteRoute: MainTasksTaskIdRouteRoute,
+  MainTasksCreateRouteRoute: MainTasksCreateRouteRoute,
   MainDashboardIndexRoute: MainDashboardIndexRoute,
+  MainTasksIndexRoute: MainTasksIndexRoute,
+  MainTasksEditTaskIdRouteRoute: MainTasksEditTaskIdRouteRoute,
 }
 
 const MainRouteRouteWithChildren = MainRouteRoute._addFileChildren(
