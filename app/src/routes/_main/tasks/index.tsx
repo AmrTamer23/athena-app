@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_main/tasks/")({
 function RouteComponent() {
   const currentUser = getCurrentUser();
   const [view, setView] = useState<"assigned_to_me" | "assigned_by_me" | "all">(
-    "assigned_to_me"
+    "all"
   );
   const [filters, setFilters] = useState<TaskFilters>({});
 
