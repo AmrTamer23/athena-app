@@ -26,6 +26,7 @@ import {
   RiLeafLine,
   RiMailLine,
   RiLogoutBoxLine,
+  RiGroupLine,
 } from "@remixicon/react";
 import { useLocation } from "@tanstack/react-router";
 
@@ -96,6 +97,11 @@ const data = {
           title: "Invite Employees",
           url: "/invite",
           icon: RiMailLine,
+        },
+        {
+          title: "Squads",
+          url: "/squads",
+          icon: RiGroupLine,
         },
         // {
         //   title: "Help Center",
