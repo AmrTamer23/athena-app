@@ -17,15 +17,9 @@ import {
 } from "@/components/ui/sidebar";
 import {
   RiScanLine,
-  RiBardLine,
-  RiUserFollowLine,
-  RiCodeSSlashLine,
-  RiLoginCircleLine,
-  RiLayoutLeftLine,
-  RiSettings3Line,
-  RiLeafLine,
   RiMailLine,
   RiLogoutBoxLine,
+  RiTaskLine,
   RiGroupLine,
 } from "@remixicon/react";
 import { useLocation } from "@tanstack/react-router";
@@ -55,6 +49,11 @@ const data = {
           title: "Dashboard",
           url: "/dashboard",
           icon: RiScanLine,
+        },
+        {
+          title: "Tasks",
+          url: "/tasks",
+          icon: RiTaskLine,
         },
         // {
         //   title: "Insights",
