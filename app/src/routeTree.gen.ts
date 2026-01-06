@@ -20,6 +20,7 @@ import { Route as MainTasksIndexRouteImport } from './routes/_main/tasks/index'
 import { Route as MainSquadsIndexRouteImport } from './routes/_main/squads/index'
 import { Route as MainDashboardIndexRouteImport } from './routes/_main/dashboard/index'
 import { Route as MainSquadsCreateRouteImport } from './routes/_main/squads/create'
+import { Route as MainEmployeesEmployeeIdRouteImport } from './routes/_main/employees/$employeeId'
 import { Route as MainTasksCreateRouteRouteImport } from './routes/_main/tasks/create/route'
 import { Route as MainTasksTaskIdRouteRouteImport } from './routes/_main/tasks/$taskId/route'
 import { Route as MainSquadsSquadIdEditRouteImport } from './routes/_main/squads/$squadId.edit'
@@ -78,6 +79,9 @@ const MainSquadsCreateRoute = MainSquadsCreateRouteImport.update({
   path: '/squads/create',
   getParentRoute: () => MainRouteRoute,
 } as any)
+const MainEmployeesEmployeeIdRoute = MainEmployeesEmployeeIdRouteImport.update({
+  id: '/employees/$employeeId',
+  path: '/employees/$employeeId',
 const MainTasksCreateRouteRoute = MainTasksCreateRouteRouteImport.update({
   id: '/tasks/create',
   path: '/tasks/create',
@@ -106,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/employees/$employeeId': typeof MainEmployeesEmployeeIdRoute
   '/tasks/$taskId': typeof MainTasksTaskIdRouteRoute
   '/tasks/create': typeof MainTasksCreateRouteRoute
   '/squads/create': typeof MainSquadsCreateRoute
@@ -121,6 +126,7 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/employees/$employeeId': typeof MainEmployeesEmployeeIdRoute
   '/tasks/$taskId': typeof MainTasksTaskIdRouteRoute
   '/tasks/create': typeof MainTasksCreateRouteRoute
   '/squads/create': typeof MainSquadsCreateRoute
@@ -139,6 +145,7 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRouteRoute
   '/_main/invite': typeof MainInviteRouteRoute
   '/onboarding/': typeof OnboardingIndexRoute
+  '/_main/employees/$employeeId': typeof MainEmployeesEmployeeIdRoute
   '/_main/tasks/$taskId': typeof MainTasksTaskIdRouteRoute
   '/_main/tasks/create': typeof MainTasksCreateRouteRoute
   '/_main/squads/create': typeof MainSquadsCreateRoute
@@ -156,6 +163,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/invite'
     | '/onboarding'
+    | '/employees/$employeeId'
     | '/tasks/$taskId'
     | '/tasks/create'
     | '/squads/create'
@@ -171,6 +179,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/invite'
     | '/onboarding'
+    | '/employees/$employeeId'
     | '/tasks/$taskId'
     | '/tasks/create'
     | '/squads/create'
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_main/invite'
     | '/onboarding/'
+    | '/_main/employees/$employeeId'
     | '/_main/tasks/$taskId'
     | '/_main/tasks/create'
     | '/_main/squads/create'
@@ -284,6 +294,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainSquadsCreateRouteImport
       parentRoute: typeof MainRouteRoute
     }
+    '/_main/employees/$employeeId': {
+      id: '/_main/employees/$employeeId'
+      path: '/employees/$employeeId'
+      fullPath: '/employees/$employeeId'
+      preLoaderRoute: typeof MainEmployeesEmployeeIdRouteImport
     '/_main/tasks/create': {
       id: '/_main/tasks/create'
       path: '/tasks/create'
@@ -331,6 +346,7 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface MainRouteRouteChildren {
   MainInviteRouteRoute: typeof MainInviteRouteRoute
+  MainEmployeesEmployeeIdRoute: typeof MainEmployeesEmployeeIdRoute
   MainTasksTaskIdRouteRoute: typeof MainTasksTaskIdRouteRoute
   MainTasksCreateRouteRoute: typeof MainTasksCreateRouteRoute
   MainSquadsCreateRoute: typeof MainSquadsCreateRoute
@@ -343,6 +359,7 @@ interface MainRouteRouteChildren {
 
 const MainRouteRouteChildren: MainRouteRouteChildren = {
   MainInviteRouteRoute: MainInviteRouteRoute,
+  MainEmployeesEmployeeIdRoute: MainEmployeesEmployeeIdRoute,
   MainTasksTaskIdRouteRoute: MainTasksTaskIdRouteRoute,
   MainTasksCreateRouteRoute: MainTasksCreateRouteRoute,
   MainSquadsCreateRoute: MainSquadsCreateRoute,
