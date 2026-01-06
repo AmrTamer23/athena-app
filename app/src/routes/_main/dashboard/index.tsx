@@ -6,6 +6,7 @@ import { getCurrentUser } from "@/services/hierarchy";
 import { Link } from "@tanstack/react-router";
 import { fadeInVariants } from "@/lib/animations-settings";
 import type { TaskStatus } from "@/services/task";
+import { AlertCircle } from "lucide-react";
 
 export const Route = createFileRoute("/_main/dashboard/")({
   component: RouteComponent,
@@ -20,6 +21,10 @@ function RouteComponent() {
   const todoTasks = assignedTasks.filter((t) => t.status === "assigned");
   const doneTasks = assignedTasks.filter((t) => t.status === "completed" || t.status === "reviewed");
   const onHoldTasks = assignedTasks.filter((t) => t.status === "assigned" && t.dueDate && new Date(t.dueDate) < new Date());
+  
+  const needsReviewTasks = allTasks.filter(
+    (t) => t.status === "completed" && t.assignerId === currentUser.id
+  );
 
   const TaskWidget = ({ title, count, status }: { title: string; count: number; status?: TaskStatus }) => (
     <Link
@@ -56,6 +61,31 @@ function RouteComponent() {
         <TaskWidget title="Done" count={doneTasks.length} />
         <TaskWidget title="On Hold" count={onHoldTasks.length} />
       </div>
+
+      {needsReviewTasks.length > 0 && (
+        <Link
+          to="/tasks"
+          search={{ status: "completed", assignerId: currentUser.id }}
+          className="block"
+        >
+          <Card className="p-6 hover:bg-accent/50 transition-colors cursor-pointer border-warning/50 bg-warning/10">
+            <div className="flex items-center gap-3">
+              <AlertCircle className="h-5 w-5 text-warning" />
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-foreground">
+                  Needs Review
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {needsReviewTasks.length} task{needsReviewTasks.length !== 1 ? "s" : ""} completed and awaiting your review
+                </p>
+              </div>
+              <p className="text-2xl font-bold text-warning">
+                {needsReviewTasks.length}
+              </p>
+            </div>
+          </Card>
+        </Link>
+      )}
     </motion.div>
   );
 }

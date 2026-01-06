@@ -20,6 +20,8 @@ import {
   Tag,
   Edit,
   FileText,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 
 type TaskDetailsProps = {
@@ -66,9 +68,15 @@ export function TaskDetails({ task }: TaskDetailsProps) {
   const canEdit = task.assignerId === currentUser.id;
   const canUpdateStatus =
     task.assigneeId === currentUser.id || task.assignerId === currentUser.id;
+  const needsReview =
+    task.status === "completed" && task.assignerId === currentUser.id;
 
   const handleStatusChange = (newStatus: typeof task.status) => {
     statusUpdate.mutate({ taskId: task.id, status: newStatus });
+  };
+
+  const handleMarkAsReviewed = () => {
+    statusUpdate.mutate({ taskId: task.id, status: "reviewed" });
   };
 
   const MetadataItem = ({
@@ -139,6 +147,34 @@ export function TaskDetails({ task }: TaskDetailsProps) {
             </div>
 
             <Separator />
+
+            {needsReview && (
+              <div className="rounded-lg border-2 border-warning/50 bg-warning/10 p-4">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-warning mt-0.5 shrink-0" />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <h3 className="text-sm font-semibold text-foreground mb-1">
+                          Review Required
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          This task has been completed and is awaiting your review.
+                        </p>
+                      </div>
+                      <Button
+                        onClick={handleMarkAsReviewed}
+                        disabled={statusUpdate.isPending}
+                        size="sm"
+                      >
+                        <CheckCircle2 className="h-4 w-4 mr-2" />
+                        {statusUpdate.isPending ? "Marking..." : "Mark as Reviewed"}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="space-y-6">
               <div>

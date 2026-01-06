@@ -42,7 +42,8 @@ import {
 } from "@/components/ui/table";
 import type { Task } from "@/services/task";
 import { TaskStatusBadge } from "./task_status_badge";
-import { getUserById } from "@/services/hierarchy";
+import { getUserById, getCurrentUser } from "@/services/hierarchy";
+import { AlertCircle } from "lucide-react";
 
 function formatDistanceToNow(date: Date): string {
   const now = new Date();
@@ -78,6 +79,7 @@ type TaskTableProps = {
 
 export function TaskTable({ tasks, isLoading }: TaskTableProps) {
   const pageSize = 10;
+  const currentUser = getCurrentUser();
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -110,10 +112,22 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
       accessorKey: "status",
       cell: ({ row }) => {
         const status = row.getValue("status") as Task["status"];
-        return <TaskStatusBadge status={status} />;
+        const needsReview =
+          status === "completed" && row.original.assignerId === currentUser.id;
+        return (
+          <div className="flex items-center gap-2">
+            <TaskStatusBadge status={status} />
+            {needsReview && (
+              <Badge variant="warning" className="text-xs">
+                <AlertCircle className="h-3 w-3 mr-1" />
+                Review
+              </Badge>
+            )}
+          </div>
+        );
       },
       header: "Status",
-      size: 120,
+      size: 150,
     },
     {
       accessorKey: "priority",
@@ -388,24 +402,35 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                className="cursor-pointer hover:bg-muted/50"
-                onClick={(e) => {
-                  const target = e.target as HTMLElement;
-                  if (!target.closest("a")) {
-                    window.location.href = `/tasks/${row.original.id}`;
-                  }
-                }}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+            table.getRowModel().rows.map((row) => {
+              const needsReview =
+                row.original.status === "completed" &&
+                row.original.assignerId === currentUser.id;
+              return (
+                <TableRow
+                  key={row.id}
+                  className={cn(
+                    "cursor-pointer hover:bg-muted/50",
+                    needsReview && "bg-warning/5 border-l-2 border-l-warning"
+                  )}
+                  onClick={(e) => {
+                    const target = e.target as HTMLElement;
+                    if (!target.closest("a")) {
+                      window.location.href = `/tasks/${row.original.id}`;
+                    }
+                  }}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })
           ) : (
             <TableRow>
               <TableCell className="h-24 text-center" colSpan={columns.length}>

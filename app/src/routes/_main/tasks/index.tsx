@@ -17,18 +17,26 @@ export const Route = createFileRoute("/_main/tasks/")({
 
 function RouteComponent() {
   const currentUser = getCurrentUser();
-  const [view, setView] = useState<"assigned_to_me" | "assigned_by_me" | "all">(
-    "all"
-  );
+  const [view, setView] = useState<
+    "assigned_to_me" | "assigned_by_me" | "all" | "needs_review"
+  >("all");
   const [filters, setFilters] = useState<TaskFilters>({});
 
   const taskFilters: TaskFilters = {
     ...filters,
     ...(view === "assigned_to_me" ? { assigneeId: currentUser.id } : {}),
     ...(view === "assigned_by_me" ? { assignerId: currentUser.id } : {}),
+    ...(view === "needs_review"
+      ? { status: "completed", assignerId: currentUser.id }
+      : {}),
   };
 
   const { data: tasks = [], isLoading } = useTasks(taskFilters);
+  const { data: allTasksForReview = [] } = useTasks({});
+
+  const needsReviewCount = allTasksForReview.filter(
+    (t) => t.status === "completed" && t.assignerId === currentUser.id
+  ).length;
 
   return (
     <motion.div
@@ -50,7 +58,7 @@ function RouteComponent() {
         </Button>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         <Button
           variant={view === "all" ? "default" : "secondary"}
           onClick={() => setView("all")}
@@ -69,6 +77,18 @@ function RouteComponent() {
         >
           Assigned by Me
         </Button>
+        {needsReviewCount > 0 && (
+          <Button
+            variant={view === "needs_review" ? "default" : "secondary"}
+            onClick={() => setView("needs_review")}
+            className="relative"
+          >
+            Needs Review
+            <span className="ml-2 px-2 py-0.5 text-xs bg-warning text-warning-foreground rounded-full">
+              {needsReviewCount}
+            </span>
+          </Button>
+        )}
       </div>
 
       <TaskFiltersComponent filters={filters} onFiltersChange={setFilters} />
