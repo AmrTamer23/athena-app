@@ -6,6 +6,8 @@ import {
   type CompanySetupForm,
 } from "@/lib/validations/company_setup";
 import { createCompany } from "@/services/company";
+import { toast } from "sonner";
+import { ApiError } from "@/lib/api/api-util";
 
 type ValidationErrors = {
   [key: string]: string | undefined;
@@ -172,15 +174,35 @@ export const useCompanySetup = () => {
         fullName: values.fullName,
         email: values.email,
         password: values.password,
+        phone_number: "",
+        country: "",
+        city: "",
+        postal_code: ""
       });
 
-      if (response.success) {
+      if (response.requiresVerification) {
+        toast.info(
+          "Please check your email for verification. After verifying, you can create your company."
+        );
+        setSubmitError(
+          "Please verify your email address. Check your inbox for the verification link."
+        );
+      } else if (response.signupSuccess && response.company) {
+        toast.success("Company created successfully!");
         setIsSuccess(true);
       } else {
         setSubmitError("Failed to create company. Please try again.");
       }
     } catch (error) {
-      setSubmitError("An unexpected error occurred. Please try again.");
+      if (error instanceof ApiError) {
+        const errorMessage =
+          error.message || "Failed to create company. Please try again.";
+        setSubmitError(errorMessage);
+        toast.error(errorMessage);
+      } else {
+        setSubmitError("An unexpected error occurred. Please try again.");
+        toast.error("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }

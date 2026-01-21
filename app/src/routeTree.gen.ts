@@ -22,6 +22,7 @@ import { Route as MainDashboardIndexRouteImport } from './routes/_main/dashboard
 import { Route as MainSquadsCreateRouteImport } from './routes/_main/squads/create'
 import { Route as MainTasksCreateRouteRouteImport } from './routes/_main/tasks/create/route'
 import { Route as MainTasksTaskIdRouteRouteImport } from './routes/_main/tasks/$taskId/route'
+import { Route as AuthVerifyKeyRouteRouteImport } from './routes/_auth/verify/$key/route'
 import { Route as MainSquadsSquadIdEditRouteImport } from './routes/_main/squads/$squadId.edit'
 import { Route as MainTasksEditTaskIdRouteRouteImport } from './routes/_main/tasks/edit/$taskId/route'
 
@@ -88,6 +89,11 @@ const MainTasksTaskIdRouteRoute = MainTasksTaskIdRouteRouteImport.update({
   path: '/tasks/$taskId',
   getParentRoute: () => MainRouteRoute,
 } as any)
+const AuthVerifyKeyRouteRoute = AuthVerifyKeyRouteRouteImport.update({
+  id: '/verify/$key',
+  path: '/verify/$key',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 const MainSquadsSquadIdEditRoute = MainSquadsSquadIdEditRouteImport.update({
   id: '/squads/$squadId/edit',
   path: '/squads/$squadId/edit',
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/verify/$key': typeof AuthVerifyKeyRouteRoute
   '/tasks/$taskId': typeof MainTasksTaskIdRouteRoute
   '/tasks/create': typeof MainTasksCreateRouteRoute
   '/squads/create': typeof MainSquadsCreateRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRouteRoute
   '/invite': typeof MainInviteRouteRoute
   '/onboarding': typeof OnboardingIndexRoute
+  '/verify/$key': typeof AuthVerifyKeyRouteRoute
   '/tasks/$taskId': typeof MainTasksTaskIdRouteRoute
   '/tasks/create': typeof MainTasksCreateRouteRoute
   '/squads/create': typeof MainSquadsCreateRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRouteRoute
   '/_main/invite': typeof MainInviteRouteRoute
   '/onboarding/': typeof OnboardingIndexRoute
+  '/_auth/verify/$key': typeof AuthVerifyKeyRouteRoute
   '/_main/tasks/$taskId': typeof MainTasksTaskIdRouteRoute
   '/_main/tasks/create': typeof MainTasksCreateRouteRoute
   '/_main/squads/create': typeof MainSquadsCreateRoute
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/invite'
     | '/onboarding'
+    | '/verify/$key'
     | '/tasks/$taskId'
     | '/tasks/create'
     | '/squads/create'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/invite'
     | '/onboarding'
+    | '/verify/$key'
     | '/tasks/$taskId'
     | '/tasks/create'
     | '/squads/create'
@@ -188,6 +199,7 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_main/invite'
     | '/onboarding/'
+    | '/_auth/verify/$key'
     | '/_main/tasks/$taskId'
     | '/_main/tasks/create'
     | '/_main/squads/create'
@@ -298,6 +310,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainTasksTaskIdRouteRouteImport
       parentRoute: typeof MainRouteRoute
     }
+    '/_auth/verify/$key': {
+      id: '/_auth/verify/$key'
+      path: '/verify/$key'
+      fullPath: '/verify/$key'
+      preLoaderRoute: typeof AuthVerifyKeyRouteRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
     '/_main/squads/$squadId/edit': {
       id: '/_main/squads/$squadId/edit'
       path: '/squads/$squadId/edit'
@@ -318,11 +337,13 @@ declare module '@tanstack/react-router' {
 interface AuthRouteRouteChildren {
   AuthJoinRouteRoute: typeof AuthJoinRouteRoute
   AuthLoginRouteRoute: typeof AuthLoginRouteRoute
+  AuthVerifyKeyRouteRoute: typeof AuthVerifyKeyRouteRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthJoinRouteRoute: AuthJoinRouteRoute,
   AuthLoginRouteRoute: AuthLoginRouteRoute,
+  AuthVerifyKeyRouteRoute: AuthVerifyKeyRouteRoute,
 }
 
 const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(

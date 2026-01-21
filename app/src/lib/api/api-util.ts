@@ -1,5 +1,5 @@
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 interface RequestConfig extends RequestInit {
   timeout?: number;
@@ -29,6 +29,7 @@ async function fetchWithTimeout(
     const response = await fetch(url, {
       ...init,
       signal: controller.signal,
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         ...init.headers,
@@ -43,6 +44,12 @@ async function fetchWithTimeout(
   }
 }
 
+let onUnauthorized: (() => void) | null = null;
+
+export function setUnauthorizedHandler(handler: () => void) {
+  onUnauthorized = handler;
+}
+
 export async function apiRequest<T = any>(
   endpoint: string,
   config: RequestConfig = {}
@@ -53,10 +60,24 @@ export async function apiRequest<T = any>(
     const response = await fetchWithTimeout(url, config);
 
     if (!response.ok) {
+      if (response.status === 401) {
+        if (onUnauthorized) {
+          onUnauthorized();
+        } else {
+          if (typeof window !== "undefined") {
+            window.location.href = "/login";
+          }
+        }
+      }
+
       let errorMessage = "An error occurred";
       try {
         const errorData = await response.json();
-        errorMessage = errorData.message || errorMessage;
+        errorMessage =
+          errorData.detail ||
+          errorData.message ||
+          errorData.details ||
+          errorMessage;
       } catch {
         errorMessage = response.statusText || errorMessage;
       }
