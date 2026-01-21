@@ -1,0 +1,111 @@
+import type { EmployeeProfile } from "@/types/employee";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Github, Linkedin, Twitter, Globe, MapPin, Calendar, Mail } from "lucide-react";
+
+interface ProfileHeaderProps {
+    employee: EmployeeProfile;
+}
+
+export function ProfileHeader({ employee }: ProfileHeaderProps) {
+    const { fullName, role, avatarUrl, department, joinDate, socialLinks, gamification, status } = employee;
+
+    const xpProgress = (gamification.currentXp / gamification.xpToNextLevel) * 100;
+
+    return (
+        <Card className="border-none shadow-card bg-card/60 backdrop-blur-sm overflow-hidden mb-6">
+            {/* <div className="h-32 bg-gradient-to-r from-blue-600/20 via-purple-500/20 to-pink-500/20" /> */}
+            <CardContent className="relative py-8 px-6 sm:px-10">
+                <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+                    {/* Avatar & Level */}
+                    <div className="flex flex-col items-center gap-3 shrink-0">
+                        <div className="relative">
+                            <Avatar className="w-32 h-32 border-2 border-border/50 shadow-md">
+                                <AvatarImage src={avatarUrl} alt={fullName} />
+                                <AvatarFallback className="text-3xl">{fullName.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div className="absolute -bottom-1 -right-1 z-10 bg-background p-1 rounded-full shadow-sm">
+                                <Badge className="px-2 py-0.5 text-xs font-bold border-amber-200 bg-amber-100 text-amber-800 hover:bg-amber-100 shadow-none">
+                                    Lvl {gamification.levelNumber}
+                                </Badge>
+                            </div>
+                        </div>
+
+                        <div className="w-32 space-y-1.5 text-center">
+                            <div className="flex justify-between text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
+                                <span>XP</span>
+                                <span>{gamification.currentXp}</span>
+                            </div>
+                            <Progress value={xpProgress} className="h-2 bg-muted" indicatorClassName="bg-gradient-to-r from-amber-400 to-orange-500" />
+                            <div className="text-[10px] text-muted-foreground text-right">{gamification.xpToNextLevel} to go</div>
+                        </div>
+                    </div>
+
+                    {/* Info Section */}
+                    <div className="flex-1 space-y-4 w-full text-center md:text-left">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                                <h1 className="text-3xl font-bold text-foreground">{fullName}</h1>
+                                <div className="flex items-center gap-2 text-muted-foreground mt-1">
+                                    <span className="font-medium text-foreground/80">{role}</span>
+                                    <span>•</span>
+                                    <span>{department}</span>
+                                    {status === 'active' && (
+                                        <Badge variant="outline" className="ml-2 border-green-200 bg-green-50 text-green-700">Active</Badge>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="flex gap-2">
+                                {socialLinks.github && (
+                                    <Button variant="ghost" size="icon" className="hover:text-[#333]" asChild>
+                                        <a href={socialLinks.github} target="_blank" rel="noreferrer"><Github className="w-5 h-5" /></a>
+                                    </Button>
+                                )}
+                                {socialLinks.linkedin && (
+                                    <Button variant="ghost" size="icon" className="hover:text-[#0077b5]" asChild>
+                                        <a href={socialLinks.linkedin} target="_blank" rel="noreferrer"><Linkedin className="w-5 h-5" /></a>
+                                    </Button>
+                                )}
+                                {socialLinks.twitter && (
+                                    <Button variant="ghost" size="icon" className="hover:text-[#1DA1F2]" asChild>
+                                        <a href={socialLinks.twitter} target="_blank" rel="noreferrer"><Twitter className="w-5 h-5" /></a>
+                                    </Button>
+                                )}
+                                {socialLinks.portfolio && (
+                                    <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground" asChild>
+                                        <a href={socialLinks.portfolio} target="_blank" rel="noreferrer"><Globe className="w-5 h-5" /></a>
+                                    </Button>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-2">
+                                <Mail className="w-4 h-4" />
+                                {employee.email}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Calendar className="w-4 h-4" />
+                                Joined {new Date(joinDate).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <MapPin className="w-4 h-4" />
+                                Remote (New York)
+                            </div>
+                        </div>
+
+                        {employee.bio && (
+                            <p className="text-foreground/80 max-w-3xl leading-relaxed text-sm bg-muted/30 p-3 rounded-lg border border-border/50">
+                                {employee.bio}
+                            </p>
+                        )}
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}

@@ -3,3 +3,5 @@ node_modules
 .alchemy
 .env
 routeTree.gen.ts
+**/routeTree.gen.ts
+app/src/routeTree.gen.ts
