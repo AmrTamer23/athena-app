@@ -1,5 +1,10 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const getApiBaseUrl = (): string => {
+
+
+  return "https://admin-athena-hq.it.com";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 interface RequestConfig extends RequestInit {
   timeout?: number;
@@ -54,7 +59,9 @@ export async function apiRequest<T = any>(
   endpoint: string,
   config: RequestConfig = {}
 ): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  const baseUrl = API_BASE_URL.endsWith("/") ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  const url = `${baseUrl}${path}`;
 
   try {
     const response = await fetchWithTimeout(url, config);
