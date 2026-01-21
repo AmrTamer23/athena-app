@@ -1,8 +1,23 @@
 import { fadeInUpVariants, fadeInVariants } from "@/lib/animations-settings";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import { getCurrentUser } from "@/services/auth";
 
 export const Route = createFileRoute("/_auth")({
+  beforeLoad: async () => {
+    try {
+      const user = await getCurrentUser();
+      if (user) {
+        throw redirect({
+          to: "/dashboard",
+        });
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message.includes("redirect")) {
+        throw error;
+      }
+    }
+  },
   component: RouteComponent,
 });
 

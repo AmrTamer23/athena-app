@@ -1,6 +1,32 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { getCurrentUser } from "@/services/auth";
 
 export const Route = createFileRoute("/_main")({
+  beforeLoad: async () => {
+    try {
+      const user = await getCurrentUser();
+      if (!user) {
+        throw redirect({
+          to: "/login",
+          search: {
+            verified: "",
+            message: ""
+          }
+        });
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message.includes("redirect")) {
+        throw error;
+      }
+      throw redirect({
+        to: "/login",
+        search: {
+          verified: "",
+          message: ""
+        }
+      });
+    }
+  },
   component: Page,
 });
 

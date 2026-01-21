@@ -28,7 +28,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/app/dist ./dist
     
 COPY --from=builder /app/app/public ./public
+
+COPY --from=builder /app/app/server.ts ./server.ts
     
 EXPOSE 80
     
-CMD ["bun", "dist/server/server.js"]
+CMD ["bun", "server.ts"]

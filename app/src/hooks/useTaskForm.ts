@@ -1,6 +1,5 @@
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
-import { z } from "zod";
 import { useEffect } from "react";
 import { taskFormSchema, type TaskFormValues } from "@/lib/validations/task";
 import { taskService } from "@/services/task";
@@ -34,7 +33,7 @@ export function useTaskForm(taskId?: string) {
 
   const createMutation = useMutation({
     mutationFn: (data: TaskFormValues) => taskService.createTask(data, currentUser.id),
-    onSuccess: (task) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       toast.success("Task created successfully");
       navigate({ to: "/tasks" });

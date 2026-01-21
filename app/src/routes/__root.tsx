@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/contexts/auth-context";
 
 import {
   HeadContent,
@@ -10,17 +11,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
-import appCss from "../index.css?url";
-
 export interface RouterAppContext {}
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60,
-    },
-  },
-});
 
 export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
@@ -34,12 +25,6 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
       },
       {
         title: "My App",
-      },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
       },
     ],
   }),
@@ -56,9 +41,11 @@ function RootDocument() {
       </head>
       <body className="min-h-screen">
         <QueryClientProvider client={queryClient}>
-          <Outlet />
-          <Toaster richColors />
-          <TanStackRouterDevtools position="bottom-left" />
+          <AuthProvider>
+            <Outlet />
+            <Toaster richColors />
+            <TanStackRouterDevtools position="bottom-left" />
+          </AuthProvider>
         </QueryClientProvider>
         <Scripts />
       </body>

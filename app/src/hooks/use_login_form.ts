@@ -1,6 +1,9 @@
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
+import { useAuth } from "@/contexts/auth-context";
+import { toast } from "sonner";
+import { ApiError } from "@/lib/api/api-util";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -30,13 +33,30 @@ function validateWithZod(value: LoginFormData) {
 
 export function useLoginForm() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const form = useForm({
     defaultValues: {
       email: "",
       password: "",
     } as LoginFormData,
-    onSubmit: async ({}) => {
-      navigate({ to: "/dashboard" });
+    onSubmit: async ({ value }) => {
+      try {
+        await login({
+          email: value.email,
+          password: value.password,
+        });
+        toast.success("Login successful");
+        navigate({ to: "/dashboard" });
+      } catch (error) {
+        if (error instanceof ApiError) {
+          const errorMessage =
+            error.message || "Invalid email or password. Please try again.";
+          toast.error(errorMessage);
+        } else {
+          toast.error("An unexpected error occurred. Please try again.");
+        }
+        throw error;
+      }
     },
     validators: {
       onSubmit: ({ value }) => validateWithZod(value),

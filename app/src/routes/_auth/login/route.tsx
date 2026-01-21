@@ -1,16 +1,35 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FieldInfo } from "@/components/field_info";
 import { useLoginForm } from "@/hooks/use_login_form";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_auth/login")({
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      verified: (search.verified as string) || undefined,
+      message: (search.message as string) || undefined,
+    };
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const form = useLoginForm();
+  const { verified, message } = useSearch({ from: "/_auth/login" });
+
+  useEffect(() => {
+    if (verified === "true") {
+      toast.success("Email verified successfully! You can now log in.");
+    } else if (message) {
+      if (message === "already_verified") {
+        toast.info("Email already verified. You can log in.");
+      }
+    }
+  }, [verified, message]);
 
   return (
     <div className=" flex items-center justify-center w-full">
@@ -47,7 +66,7 @@ function RouteComponent() {
                     id={field.name}
                     name={field.name}
                     type="email"
-                    size={"lg"}
+                    size={4}
                     placeholder="Enter your email"
                     value={field.state.value}
                     onBlur={field.handleBlur}
@@ -77,7 +96,7 @@ function RouteComponent() {
                 <>
                   <Label htmlFor={field.name}>Password</Label>
                   <Input
-                    size={"lg"}
+                    size={4}
                     id={field.name}
                     name={field.name}
                     type="password"

@@ -6,4 +6,12 @@ import viteReact from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [tsconfigPaths(), tailwindcss(), tanstackStart(), viteReact()],
+  build: {
+    assetsDir: "assets",
+    rollupOptions: {
+      output: {
+        assetFileNames: "assets/[name]-[hash][extname]",
+      },
+    },
+  },
 });

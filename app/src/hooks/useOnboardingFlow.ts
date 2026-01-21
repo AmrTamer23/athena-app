@@ -144,7 +144,7 @@ export const useOnboardingFlow = ({ token }: UseOnboardingFlowArgs) => {
 
   const updateSocialMediaField = (key: string, value: string) => {
     form.setFieldValue("socialMedia", (prev) => ({
-      ...(prev ?? {}),
+      ...prev,
       [key]: value,
     }));
   };
