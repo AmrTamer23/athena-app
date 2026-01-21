@@ -6,7 +6,6 @@ import {
   Play,
   User,
   Users,
-  Plus,
   ArrowRight,
 } from "lucide-react";
 import { getCurrentUser, getSubordinates } from "@/services/hierarchy";

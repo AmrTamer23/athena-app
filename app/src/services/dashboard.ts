@@ -75,7 +75,6 @@ function calculateLevel(xp: number): { level: number; xpToNextLevel: number; tot
     xpForNextLevel = Math.floor(xpForCurrentLevel * multiplier);
   }
 
-  const xpInCurrentLevel = xp - xpForCurrentLevel;
   const xpToNextLevel = xpForNextLevel - xp;
 
   return {

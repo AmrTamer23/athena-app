@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { GamificationData } from "@/services/dashboard";
-import { Trophy, Award, Target } from "lucide-react";
+import { Trophy, Target } from "lucide-react";
 
 interface GamificationCardProps {
   gamification: GamificationData;

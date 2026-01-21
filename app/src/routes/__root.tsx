@@ -15,14 +15,6 @@ import appCss from "../index.css?url";
 
 export interface RouterAppContext {}
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60,
-    },
-  },
-});
-
 export const Route = createRootRouteWithContext<RouterAppContext>()({
   head: () => ({
     meta: [

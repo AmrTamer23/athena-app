@@ -55,7 +55,7 @@ function VerifyComponent() {
           setMessage("Verification failed. Please try again.");
           toast.error("Verification failed");
         }
-      } catch (error) {
+      } catch {
         setStatus("error");
         setMessage("An error occurred during verification. Please try again.");
         toast.error("Verification error");

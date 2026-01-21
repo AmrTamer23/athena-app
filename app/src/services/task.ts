@@ -1,5 +1,3 @@
-import type { User } from "./hierarchy";
-
 export type TaskStatus = "assigned" | "in_progress" | "completed" | "reviewed";
 export type TaskPriority = "low" | "medium" | "high" | "urgent";
 export type TaskCategory = "development" | "design" | "qa" | "marketing" | "other";

@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import type { Task } from "@/services/task";
 import { getUserById } from "@/services/hierarchy";
 import { Link } from "@tanstack/react-router";
-function formatDistanceToNow(date: Date, options?: { addSuffix?: boolean }): string {
+function formatDistanceToNow(date: Date): string {
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffMins = Math.floor(diffMs / 60000);

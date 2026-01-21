@@ -82,12 +82,6 @@ export function OnboardingSidePanel(props: OnboardingSidePanelProps) {
   }
 
   if (props.step === "checklist") {
-    const completedCount = props.checklist.steps.filter(
-      (step) => step.status === "completed"
-    ).length;
-    const totalCount = props.checklist.steps.length;
-    const progress = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
-
     return (
       <div className="relative w-full min-h-[80svh] flex flex-col justify-center items-center">
         <img

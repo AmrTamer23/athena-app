@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useTasks } from "./useTasks";
-import { getCurrentUser, getSubordinates } from "@/services/hierarchy";
+import { getCurrentUser } from "@/services/hierarchy";
 import { dashboardService } from "@/services/dashboard";
 import type { Task } from "@/services/task";
 
@@ -42,7 +42,6 @@ export function useDashboardStats() {
         t.status === "assigned" && t.dueDate && new Date(t.dueDate) < new Date()
     );
 
-    const subordinates = getSubordinates(currentUser.id);
     const needsReviewTasks = allTasks.filter(
       (t) => t.status === "completed" && t.assignerId === currentUser.id
     );

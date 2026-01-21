@@ -3,8 +3,6 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -15,7 +13,6 @@ import {
 } from "recharts";
 import type { TaskCompletionData } from "@/services/dashboard";
 import { TrendingUp } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface TaskCompletionGraphProps {
   threeMonths: TaskCompletionData[];
