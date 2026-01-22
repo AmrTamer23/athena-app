@@ -1,36 +1,21 @@
-FROM oven/bun:1 as base
-WORKDIR /app
+# build stage
+FROM oven/bun:1 as build-stage
 
-FROM base AS deps
+WORKDIR /app
 
 COPY bun.lock package.json turbo.json ./
-    
 COPY app ./app
-    
-RUN bun install --frozen-lockfile
-    
-FROM base AS builder
-WORKDIR /app
-    
-COPY --from=deps /app ./
-    
-RUN bun run build
-    
-FROM base AS runner
-WORKDIR /app
-    
-ENV NODE_ENV=production
-ENV PORT=80
-ENV HOSTNAME=0.0.0.0
-    
-COPY --from=deps /app/node_modules ./node_modules
-    
-COPY --from=builder /app/app/dist ./dist
-    
-COPY --from=builder /app/app/public ./public
 
-COPY --from=builder /app/app/server.ts ./server.ts
-    
-EXPOSE 80
-    
-CMD ["bun", "server.ts"]
+RUN bun install --frozen-lockfile
+RUN bun run build
+
+# production stage
+FROM nginx:stable-alpine as production-stage
+
+COPY --from=build-stage /app/app/dist /usr/share/nginx/html
+
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
