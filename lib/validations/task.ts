@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TASK_PRIORITIES, TASK_CATEGORIES, TASK_TYPES, TASK_STATUSES } from "@/services/task";
+import { TASK_PRIORITIES, TASK_CATEGORIES, TASK_TYPES, TASK_STATUSES, type TaskPriority, type TaskCategory, type TaskType, type TaskStatus } from "@/services/task";
 
 export const taskFormSchema = z.object({
   title: z
@@ -11,21 +11,21 @@ export const taskFormSchema = z.object({
     .min(10, "Description must be at least 10 characters")
     .max(2000, "Description must be less than 2000 characters"),
   assigneeId: z.string().min(1, "Please select an assignee"),
-  priority: z.enum(TASK_PRIORITIES as [string, ...string[]], {
-    required_error: "Please select a priority",
+  priority: z.enum(TASK_PRIORITIES as [TaskPriority, ...TaskPriority[]], {
+    message: "Please select a priority",
   }),
-  category: z.enum(TASK_CATEGORIES as [string, ...string[]], {
-    required_error: "Please select a category",
+  category: z.enum(TASK_CATEGORIES as [TaskCategory, ...TaskCategory[]], {
+    message: "Please select a category",
   }),
-  type: z.enum(TASK_TYPES as [string, ...string[]], {
-    required_error: "Please select a type",
+  type: z.enum(TASK_TYPES as [TaskType, ...TaskType[]], {
+    message: "Please select a type",
   }),
   dueDate: z.string().optional(),
 });
 
 export const taskStatusUpdateSchema = z.object({
-  status: z.enum(TASK_STATUSES as [string, ...string[]], {
-    required_error: "Please select a status",
+  status: z.enum(TASK_STATUSES as [TaskStatus, ...TaskStatus[]], {
+    message: "Please select a status",
   }),
 });
 

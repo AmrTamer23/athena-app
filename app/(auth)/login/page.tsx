@@ -62,7 +62,6 @@ export default function LoginPage() {
                     id={field.name}
                     name={field.name}
                     type="email"
-                    size={4}
                     placeholder="Enter your email"
                     value={field.state.value}
                     onBlur={field.handleBlur}
@@ -93,7 +92,6 @@ export default function LoginPage() {
                 <>
                   <Label htmlFor={field.name}>Password</Label>
                   <Input
-                    size={4}
                     id={field.name}
                     name={field.name}
                     type="password"

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export default function VerifyPage() {
   const params = useParams();
@@ -69,7 +69,7 @@ export default function VerifyPage() {
     <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
       {status === "verifying" && (
         <>
-          <Loader className="w-8 h-8 animate-spin" />
+          <Loader2 className="w-8 h-8 animate-spin" />
           <p className="text-muted-foreground">Verifying your email...</p>
         </>
       )}

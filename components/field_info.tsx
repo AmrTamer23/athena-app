@@ -10,15 +10,13 @@ function formatError(error: unknown): string {
   }
   
   if (error && typeof error === 'object') {
-    // Handle Zod error objects
-    if (error.message) {
-      return error.message
+    const errorObj = error as Record<string, unknown>
+    if (typeof errorObj.message === 'string') {
+      return errorObj.message
     }
-    // Handle other error object formats
-    if (error.code && error.message) {
-      return error.message
+    if (typeof errorObj.code === 'string' && typeof errorObj.message === 'string') {
+      return errorObj.message
     }
-    // Fallback for complex objects
     return 'Invalid input'
   }
   

@@ -67,7 +67,7 @@ export function TeamContextCard({ team }: TeamContextCardProps) {
                     <div>
                         <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Direct Reports ({contact.directReports.length})</h3>
                         <div className="space-y-2">
-                            {contact.directReports.map(report => (
+                            {contact.directReports.map((report: { id: string; name: string; avatarUrl?: string; role: string }) => (
                                 <div key={report.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/30 transition-colors cursor-pointer">
                                     <Avatar className="h-8 w-8 border border-border">
                                         <AvatarImage src={report.avatarUrl} />

@@ -19,7 +19,7 @@ export function BadgesCard({ badges }: BadgesCardProps) {
             <CardContent>
                 <div className="space-y-4">
                     {badges.length > 0 ? (
-                        badges.map((badge) => (
+                        badges.map((badge: { id: string; name: string; description: string; unlockedAt: string }) => (
                             <div key={badge.id} className="flex items-start gap-4 p-3 rounded-lg bg-muted/40 border border-border/50 transition-colors hover:bg-muted/60">
                                 <div className="p-2 bg-amber-100 dark:bg-amber-900/30 text-amber-600 rounded-lg">
                                     <Award className="w-6 h-6" /> {/* Placeholder for badge icon */}
@@ -32,7 +32,7 @@ export function BadgesCard({ badges }: BadgesCardProps) {
                                         </UiBadge>
                                     </div>
                                     <p className="text-sm text-muted-foreground line-clamp-2">{badge.description}</p>
-                                    <p className="text-xs text-muted-foreground mt-1">Earned on {new Date(badge.earnedDate).toLocaleDateString()}</p>
+                                    <p className="text-xs text-muted-foreground mt-1">Earned on {new Date(badge.unlockedAt).toLocaleDateString()}</p>
                                 </div>
                             </div>
                         ))

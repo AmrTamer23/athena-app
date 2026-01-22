@@ -127,14 +127,14 @@ export function TaskCompletionGraph({
               <YAxis className="text-xs" />
               <Tooltip
                 content={({ active, payload }) => {
-                  if (active && payload && payload.length) {
+                  if (active && payload && payload.length && payload[0]?.payload) {
                     return (
                       <div className="bg-background border rounded-lg shadow-lg p-3">
                         <p className="text-sm font-medium">
                           {formatDate(payload[0].payload.date)}
                         </p>
                         <p className="text-lg font-bold text-primary">
-                          {payload[0].value} task{payload[0].value !== 1 ? "s" : ""}
+                          {payload[0].payload.count} task{payload[0].payload.count !== 1 ? "s" : ""}
                         </p>
                       </div>
                     );

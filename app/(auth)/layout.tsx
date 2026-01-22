@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeInUpVariants, fadeInVariants } from "@/lib/animations-settings";
 import { useAuth } from "@/contexts/auth-context";
@@ -28,10 +29,13 @@ export default function AuthLayout({
         animate="animate"
         className="relative hidden items-center justify-center overflow-hidden rounded-none sm:rounded-2xl lg:flex lg:w-[40%] flex-col "
       >
-        <img
+        <Image
           src="/VERT_athena.avif"
           alt="background"
+          width={600}
+          height={800}
           className="inset-0 object-contain w-[60%] scale-150"
+          priority
         />
 
         <motion.div
@@ -50,10 +54,13 @@ export default function AuthLayout({
 
       <main className="w-full flex flex-col gap-4 items-center justify-center lg:w-[60%] rounded-r-2xl">
         <div>
-          <img
+          <Image
             src="/athena.avif"
             alt="athena hq"
+            width={160}
+            height={160}
             className="w-40 h-40 object-cover"
+            priority
           />
         </div>
         {children}

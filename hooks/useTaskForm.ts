@@ -4,7 +4,7 @@ import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { taskFormSchema, type TaskFormValues } from "@/lib/validations/task";
-import { taskService } from "@/services/task";
+import { taskService, type TaskPriority, type TaskCategory, type TaskType } from "@/services/task";
 import { getCurrentUser } from "@/services/hierarchy";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTask } from "./useTasks";
@@ -34,7 +34,12 @@ export function useTaskForm(taskId?: string) {
   const { data: task } = useTask(taskId);
 
   const createMutation = useMutation({
-    mutationFn: (data: TaskFormValues) => taskService.createTask(data, currentUser.id),
+    mutationFn: (data: TaskFormValues) => taskService.createTask({
+      ...data,
+      priority: data.priority as TaskPriority,
+      category: data.category as TaskCategory,
+      type: data.type as TaskType,
+    }, currentUser.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
       toast.success("Task created successfully");
@@ -48,7 +53,12 @@ export function useTaskForm(taskId?: string) {
   const updateMutation = useMutation({
     mutationFn: (data: TaskFormValues) => {
       if (!taskId) throw new Error("Task ID is required");
-      return taskService.updateTask(taskId, data);
+      return taskService.updateTask(taskId, {
+        ...data,
+        priority: data.priority as TaskPriority,
+        category: data.category as TaskCategory,
+        type: data.type as TaskType,
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });

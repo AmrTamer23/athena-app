@@ -2,11 +2,11 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { CompanyInfoStep } from "./company_info_step";
-import { DecisionMakerStep } from "./decision_maker_step";
+import { CompanyInfoStep, type CompanyInfoStepProps } from "./company_info_step";
+import { DecisionMakerStep, type DecisionMakerStepProps } from "./decision_maker_step";
 import { ConfirmationStep } from "./confirmation_step";
 import { useCompanySetup } from "@/hooks/useCompanySetup";
 
@@ -64,7 +64,7 @@ export function Wizard() {
             transition={{ duration: 0.3 }}
           >
             <CompanyInfoStep
-              form={form}
+              form={form as unknown as CompanyInfoStepProps["form"]}
               errors={errors}
               onBlur={validateField}
             />
@@ -80,7 +80,7 @@ export function Wizard() {
             transition={{ duration: 0.3 }}
           >
             <DecisionMakerStep
-              form={form}
+              form={form as unknown as DecisionMakerStepProps["form"]}
               errors={errors}
               onBlur={validateField}
             />
@@ -164,7 +164,7 @@ export function Wizard() {
               <Button onClick={handleSubmit} disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
-                    <Loader />
+                    <Loader2 className="w-4 h-4 animate-spin" />
                     Creating...
                   </>
                 ) : (

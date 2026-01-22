@@ -1,7 +1,7 @@
 "use client";
 
 import { useSquadCreate } from '@/hooks/useSquadCreate'; 
-import { SquadForm } from '@/components/squad/squad_form';
+import { SquadForm, type SquadFormProps } from '@/components/squad/squad_form';
 import { 
   Briefcase, 
   Code, 
@@ -29,7 +29,7 @@ export default function CreateSquadPage() {
 
   return (
     <SquadForm 
-      form={form} 
+      form={form as unknown as SquadFormProps["form"]} 
       isEditing={isEditing} 
       roleDefinitions={roleDefinitions} 
       roleColors={roleColors} 

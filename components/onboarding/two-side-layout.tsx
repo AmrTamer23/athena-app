@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { fadeInVariants } from "@/lib/animations-settings";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
@@ -21,10 +22,13 @@ export function TwoSideLayout({ leftPanel, children }: TwoSideLayoutProps) {
 
       <main className="w-full flex flex-col gap-4 items-center justify-center lg:w-[60%] ">
         <div>
-          <img
+          <Image
             src="/athena.avif"
             alt="athena hq"
+            width={160}
+            height={160}
             className="w-40 h-40 object-cover"
+            priority
           />
         </div>
         {children}

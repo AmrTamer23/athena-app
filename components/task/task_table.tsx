@@ -9,14 +9,16 @@ import {
   type PaginationState,
   type SortingState,
   useReactTable,
+  type Row,
+  type Header,
+  type Cell,
 } from "@tanstack/react-table";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Frame, FrameFooter } from "@/components/ui/frame";
 import {
   Pagination,
@@ -93,10 +95,10 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
     },
   ]);
 
-  const columns: ColumnDef<Task>[] = [
+  const columns: ColumnDef<Task>[] = useMemo(() => [
     {
       accessorKey: "title",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<Task> }) => (
         <Link
           href={`/tasks/${row.original.id}`}
           className="font-medium hover:underline"
@@ -109,7 +111,7 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
     },
     {
       accessorKey: "status",
-      cell: ({ row }) => {
+      cell: ({ row }: { row: Row<Task> }) => {
         const status = row.getValue("status") as Task["status"];
         const needsReview =
           status === "completed" && row.original.assignerId === currentUser.id;
@@ -130,7 +132,7 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
     },
     {
       accessorKey: "priority",
-      cell: ({ row }) => {
+      cell: ({ row }: { row: Row<Task> }) => {
         const priority = row.getValue("priority") as Task["priority"];
         return (
           <Badge className={cn("text-xs", priorityColors[priority])}>
@@ -143,7 +145,7 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
     },
     {
       accessorKey: "assigneeId",
-      cell: ({ row }) => {
+      cell: ({ row }: { row: Row<Task> }) => {
         const assignee = getUserById(row.original.assigneeId);
         return (
           <div className="text-sm">{assignee ? assignee.name : "Unknown"}</div>
@@ -154,7 +156,7 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
     },
     {
       accessorKey: "assignerId",
-      cell: ({ row }) => {
+      cell: ({ row }: { row: Row<Task> }) => {
         const assigner = getUserById(row.original.assignerId);
         return (
           <div className="text-sm text-muted-foreground">
@@ -167,7 +169,7 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
     },
     {
       accessorKey: "category",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<Task> }) => (
         <Badge variant="outline" className="text-xs">
           {row.getValue("category")}
         </Badge>
@@ -177,7 +179,7 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
     },
     {
       accessorKey: "type",
-      cell: ({ row }) => (
+      cell: ({ row }: { row: Row<Task> }) => (
         <span className="text-sm text-muted-foreground capitalize">
           {row.getValue("type")}
         </span>
@@ -187,7 +189,7 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
     },
     {
       accessorKey: "dueDate",
-      cell: ({ row }) => {
+      cell: ({ row }: { row: Row<Task> }) => {
         const dueDate = row.getValue("dueDate") as string | undefined;
         if (!dueDate) return <span className="text-muted-foreground">-</span>;
         const isOverdue =
@@ -210,7 +212,7 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
     },
     {
       accessorKey: "updatedAt",
-      cell: ({ row }) => {
+      cell: ({ row }: { row: Row<Task> }) => {
         const date = row.getValue("updatedAt") as Date;
         return (
           <span className="text-sm text-muted-foreground">
@@ -221,9 +223,9 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
       header: "Updated",
       size: 120,
     },
-  ];
+  ], [currentUser.id]);
 
-  const table = useReactTable({
+  const tableOptions = useMemo(() => ({
     columns,
     data: tasks,
     enableSortingRemoval: false,
@@ -236,7 +238,9 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
       pagination,
       sorting,
     },
-  });
+  }), [columns, tasks, pagination, sorting]);
+
+  const table = useReactTable(tableOptions);
 
   if (isLoading) {
     return (
@@ -273,9 +277,9 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
       <Frame className="w-full">
         <Table className="table-fixed">
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {table.getHeaderGroups().map((headerGroup: { id: string; headers: Header<Task, unknown>[] }) => (
               <TableRow className="hover:bg-transparent" key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map((header: Header<Task, unknown>) => {
                   const columnSize = header.column.getSize();
                   return (
                     <TableHead
@@ -401,7 +405,7 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows.length ? (
-            table.getRowModel().rows.map((row) => {
+            table.getRowModel().rows.map((row: Row<Task>) => {
               const needsReview =
                 row.original.status === "completed" &&
                 row.original.assignerId === currentUser.id;
@@ -419,7 +423,7 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
                     }
                   }}
                 >
-                  {row.getVisibleCells().map((cell) => (
+                  {row.getVisibleCells().map((cell: Cell<Task, unknown>) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -444,8 +448,8 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
           <div className="flex items-center gap-2 whitespace-nowrap">
             <p className="text-muted-foreground text-sm">Viewing</p>
             <Select
-              onValueChange={(value) => {
-                table.setPageIndex((Number(value) as number) - 1);
+              onValueChange={(value: string) => {
+                table.setPageIndex(Number(value) - 1);
               }}
               value={String(table.getState().pagination.pageIndex + 1)}
             >
@@ -485,27 +489,15 @@ export function TaskTable({ tasks, isLoading }: TaskTableProps) {
               <PaginationItem>
                 <PaginationPrevious
                   className="sm:*:[svg]:hidden"
-                  render={
-                    <Button
-                      disabled={!table.getCanPreviousPage()}
-                      onClick={() => table.previousPage()}
-                      size="sm"
-                      variant="outline"
-                    />
-                  }
+                  onClick={() => table.previousPage()}
+                  style={{ pointerEvents: table.getCanPreviousPage() ? "auto" : "none", opacity: table.getCanPreviousPage() ? 1 : 0.5 }}
                 />
               </PaginationItem>
               <PaginationItem>
                 <PaginationNext
                   className="sm:*:[svg]:hidden"
-                  render={
-                    <Button
-                      disabled={!table.getCanNextPage()}
-                      onClick={() => table.nextPage()}
-                      size="sm"
-                      variant="outline"
-                    />
-                  }
+                  onClick={() => table.nextPage()}
+                  style={{ pointerEvents: table.getCanNextPage() ? "auto" : "none", opacity: table.getCanNextPage() ? 1 : 0.5 }}
                 />
               </PaginationItem>
             </PaginationContent>

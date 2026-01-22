@@ -14,7 +14,7 @@ import { DatePicker } from "@/components/ui/date_picker";
 import { FieldInfo } from "@/components/field_info";
 import { useTaskForm } from "@/hooks/useTaskForm";
 import { getSubordinates, getCurrentUser } from "@/services/hierarchy";
-import { TASK_PRIORITIES, TASK_CATEGORIES, TASK_TYPES } from "@/services/task";
+import { TASK_PRIORITIES, TASK_CATEGORIES, TASK_TYPES, type TaskPriority, type TaskCategory, type TaskType } from "@/services/task";
 import { Frame, FramePanel } from "@/components/ui/frame";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
@@ -85,7 +85,7 @@ function FormField({
   label: string;
   required?: boolean;
   children: React.ReactNode;
-  field?: { state: { meta: { errors?: string[] } } };
+  field?: unknown;
 }) {
   return (
     <div className="flex flex-col gap-2">
@@ -95,7 +95,7 @@ function FormField({
         {required && <span className="text-destructive">*</span>}
       </Label>
       {children}
-      {field && <FieldInfo field={field} />}
+      {field ? <FieldInfo field={field as unknown as Parameters<typeof FieldInfo>[0]["field"]} /> : null}
     </div>
   );
 }
@@ -162,7 +162,7 @@ export function TaskForm({ taskId }: TaskFormProps) {
                 <FormField icon={User} label="Assignee" required field={field}>
                   <Select
                     value={field.state.value}
-                    onValueChange={(value) => field.handleChange(value)}
+                    onValueChange={(value: string) => field.handleChange(value)}
                   >
                     <SelectTrigger id={field.name} className="w-full">
                       <SelectValue placeholder="Select a team member to assign this task" />
@@ -189,7 +189,7 @@ export function TaskForm({ taskId }: TaskFormProps) {
                   <FormField icon={Flag} label="Priority" field={field}>
                     <Select
                       value={field.state.value}
-                      onValueChange={(value) => field.handleChange(value)}
+                      onValueChange={(value: string) => field.handleChange(value as TaskPriority)}
                     >
                       <SelectTrigger id={field.name} className="w-full">
                         <SelectValue placeholder="Select priority" />
@@ -211,7 +211,7 @@ export function TaskForm({ taskId }: TaskFormProps) {
                   <FormField icon={Tag} label="Category" field={field}>
                     <Select
                       value={field.state.value}
-                      onValueChange={(value) => field.handleChange(value)}
+                      onValueChange={(value: string) => field.handleChange(value as TaskCategory)}
                     >
                       <SelectTrigger id={field.name} className="w-full">
                         <SelectValue placeholder="Select category" />
@@ -233,7 +233,7 @@ export function TaskForm({ taskId }: TaskFormProps) {
                   <FormField icon={Tag} label="Type" field={field}>
                     <Select
                       value={field.state.value}
-                      onValueChange={(value) => field.handleChange(value)}
+                      onValueChange={(value: string) => field.handleChange(value as TaskType)}
                     >
                       <SelectTrigger id={field.name} className="w-full">
                         <SelectValue placeholder="Select type" />

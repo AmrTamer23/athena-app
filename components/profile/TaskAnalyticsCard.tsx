@@ -73,7 +73,7 @@ export function TaskAnalyticsCard({ analytics }: TaskAnalyticsCardProps) {
                             <Clock className="w-4 h-4 text-muted-foreground" />
                             <div className="flex flex-col">
                                 <span className="text-xs text-muted-foreground">Avg Time</span>
-                                <span className="font-semibold text-sm">{analytics.averageCompletionTimeDays}d</span>
+                                <span className="font-semibold text-sm">{analytics.averageCompletionTimeDays ?? 0}d</span>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">

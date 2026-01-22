@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,7 @@ import {
   useInvitationActions,
   useInvitationFilters,
 } from "@/hooks/useInvitation";
+import type { TeamRole, InvitationStatus } from "@/services/invitation";
 import {
   SearchIcon,
   MoreHorizontalIcon,
@@ -28,7 +30,6 @@ import {
   Trash2Icon,
 } from "lucide-react";
 import { fadeInUpVariants } from "@/lib/animations-settings";
-import type { InvitationStatus } from "@/services/invitation";
 
 const statusConfig: Record<
   InvitationStatus,
@@ -81,7 +82,7 @@ export function PendingInvitations() {
 
           <Select
             value={roleFilter}
-            onValueChange={(value) => setRoleFilter(value)}
+            onValueChange={(value: string) => setRoleFilter(value as TeamRole | "all")}
           >
             <SelectTrigger className=" min-w-28 flex-0">
               <SelectValue>
@@ -105,7 +106,7 @@ export function PendingInvitations() {
 
           <Select
             value={statusFilter}
-            onValueChange={(value) => setStatusFilter(value)}
+            onValueChange={(value: string) => setStatusFilter(value as InvitationStatus | "all")}
           >
             <SelectTrigger className=" min-w-28 flex-0">
               <SelectValue>
@@ -137,9 +138,11 @@ export function PendingInvitations() {
                 transition={{ delay: index * 0.05 }}
                 className="flex items-center gap-4 p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
               >
-                <img
-                  src={invitation.avatar}
+                <Image
+                  src={invitation.avatar || "/athena.avif"}
                   alt={invitation.email}
+                  width={40}
+                  height={40}
                   className="w-10 h-10 rounded-full"
                 />
 

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 
 // import { SearchForm } from "@/components/search-form";
 // import { TeamSwitcher } from "@/components/team-switcher";
@@ -121,10 +122,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader className="flex flex-row items-center gap-2">
-        <img
+        <Image
           src="/athena.avif"
           alt="Logo"
+          width={56}
+          height={56}
           className="w-14 h-14 object-cover rounded-full"
+          priority
         />
         <h1 className="text-2xl font-bold font-serif italic mt-2">Athena HQ</h1>
       </SidebarHeader>

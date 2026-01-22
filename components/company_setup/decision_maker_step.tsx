@@ -1,10 +1,10 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
-import { Field } from "@tanstack/react-form";
-interface DecisionMakerStepProps {
+
+export interface DecisionMakerStepProps {
   form: {
-    Field: typeof Field;
+    Field: <TName extends "fullName" | "email" | "password" | "confirmPassword">(props: { name: TName; children: (field: { state: { value: string }; handleChange: (value: string) => void; handleBlur: () => void; name: TName } & Record<string, unknown>) => React.ReactNode }) => React.ReactElement;
   };
   errors: {
     [key: string]: string | undefined;
@@ -35,7 +35,7 @@ export function DecisionMakerStep({
                 <Input
                   id="fullName"
                   placeholder="John Doe"
-                  value={field.state.value}
+                  value={typeof field.state.value === "string" ? field.state.value : ""}
                   onChange={(e) => field.handleChange(e.target.value)}
                   onBlur={() => onBlur("fullName")}
                   size="lg"
@@ -65,7 +65,7 @@ export function DecisionMakerStep({
                   id="email"
                   type="email"
                   placeholder="john@acme.com"
-                  value={field.state.value}
+                  value={typeof field.state.value === "string" ? field.state.value : ""}
                   onChange={(e) => field.handleChange(e.target.value)}
                   onBlur={() => onBlur("email")}
                   size="lg"
@@ -96,7 +96,7 @@ export function DecisionMakerStep({
                 id="password"
                 type="password"
                 placeholder="••••••••"
-                value={field.state.value}
+                value={typeof field.state.value === "string" ? field.state.value : ""}
                 onChange={(e) => field.handleChange(e.target.value)}
                 onBlur={() => onBlur("password")}
                 size="lg"
@@ -126,7 +126,7 @@ export function DecisionMakerStep({
                 id="confirmPassword"
                 type="password"
                 placeholder="••••••••"
-                value={field.state.value}
+                value={typeof field.state.value === "string" ? field.state.value : ""}
                 onChange={(e) => field.handleChange(e.target.value)}
                 onBlur={() => onBlur("confirmPassword")}
                 size="lg"

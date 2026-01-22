@@ -61,7 +61,7 @@ export function TaskFiltersComponent({
         <Label>Status</Label>
         <Select
           value={filters.status || "all"}
-          onValueChange={(value) =>
+          onValueChange={(value: string) =>
             updateFilter(
               "status",
               value === "all" ? undefined : (value as TaskStatus)
@@ -86,7 +86,7 @@ export function TaskFiltersComponent({
         <Label>Priority</Label>
         <Select
           value={filters.priority || "all"}
-          onValueChange={(value) =>
+          onValueChange={(value: string) =>
             updateFilter(
               "priority",
               value === "all" ? undefined : (value as TaskPriority)
@@ -111,7 +111,7 @@ export function TaskFiltersComponent({
         <Label>Category</Label>
         <Select
           value={filters.category || "all"}
-          onValueChange={(value) =>
+          onValueChange={(value: string) =>
             updateFilter(
               "category",
               value === "all" ? undefined : (value as TaskCategory)

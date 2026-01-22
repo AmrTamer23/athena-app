@@ -1,11 +1,12 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
-import { TooltipTrigger, TooltipPopup, Tooltip } from "../ui/tooltip";
+import { TooltipTrigger, TooltipContent, Tooltip } from "../ui/tooltip";
 import { InfoIcon } from "lucide-react";
-interface CompanyInfoStepProps {
+
+export interface CompanyInfoStepProps {
   form: {
-    Field: <TName extends string>(props: { name: TName; children: (field: { state: { value: string }; handleChange: (value: string) => void; handleBlur: () => void } & Record<string, unknown>) => React.ReactNode }) => React.ReactElement;
+    Field: <TName extends "companyName" | "companyIdentifier">(props: { name: TName; children: (field: { state: { value: string }; handleChange: (value: string) => void; handleBlur: () => void; name: TName } & Record<string, unknown>) => React.ReactNode }) => React.ReactElement;
   };
   errors: {
     [key: string]: string | undefined;
@@ -35,7 +36,7 @@ export function CompanyInfoStep({
               <Input
                 id="companyName"
                 placeholder="Acme Corporation"
-                value={field.state.value}
+                value={typeof field.state.value === "string" ? field.state.value : ""}
                 onChange={(e) => field.handleChange(e.target.value)}
                 onBlur={() => onBlur("companyName")}
                 size="lg"
@@ -69,16 +70,16 @@ export function CompanyInfoStep({
                   <TooltipTrigger>
                     <InfoIcon className="w-3.5 h-3.5" />
                   </TooltipTrigger>
-                  <TooltipPopup side="right">
+                  <TooltipContent side="right">
                     This will be used in your company URL. Use lowercase
                     letters, numbers, and hyphens only.
-                  </TooltipPopup>
+                  </TooltipContent>
                 </Tooltip>
               </Label>
               <Input
                 id="companyIdentifier"
                 placeholder="acme-corp"
-                value={field.state.value}
+                value={typeof field.state.value === "string" ? field.state.value : ""}
                 onChange={(e) => field.handleChange(e.target.value)}
                 onBlur={() => onBlur("companyIdentifier")}
                 size="lg"

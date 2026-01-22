@@ -12,7 +12,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { FieldInfo } from "@/components/field_info";
 import { useInvitationForm } from "@/hooks/useInvitation";
-import { TEAM_ROLES } from "@/services/invitation";
+import { TEAM_ROLES, type TeamRole } from "@/services/invitation";
 import { FileUpIcon } from "lucide-react";
 import { fadeInUpVariants } from "@/lib/animations-settings";
 
@@ -89,7 +89,7 @@ export function InviteForm() {
                   <Label htmlFor={field.name}>Role</Label>
                   <Select
                     value={field.state.value}
-                    onValueChange={(value) => field.handleChange(value)}
+                    onValueChange={(value: string) => field.handleChange(value as TeamRole)}
                   >
                     <SelectTrigger
                       id={field.name}

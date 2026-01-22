@@ -60,24 +60,24 @@ export function ProfileHeader({ employee }: ProfileHeaderProps) {
                             </div>
 
                             <div className="flex gap-2">
-                                {socialLinks.github && (
+                                {socialLinks?.github && (
                                     <Button variant="ghost" size="icon" className="hover:text-[#333]" asChild>
                                         <a href={socialLinks.github} target="_blank" rel="noreferrer"><Github className="w-5 h-5" /></a>
                                     </Button>
                                 )}
-                                {socialLinks.linkedin && (
+                                {socialLinks?.linkedin && (
                                     <Button variant="ghost" size="icon" className="hover:text-[#0077b5]" asChild>
                                         <a href={socialLinks.linkedin} target="_blank" rel="noreferrer"><Linkedin className="w-5 h-5" /></a>
                                     </Button>
                                 )}
-                                {socialLinks.twitter && (
+                                {socialLinks?.twitter && (
                                     <Button variant="ghost" size="icon" className="hover:text-[#1DA1F2]" asChild>
                                         <a href={socialLinks.twitter} target="_blank" rel="noreferrer"><Twitter className="w-5 h-5" /></a>
                                     </Button>
                                 )}
-                                {socialLinks.portfolio && (
+                                {socialLinks?.website && (
                                     <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground" asChild>
-                                        <a href={socialLinks.portfolio} target="_blank" rel="noreferrer"><Globe className="w-5 h-5" /></a>
+                                        <a href={socialLinks.website} target="_blank" rel="noreferrer"><Globe className="w-5 h-5" /></a>
                                     </Button>
                                 )}
                             </div>
@@ -86,7 +86,7 @@ export function ProfileHeader({ employee }: ProfileHeaderProps) {
                         <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
                             <div className="flex items-center gap-2">
                                 <Mail className="w-4 h-4" />
-                                {employee.email}
+                                {employee.email || "N/A"}
                             </div>
                             <div className="flex items-center gap-2">
                                 <Calendar className="w-4 h-4" />

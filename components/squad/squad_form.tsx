@@ -20,15 +20,20 @@ import type { RoleDefinition } from "@/components/squad/role_builder";
 import { TechStackSelect } from "@/components/squad/tech_stack_select";
 import { UserSelect } from "@/components/squad/user_select";
 import { SquadPreview } from "@/components/squad/preview_card";
-import type { useForm } from '@tanstack/react-form';
 import type { SquadFormValues } from '@/hooks/useSquadCreate';
 
 interface SquadFormProps {
-  form: ReturnType<typeof useForm<SquadFormValues, unknown>>;
+  form: {
+    Field: <TName extends keyof SquadFormValues>(props: { name: TName; children: (field: { state: { value: SquadFormValues[TName]; meta: { errors?: unknown[] } }; handleChange: (value: SquadFormValues[TName] | ((prev: SquadFormValues[TName]) => SquadFormValues[TName])) => void; handleBlur: () => void; name: TName } & Record<string, unknown>) => React.ReactNode }) => React.ReactElement;
+    Subscribe: <TSelected>(props: { selector: (state: { values: SquadFormValues; isSubmitting: boolean }) => TSelected; children: (selected: TSelected) => React.ReactNode }) => React.ReactElement;
+    handleSubmit: () => void;
+  } & Record<string, unknown>;
   isEditing: boolean;
   roleDefinitions: readonly RoleDefinition[];
   roleColors: Record<string, string>;
 }
+
+export type { SquadFormProps };
 
 export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: SquadFormProps) {
   return (
@@ -230,9 +235,9 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
           {/* Right Panel: Preview */}
           <div className="hidden lg:block lg:col-span-5">
             <form.Subscribe
-              selector={(state) => state.values}
+              selector={(state: { values: SquadFormValues }) => state.values}
             >
-              {(values) => (
+              {(values: SquadFormValues) => (
                 <SquadPreview values={values} roleColors={roleColors} />
               )}
             </form.Subscribe>
@@ -256,9 +261,9 @@ export function SquadForm({ form, isEditing, roleDefinitions, roleColors }: Squa
               Save Draft
             </Button>
             <form.Subscribe
-              selector={(state) => state.isSubmitting}
+              selector={(state: { isSubmitting: boolean }) => state.isSubmitting}
             >
-              {(isSubmitting) => (
+              {(isSubmitting: boolean) => (
                 <Button
                   onClick={(e) => {
                     e.preventDefault();

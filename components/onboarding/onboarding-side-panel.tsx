@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { fadeInUpVariants } from "@/lib/animations-settings";
 import { AnimatePresence, motion } from "framer-motion";
 import type {
@@ -33,10 +34,12 @@ export function OnboardingSidePanel(props: OnboardingSidePanelProps) {
     const firstName = invite.fullName.split(" ")[0] || invite.fullName;
     return (
       <div className="relative w-full min-h-[80svh] flex flex-col justify-center items-center">
-        <img
+        <Image
           src="/VERT_athena.avif"
           alt="background"
+          fill
           className="absolute inset-0 w-full h-full object-cover p-8"
+          priority
         />
         <div className="absolute inset-0 bg-black/80 z-[5] rounded-e-3xl" />
         <div className="relative z-10 flex flex-col items-center justify-center p-8 text-center">
@@ -84,10 +87,12 @@ export function OnboardingSidePanel(props: OnboardingSidePanelProps) {
   if (props.step === "checklist") {
     return (
       <div className="relative w-full min-h-[80svh] flex flex-col justify-center items-center">
-        <img
+        <Image
           src="/VERT_athena.avif"
           alt="background"
+          fill
           className="absolute inset-0 w-full h-full object-cover p-8"
+          priority
         />
         <div className="absolute inset-0 bg-black/80 z-[5] rounded-e-3xl" />
         <div className="relative z-10 flex flex-col items-center justify-center p-8 text-center">
@@ -133,10 +138,12 @@ export function OnboardingSidePanel(props: OnboardingSidePanelProps) {
   if (props.step === "profile-basic") {
     return (
       <div className="relative w-full min-h-[80svh] flex flex-col justify-center items-center">
-        <img
+        <Image
           src="/VERT_athena.avif"
           alt="background"
+          fill
           className="absolute inset-0 w-full h-full object-cover p-8"
+          priority
         />
         <div className="absolute inset-0 bg-black/80 z-[5] rounded-e-3xl" />
         <div className="relative z-10 flex flex-col items-center justify-center p-8 text-center">
