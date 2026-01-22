@@ -5,13 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FieldInfo } from "@/components/field_info";
 import { useLoginForm } from "@/hooks/use_login_form";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
-  const form = useLoginForm();
+function SearchParamsHandler() {
   const searchParams = useSearchParams();
   const verified = searchParams.get("verified");
   const message = searchParams.get("message");
@@ -26,8 +25,17 @@ export default function LoginPage() {
     }
   }, [verified, message]);
 
+  return null;
+}
+
+export default function LoginPage() {
+  const form = useLoginForm();
+
   return (
     <div className=" flex items-center justify-center w-full">
+      <Suspense fallback={null}>
+        <SearchParamsHandler />
+      </Suspense>
       <div className="w-full max-w-sm bg-transparent border-0 shadow-none flex flex-col gap-6">
         <div className="text-center flex flex-col gap-2">
           <h2 className="text-2xl font-semibold">Welcome back</h2>

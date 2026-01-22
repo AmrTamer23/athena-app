@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +15,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function OnboardingPage() {
+function OnboardingContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token") || "";
   
@@ -325,6 +326,23 @@ export default function OnboardingPage() {
   }
 
   return null;
+}
+
+export default function OnboardingPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-[60vh] items-center justify-center px-4">
+        <div className="w-full max-w-lg text-center flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-2xl font-semibold">Loading...</h1>
+            <p className="text-sm text-muted-foreground">Preparing your onboarding flow...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <OnboardingContent />
+    </Suspense>
+  );
 }
 
 type CenteredStateProps = {
