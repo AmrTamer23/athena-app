@@ -1,5 +1,17 @@
 *.env
+*.env.local
+*.env.*.local
 docs
 dist
 build
 node_modules
+.next
+.git
+.gitignore
+.husky
+.cursor
+*.md
+.DS_Store
+coverage
+.nyc_output
+*.log
