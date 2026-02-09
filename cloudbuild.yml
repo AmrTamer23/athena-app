@@ -17,17 +17,21 @@ steps:
         "us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend-image:$COMMIT_SHA",
       ]
 
-  # get the current used instance template
+  # Deploy to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    id: "1"
-    args: ["./create_new_instance_template.sh", $COMMIT_SHA]
-    entrypoint: bash
+    entrypoint: gcloud
+    args:
+      [
+        "run", "deploy", "athena-frontend",
+        "--image", "us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend-image:$COMMIT_SHA",
+        "--region", "us-central1",
+        "--platform", "managed",
+        "--allow-unauthenticated",
+        "--port", "8080"
+      ]
 
-  # start update
-  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
-    waitFor: ["1"]
-    args: ["./activate_instance_template.sh", $COMMIT_SHA]
-    entrypoint: bash
+images:
+  - "us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend-image:$COMMIT_SHA"
 
 options:
   logging: CLOUD_LOGGING_ONLY
