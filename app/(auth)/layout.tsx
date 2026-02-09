@@ -7,6 +7,9 @@ import { motion } from "framer-motion";
 import { fadeInUpVariants, fadeInVariants } from "@/lib/animations-settings";
 import { useAuth } from "@/contexts/auth-context";
 
+const guardsDisabled =
+  process.env.NEXT_PUBLIC_DISABLE_AUTH_GUARDS === "true";
+
 export default function AuthLayout({
   children,
 }: {
@@ -16,7 +19,7 @@ export default function AuthLayout({
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user) {
+    if (!guardsDisabled && user) {
       router.push("/dashboard");
     }
   }, [user, router]);

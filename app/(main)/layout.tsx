@@ -10,6 +10,9 @@ import {
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/auth-context";
 
+const guardsDisabled =
+  process.env.NEXT_PUBLIC_DISABLE_AUTH_GUARDS === "true";
+
 export default function MainLayout({
   children,
 }: {
@@ -19,12 +22,12 @@ export default function MainLayout({
   const { user, isLoading } = useAuth();
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!guardsDisabled && !isLoading && !user) {
       router.push("/login");
     }
   }, [user, isLoading, router]);
 
-  if (isLoading) {
+  if (!guardsDisabled && isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-muted-foreground">Loading...</div>
@@ -32,7 +35,7 @@ export default function MainLayout({
     );
   }
 
-  if (!user) {
+  if (!guardsDisabled && !user) {
     return null;
   }
 
