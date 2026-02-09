@@ -1,0 +1,145 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/date_picker";
+import { Label } from "@/components/ui/label";
+import {
+  TASK_STATUSES,
+  TASK_PRIORITIES,
+  TASK_CATEGORIES,
+  type TaskStatus,
+  type TaskPriority,
+  type TaskCategory,
+} from "@/services/task";
+import type { TaskFilters } from "@/services/task";
+
+type TaskFiltersProps = {
+  filters: TaskFilters;
+  onFiltersChange: (filters: TaskFilters) => void;
+};
+
+const statusLabels: Record<TaskStatus, string> = {
+  assigned: "Assigned",
+  in_progress: "In Progress",
+  completed: "Completed",
+  reviewed: "Reviewed",
+};
+
+const priorityLabels: Record<TaskPriority, string> = {
+  low: "Low",
+  medium: "Medium",
+  high: "High",
+  urgent: "Urgent",
+};
+
+const categoryLabels: Record<TaskCategory, string> = {
+  development: "Development",
+  design: "Design",
+  qa: "QA",
+  marketing: "Marketing",
+  other: "Other",
+};
+
+export function TaskFiltersComponent({
+  filters,
+  onFiltersChange,
+}: TaskFiltersProps) {
+  const updateFilter = <K extends keyof TaskFilters>(
+    key: K,
+    value: TaskFilters[K] | undefined
+  ) => {
+    onFiltersChange({ ...filters, [key]: value || undefined });
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="flex flex-col gap-2">
+        <Label>Status</Label>
+        <Select
+          value={filters.status || "all"}
+          onValueChange={(value: string) =>
+            updateFilter(
+              "status",
+              value === "all" ? undefined : (value as TaskStatus)
+            )
+          }
+        >
+          <SelectTrigger className="w-full capitalize">
+            <SelectValue placeholder="All statuses" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All statuses</SelectItem>
+            {TASK_STATUSES.map((status) => (
+              <SelectItem key={status} value={status} className="capitalize">
+                {statusLabels[status]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label>Priority</Label>
+        <Select
+          value={filters.priority || "all"}
+          onValueChange={(value: string) =>
+            updateFilter(
+              "priority",
+              value === "all" ? undefined : (value as TaskPriority)
+            )
+          }
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="All priorities" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All priorities</SelectItem>
+            {TASK_PRIORITIES.map((priority) => (
+              <SelectItem key={priority} value={priority}>
+                {priorityLabels[priority]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label>Category</Label>
+        <Select
+          value={filters.category || "all"}
+          onValueChange={(value: string) =>
+            updateFilter(
+              "category",
+              value === "all" ? undefined : (value as TaskCategory)
+            )
+          }
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="All categories" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All categories</SelectItem>
+            {TASK_CATEGORIES.map((category) => (
+              <SelectItem key={category} value={category}>
+                {categoryLabels[category]}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Label>Due Date From</Label>
+        <DatePicker
+          value={filters.dueDateFrom}
+          onChange={(value) => updateFilter("dueDateFrom", value)}
+          placeholder="Select date"
+        />
+      </div>
+    </div>
+  );
+}

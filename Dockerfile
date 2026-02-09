@@ -1,21 +1,37 @@
-# build stage
-FROM oven/bun:1 as build-stage
+FROM node:20-alpine AS base
 
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+FROM base AS deps
 WORKDIR /app
 
-COPY bun.lock package.json turbo.json ./
-COPY app ./app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
-RUN bun install --frozen-lockfile
-RUN bun run build
+FROM base AS builder
+WORKDIR /app
 
-# production stage
-FROM nginx:stable-alpine as production-stage
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
-COPY --from=build-stage /app/app/dist /usr/share/nginx/html
+RUN pnpm run build
 
-COPY nginx.conf /etc/nginx/nginx.conf
+FROM node:20-alpine AS runner
+WORKDIR /app
 
-EXPOSE 8080
+ENV NODE_ENV=production
+ENV PORT=80
+ENV HOSTNAME=0.0.0.0
 
-CMD ["nginx", "-g", "daemon off;"]
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 80
+
+CMD ["node", "server.js"]
